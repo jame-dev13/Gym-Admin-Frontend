@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@theme {
+  --breakpoint-tab: 942px;
+
+  --animate-fade-in-up: fade-in-up 0.7s ease-out;
+  --animate-fade-in: fade-in 0.6s ease-out;
+  --animate-fade-in-scale: fade-in-scale 0.2s ease-out;
+
+  --color-surface: #0b0e1a;
+  --color-surface-raised: #111627;
+  --color-surface-over: #1a2038;
+  --color-text-primary: #e2e8f0;
+  --color-text-secondary: #94a3b8;
+  --color-text-tertiary: #64748b;
+  --color-accent: #22d3ee;
+  --color-accent-emphasis: #06b6d4;
+  --color-border: #1e293b;
+  --color-border-emphasis: #334155;
+  --color-danger: #f43f5e;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-surface-secondary: #0d132b;
+  --color-surface-secondary-raised: #03081b;
+  --color-surface-secondary-over: #0c1127;
+}
+
+:root, .dark {
+  color-scheme: dark;
+}
+
+.light {
+  color-scheme: light;
+
+  --color-surface: #f8fafc;
+  --color-surface-raised: #ffffff;
+  --color-surface-over: #f1f5f9;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-tertiary: #64748b;
+  --color-accent: #0891b2;
+  --color-accent-emphasis: #0e7490;
+  --color-border: #e2e8f0;
+  --color-border-emphasis: #cbd5e1;
+  --color-danger: #e11d48;
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  --color-surface-secondary: rgb(234, 254, 255);
+  --color-surface-secondary-raised: #dddfff;
+  --color-surface-secondary-over: #e9ebff;
+
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root, html {
+  scroll-behavior: smooth;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}

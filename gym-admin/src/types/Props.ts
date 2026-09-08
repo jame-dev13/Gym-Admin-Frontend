@@ -1,7 +1,51 @@
-import type { ReactNode } from 'react'
+import type { ReactNode, InputHTMLAttributes } from 'react'
 import { type LucideIcon } from 'lucide-react'
 
 type AvailableIcon = LucideIcon
+
+type InputHTMLProps = InputHTMLAttributes<HTMLInputElement>
+
+export interface InputBaseProps {
+  labelText?: string
+  Icon?: AvailableIcon
+}
+
+export type InputProps = InputBaseProps & InputHTMLProps
+
+export type EmailInputProps = InputBaseProps &
+  Pick<InputHTMLProps, 'aria-label' | 'disabled' | 'pattern' | 'value' | 'defaultValue' | 'name'>
+
+export type DateInputProps = InputBaseProps &
+  Pick<InputHTMLProps, 'aria-label' | 'disabled' | 'min' | 'max' | 'name' | 'value' | 'defaultValue'>
+
+export type PhoneInputProps = InputBaseProps &
+  Pick<
+    InputHTMLProps,
+    'aria-label' | 'autoComplete' | 'defaultValue' | 'disabled' | 'maxLength' | 'name' | 'onChange' | 'pattern' | 'required'
+  > & {
+    separator?: string
+  }
+
+export type NumberInputProps = InputBaseProps &
+  Pick<
+    InputHTMLProps,
+    | 'id'
+    | 'name'
+    | 'value'
+    | 'defaultValue'
+    | 'min'
+    | 'max'
+    | 'step'
+    | 'required'
+    | 'disabled'
+    | 'readOnly'
+    | 'className'
+    | 'aria-label'
+    | 'aria-describedby'
+    | 'autoComplete'
+    | 'title'
+    | 'onChange'
+  >
 
 export interface LinkToBaseProps {
   to: string

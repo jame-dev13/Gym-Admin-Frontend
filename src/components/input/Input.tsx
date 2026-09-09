@@ -144,7 +144,7 @@ export const PhoneInput = ({
   );
 };
 
-export const PasswordInput = ({ name, className, ...props }: InputProps) => {
+export const PasswordInput = ({ name, className, labelText="Password", ...props }: InputProps) => {
   const autoId = useId();
   const [type, setType] = useState<"text" | "password">(() => "password");
   const handleChangeType = useCallback(() => {
@@ -173,7 +173,7 @@ export const PasswordInput = ({ name, className, ...props }: InputProps) => {
         peer-focus:text-accent peer-invalid:not-focus-visible:text-rose-500 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto`}
         >
           <UserLock className="scale-75" />
-          Password
+          {labelText}
         </label>
         <CommandBtn
           Icon={Icon}

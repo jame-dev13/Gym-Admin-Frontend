@@ -1,3 +1,4 @@
+import { EmailInput } from "@/components/input/Input";
 import { getAuthRouter } from "@/features/auth/services/AuthRouter";
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
@@ -14,6 +15,11 @@ export const AppRouter = () => {
           <Route path="login" element={<Login />} caseSensitive />
           <Route path="register" element={<Register />} caseSensitive />
         </Route>
+        <Route path="/test" element={
+          <div className="size-80">
+            <EmailInput />
+          </div>
+        } />
       </Routes>
     </Suspense>
   );

@@ -3,7 +3,7 @@ import { getAuthRouter } from "@/features/auth/services/AuthRouter";
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
-const { AuthLayout, Register, Login } = getAuthRouter();
+const { AuthLayout, Register, Login, Verification } = getAuthRouter();
 
 export const AppRouter = () => {
   return (
@@ -14,12 +14,16 @@ export const AppRouter = () => {
           <Route index element={<AuthLayout />} />
           <Route path="login" element={<Login />} caseSensitive />
           <Route path="register" element={<Register />} caseSensitive />
+          <Route path="verification" element={<Verification />} caseSensitive />
         </Route>
-        <Route path="/test" element={
-          <div className="size-80">
-            <EmailInput />
-          </div>
-        } />
+        <Route
+          path="/test"
+          element={
+            <div className="size-80">
+              <EmailInput />
+            </div>
+          }
+        />
       </Routes>
     </Suspense>
   );

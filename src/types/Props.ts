@@ -38,6 +38,18 @@ export type EmailInputProps = InputBaseProps &
     | "defaultValue"
   >;
 
+export interface OtpInputProps {
+  length?: number;
+  name?: string;
+  autoComplete?: string;
+  required?: boolean;
+  disabled?: boolean;
+  "aria-label"?: string;
+  value?: string;
+  onChange?: (value: string) => void;
+  onComplete?: (value: string) => void;
+}
+
 export type DateInputProps = InputBaseProps &
   Pick<
     InputHTMLProps,

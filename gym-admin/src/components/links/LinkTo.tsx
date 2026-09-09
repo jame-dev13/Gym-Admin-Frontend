@@ -9,7 +9,7 @@ const baseLinkStyles = [
   'inline-flex',
   'items-center',
   'gap-2',
-  'text-text-secondary',
+  'text-text-primary',
   'hover:text-accent',
   'hover:underline',
   'underline-offset-4',

@@ -1,5 +1,8 @@
+import { getAuthRouter } from "@/features/auth/services/AuthRouter";
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
+
+const { AuthLayout, Register, Login } = getAuthRouter();
 
 export const AppRouter = () => {
   return (
@@ -7,9 +10,9 @@ export const AppRouter = () => {
       <Routes>
         <Route path="/" element={<div>Lading Page</div>} />
         <Route path="/auth" caseSensitive>
-          <Route index element={<div>Index auth page</div>}/>
-          <Route path="login" element={<div>Login page</div>}/>
-          <Route path="register" element={<div>Page page</div>}/>
+          <Route index element={<AuthLayout />} />
+          <Route path="login" element={<Login />} caseSensitive />
+          <Route path="register" element={<Register />} caseSensitive />
         </Route>
       </Routes>
     </Suspense>

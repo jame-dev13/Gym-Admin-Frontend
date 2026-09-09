@@ -12,6 +12,19 @@ export interface InputBaseProps {
 
 export type InputProps = InputBaseProps & InputHTMLProps;
 
+export type TextInputProps = InputBaseProps &
+  Pick<
+    InputHTMLProps,
+    | "aria-label"
+    | "autoComplete"
+    | "disabled"
+    | "name"
+    | "pattern"
+    | "required"
+    | "value"
+    | "defaultValue"
+  >;
+
 export type EmailInputProps = InputBaseProps &
   Pick<
     InputHTMLProps,

@@ -6,6 +6,7 @@ import { AuthCard } from "@/features/auth/components/AuthCard";
 import { AuthHeader } from "@/features/auth/components/AuthHeader";
 import { BackToLandingLink } from "@/features/auth/components/BackToLandingLink";
 import { getLoginFormConfig } from "@/features/auth/services/LoginFormConfig";
+import { UserRoundArrowLeft } from "lucide-react";
 
 const PAGE_TITLE = "Login | Gym Admin";
 
@@ -49,7 +50,9 @@ const LoginForm = () => {
             <LoginFormBody />
           </section>
         </fieldset>
-        <SubmitBtn className="w-full">Login</SubmitBtn>
+        <SubmitBtn className="w-full" Icon={UserRoundArrowLeft}>
+          Login
+        </SubmitBtn>
       </form>
 
       <SocialAuthButtons />

@@ -1,6 +1,7 @@
 import {
   Info,
   PhoneIcon,
+  User,
   UserCircle,
   UserLock,
   EyeClosed,
@@ -20,6 +21,7 @@ import type {
   InputProps,
   NumberInputProps,
   PhoneInputProps,
+  TextInputProps,
 } from "@/types/Props";
 import { CommandBtn } from "@/components/buttons/Buttons";
 
@@ -52,6 +54,19 @@ export const Input: FC<InputProps> = ({
         {labelText}
       </label>
     </div>
+  );
+};
+
+export const TextInput: FC<TextInputProps> = (props) => {
+  return (
+    <Input
+      type="text"
+      inputMode="text"
+      aria-label="Name input"
+      labelText={props.labelText ?? "Name"}
+      Icon={User}
+      {...props}
+    />
   );
 };
 

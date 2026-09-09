@@ -1,7 +1,15 @@
-import { Info, PhoneIcon, UserCircle } from "lucide-react";
+import {
+  Info,
+  PhoneIcon,
+  UserCircle,
+  UserLock,
+  EyeClosed,
+  Eye,
+} from "lucide-react";
 import {
   useCallback,
   useId,
+  useMemo,
   useState,
   type ChangeEvent,
   type FC,
@@ -13,6 +21,7 @@ import type {
   NumberInputProps,
   PhoneInputProps,
 } from "@/types/Props";
+import { CommandBtn } from "@/components/buttons/Buttons";
 
 export const Input: FC<InputProps> = ({
   labelText = "",
@@ -24,13 +33,14 @@ export const Input: FC<InputProps> = ({
   const autoId = useId();
 
   return (
-    <div className="group relative w-full font-serif">
+    <div className="group relative isolate w-full font-serif">
       <input
         type={type}
         id={autoId}
         inputMode="text"
-        className={`block py-2.5 px-0 w-full text-sm text-left tracking-wide bg-transparent border-0 border-b-2 border-border appearance-none focus:outline-none focus:ring-0 focus:border-accent focus:text-accent peer ${className} invalid:focus:text-rose-500 invalid:focus:border-rose-500`}
+        className={`block py-2.5 px-0 w-full text-left tracking-wide bg-transparent border-0 border-b-2 border-border appearance-none focus:outline-none focus:ring-0 focus:border-accent focus:text-accent peer ${className} invalid:focus:text-rose-500 invalid:focus:border-rose-500`}
         placeholder=" "
+        required
         {...props}
       />
       <label
@@ -38,7 +48,7 @@ export const Input: FC<InputProps> = ({
         className={`inline-flex gap-x-1 items-center absolute tracking-wider duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-left peer-focus:inset-s peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75
         peer-focus:text-accent peer-invalid:not-focus-visible:text-rose-500 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto`}
       >
-        <Icon className="text-sm scale-75" />
+        <Icon className="scale-75" />
         {labelText}
       </label>
     </div>
@@ -116,5 +126,49 @@ export const PhoneInput = ({
       onChange={handleChange}
       {...rest}
     />
+  );
+};
+
+export const PasswordInput = ({ name, className, ...props }: InputProps) => {
+  const autoId = useId();
+  const [type, setType] = useState<"text" | "password">(() => "password");
+  const handleChangeType = useCallback(() => {
+    setType((prev) => (prev === "password" ? "text" : "password"));
+  }, []);
+
+  const show = type === "text";
+  const Icon = useMemo(() => (show ? Eye : EyeClosed), [show]);
+
+  return (
+    <>
+      <div className="group relative isolate w-full font-serif">
+        <input
+          type={type}
+          id={autoId}
+          inputMode="text"
+          name={name}
+          className={`block py-2.5 px-0 w-full text-left tracking-wide bg-transparent border-0 border-b-2 border-border appearance-none focus:outline-none focus:ring-0 focus:border-accent focus:text-accent peer ${className} invalid:focus:text-rose-500 invalid:focus:border-rose-500`}
+          placeholder=" "
+          required
+          {...props}
+        />
+        <label
+          htmlFor={autoId}
+          className={`inline-flex gap-x-1 items-center absolute tracking-wider duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-left peer-focus:inset-s peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75
+        peer-focus:text-accent peer-invalid:not-focus-visible:text-rose-500 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto`}
+        >
+          <UserLock className="scale-75" />
+          Password
+        </label>
+        <CommandBtn
+          Icon={Icon}
+          onClick={handleChangeType}
+          aria-label="Button show/hide password"
+          className="absolute right-0 top-0"
+        >
+          {""}
+        </CommandBtn>
+      </div>
+    </>
   );
 };

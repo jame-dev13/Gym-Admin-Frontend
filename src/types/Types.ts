@@ -8,3 +8,25 @@ type ApiError = Partial<{
 }>;
 
 export type ApiErrorResponse = Readonly<ApiError>;
+
+export type FetchResponse<T> = {
+  data: T;
+  status: number;
+};
+
+export type MutationResponse<T> = {
+  payload?: T;
+  status: number;
+};
+
+export type Page<T> = Readonly<{
+  content: T[],
+  page: PageProperty
+}>;
+
+type PageProperty = Readonly<{
+  size: number;
+  number: number;
+  totalElements: number;
+  totalPages: number;
+}>;

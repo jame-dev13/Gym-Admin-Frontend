@@ -99,6 +99,53 @@ export type NumberInputProps = InputBaseProps &
     | "onChange"
   >;
 
+export type SearchInputProps = InputBaseProps &
+  Pick<
+    InputHTMLProps,
+    | "id"
+    | "name"
+    | "placeholder"
+    | "autoComplete"
+    | "disabled"
+    | "required"
+    | "readOnly"
+    | "value"
+    | "defaultValue"
+    | "className"
+    | "aria-label"
+    | "aria-describedby"
+    | "onChange"
+    | "onKeyDown"
+    | "onFocus"
+    | "onBlur"
+  > & {
+    onSearch?: (value: string) => void;
+    onClear?: () => void;
+    searchLabel?: string;
+  };
+
+export type CheckboxInputProps = Pick<
+  InputHTMLProps,
+  | "id"
+  | "name"
+  | "checked"
+  | "defaultChecked"
+  | "disabled"
+  | "required"
+  | "value"
+  | "className"
+  | "aria-label"
+  | "aria-describedby"
+  | "onChange"
+  | "onFocus"
+  | "onBlur"
+> & {
+  label: string;
+  description?: string;
+  error?: string;
+  indeterminate?: boolean;
+};
+
 export interface LinkToBaseProps {
   to: string;
   Icon?: AvailableIcon;

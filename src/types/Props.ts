@@ -154,4 +154,29 @@ export type PillBtnProps = ButtonBaseProps & {
   type?: "button" | "reset";
 };
 
+export interface SwitchBtnProps {
+  checked: boolean;
+  onCheckedChange?: (next: boolean) => void;
+  onClick?: () => void;
+  OnIcon?: AvailableIcon;
+  OffIcon?: AvailableIcon;
+  label?: string;
+  disabled?: boolean;
+  size?: "sm" | "md";
+  className?: string;
+  "aria-label"?: string;
+}
+
+export interface RefreshBtnProps {
+  onClick?: () => void;
+  Icon?: AvailableIcon;
+  cooldownMs?: number;
+  showCountdown?: boolean;
+  label?: string;
+  children?: ReactNode;
+  disabled?: boolean;
+  className?: string;
+  "aria-label"?: string;
+}
+
 export type PropsWithChildren = { children?: ReactNode };

@@ -1,4 +1,3 @@
-import { EmailInput } from "@/components/input/Input";
 import { getAuthRouter } from "@/features/auth/services/AuthRouter";
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
@@ -18,14 +17,6 @@ export const AppRouter = () => {
           <Route path="verification" element={<Verification />} caseSensitive />
           <Route path="password-reset" element={<PasswordReset />} caseSensitive />
         </Route>
-        <Route
-          path="/test"
-          element={
-            <div className="size-80">
-              <EmailInput />
-            </div>
-          }
-        />
       </Routes>
     </Suspense>
   );

@@ -1,4 +1,4 @@
-import type { ReactNode, InputHTMLAttributes } from "react";
+import type { FormEvent, ReactNode, InputHTMLAttributes } from "react";
 import { type LucideIcon } from "lucide-react";
 
 type AvailableIcon = LucideIcon;
@@ -227,3 +227,15 @@ export interface RefreshBtnProps {
 }
 
 export type PropsWithChildren = { children?: ReactNode };
+
+export interface AppFormProps {
+  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  children: ReactNode;
+  id?: string;
+  className?: string;
+}
+
+export interface FieldsetProps {
+  legend?: string;
+  children: ReactNode;
+}

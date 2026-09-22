@@ -239,3 +239,11 @@ export interface FieldsetProps {
   legend?: string;
   children: ReactNode;
 }
+
+export type ModalSize = "sm" | "md" | "lg";
+
+export interface ModalProps {
+  title: string;
+  children: ReactNode;
+  size?: ModalSize;
+}

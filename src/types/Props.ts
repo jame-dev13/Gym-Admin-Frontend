@@ -1,6 +1,6 @@
 import type { FormEvent, ReactNode, InputHTMLAttributes } from "react";
 import { type LucideIcon } from "lucide-react";
-import type { Column, Identifiable } from "@/types/Types";
+import type { Column, DropdownOption, Identifiable } from "@/types/Types";
 
 type AvailableIcon = LucideIcon;
 
@@ -267,3 +267,23 @@ export type TableProps<T extends Identifiable> = {
   cardTitleKey?: keyof T;
   className?: string;
 };
+
+export type DropdownSize = "sm" | "md";
+
+export type DropdownPlacement = "bottom-start" | "bottom-end";
+
+export interface DropdownProps {
+  options: DropdownOption[];
+  value?: string;
+  defaultValue?: string;
+  onSelect?: (value: string) => void;
+  label?: string;
+  Icon?: AvailableIcon;
+  trigger?: ReactNode;
+  placeholder?: string;
+  disabled?: boolean;
+  size?: DropdownSize;
+  placement?: DropdownPlacement;
+  "aria-label"?: string;
+  className?: string;
+}

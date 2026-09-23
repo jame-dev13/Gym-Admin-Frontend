@@ -32,6 +32,7 @@ type PageProperty = Readonly<{
 }>;
 
 import type { ReactNode } from "react";
+import type { LucideIcon } from "lucide-react";
 
 export type Identifiable = { id: string | number | null };
 
@@ -45,4 +46,12 @@ export type Column<T> = {
   emptyValue?: string;
   hideOnCards?: boolean;
   render?: (value: T[keyof T], row: T) => ReactNode;
+};
+
+export type DropdownOption = {
+  value: string;
+  label: string;
+  description?: string;
+  Icon?: LucideIcon;
+  disabled?: boolean;
 };

@@ -1,5 +1,4 @@
 import { getAuthRouter } from "@/features/auth/services/AuthRouter";
-import { TablePreview } from "@/pages/TablePreview";
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
@@ -11,8 +10,6 @@ export const AppRouter = () => {
     <Suspense fallback={<div>Loading.....</div>}>
       <Routes>
         <Route path="/" element={<div>Lading Page</div>} />
-        {/* TEMPORARY preview route — remove before merging to main. */}
-        <Route path="/table-preview" element={<TablePreview />} />
         <Route path="/auth" caseSensitive>
           <Route index element={<AuthLayout />} />
           <Route path="login" element={<Login />} caseSensitive />

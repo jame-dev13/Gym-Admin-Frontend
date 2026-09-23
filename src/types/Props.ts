@@ -1,5 +1,6 @@
 import type { FormEvent, ReactNode, InputHTMLAttributes } from "react";
 import { type LucideIcon } from "lucide-react";
+import type { Column, Identifiable } from "@/types/Types";
 
 type AvailableIcon = LucideIcon;
 
@@ -247,3 +248,22 @@ export interface ModalProps {
   children: ReactNode;
   size?: ModalSize;
 }
+
+export type TableSize = "sm" | "md";
+
+export type TableResponsive = "cards" | "scroll";
+
+export type TableProps<T extends Identifiable> = {
+  data: T[];
+  columns: Column<T>[];
+  caption?: string;
+  "aria-label"?: string;
+  emptyMessage?: string;
+  getRowKey?: (row: T) => string | number;
+  stickyHeader?: boolean;
+  striped?: boolean;
+  size?: TableSize;
+  responsive?: TableResponsive;
+  cardTitleKey?: keyof T;
+  className?: string;
+};

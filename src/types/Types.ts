@@ -55,3 +55,9 @@ export type DropdownOption = {
   Icon?: LucideIcon;
   disabled?: boolean;
 };
+
+export type SelectOption = {
+  value: string;
+  label: string;
+  disabled?: boolean;
+};

@@ -1,6 +1,6 @@
-import type { FormEvent, ReactNode, InputHTMLAttributes } from "react";
+import type { ChangeEvent, FormEvent, ReactNode, InputHTMLAttributes } from "react";
 import { type LucideIcon } from "lucide-react";
-import type { Column, DropdownOption, Identifiable } from "@/types/Types";
+import type { Column, DropdownOption, Identifiable, SelectOption } from "@/types/Types";
 
 type AvailableIcon = LucideIcon;
 
@@ -286,4 +286,22 @@ export interface DropdownProps {
   placement?: DropdownPlacement;
   "aria-label"?: string;
   className?: string;
+}
+
+export interface SelectProps {
+  options: SelectOption[];
+  label: string;
+  name?: string;
+  id?: string;
+  value?: string;
+  defaultValue?: string;
+  onChange?: (event: ChangeEvent<HTMLSelectElement>) => void;
+  placeholder?: string;
+  required?: boolean;
+  disabled?: boolean;
+  description?: string;
+  error?: string;
+  className?: string;
+  "aria-label"?: string;
+  "aria-describedby"?: string;
 }

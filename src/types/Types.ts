@@ -30,3 +30,19 @@ type PageProperty = Readonly<{
   totalElements: number;
   totalPages: number;
 }>;
+
+import type { ReactNode } from "react";
+
+export type Identifiable = { id: string | number | null };
+
+export type ColumnAlign = "left" | "center" | "right";
+
+export type Column<T> = {
+  key: keyof T;
+  header: string;
+  align?: ColumnAlign;
+  width?: string;
+  emptyValue?: string;
+  hideOnCards?: boolean;
+  render?: (value: T[keyof T], row: T) => ReactNode;
+};

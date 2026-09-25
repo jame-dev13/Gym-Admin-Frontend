@@ -61,3 +61,11 @@ export type SelectOption = {
   label: string;
   disabled?: boolean;
 };
+
+export type NavbarPosition = "static" | "sticky" | "fixed";
+
+export type NavbarLink = {
+  to: string;
+  label: string;
+  Icon?: LucideIcon;
+};

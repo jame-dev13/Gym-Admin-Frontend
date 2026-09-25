@@ -131,4 +131,48 @@ describe("Navbar", () => {
       screen.getByRole("button", { name: "Open menu" }),
     ).toBeInTheDocument();
   });
+
+  it("renders anchor links with href for in-page navigation", () => {
+    renderNavbar(
+      <Navbar
+        brand={<span>Brand</span>}
+        links={[{ href: "#membresias", label: "Membresías" }]}
+      />,
+    );
+    const anchor = screen.getAllByRole("link", { name: "Membresías" })[0];
+    expect(anchor).toHaveAttribute("href", "#membresias");
+    expect(anchor.tagName).toBe("A");
+  });
+
+  it("supports mixed router and anchor links", () => {
+    renderNavbar(
+      <Navbar
+        brand={<span>Brand</span>}
+        links={[...links, { href: "#membresias", label: "Membresías" }]}
+      />,
+    );
+    expect(
+      screen.getAllByRole("link", { name: "Membresías" })[0],
+    ).toHaveAttribute("href", "#membresias");
+    expect(screen.getAllByRole("link", { name: "Home" })[0]).toHaveAttribute(
+      "href",
+      "/",
+    );
+  });
+
+  it("closes the mobile menu when an anchor link is selected", async () => {
+    const user = userEvent.setup();
+    renderNavbar(
+      <Navbar
+        brand={<span>Brand</span>}
+        links={[{ href: "#membresias", label: "Membresías" }]}
+        defaultOpen
+      />,
+    );
+
+    const panelAnchors = screen.getAllByRole("link", { name: "Membresías" });
+    await user.click(panelAnchors[panelAnchors.length - 1]);
+
+    expect(screen.getByRole("button", { name: "Open menu" })).toBeInTheDocument();
+  });
 });

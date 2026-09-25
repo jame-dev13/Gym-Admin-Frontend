@@ -1,0 +1,61 @@
+/* Reusable landing-page motion. All animation is gated behind
+   prefers-reduced-motion: elements are fully visible when the user
+   prefers reduced motion. */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    transition:
+      opacity 0.7s ease-out,
+      transform 0.7s ease-out;
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes landing-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .landing-float {
+    animation: landing-float 7s ease-in-out infinite;
+  }
+}
+
+@keyframes landing-glow-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .landing-glow-pulse {
+    animation: landing-glow-pulse 5s ease-in-out infinite;
+  }
+}

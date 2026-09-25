@@ -64,8 +64,18 @@ export type SelectOption = {
 
 export type NavbarPosition = "static" | "sticky" | "fixed";
 
-export type NavbarLink = {
+export type NavbarRouteLink = {
   to: string;
+  href?: never;
   label: string;
   Icon?: LucideIcon;
 };
+
+export type NavbarAnchorLink = {
+  href: string;
+  to?: never;
+  label: string;
+  Icon?: LucideIcon;
+};
+
+export type NavbarLink = NavbarRouteLink | NavbarAnchorLink;

@@ -1,15 +1,17 @@
 import { getAuthRouter } from "@/features/auth/services/AuthRouter";
+import { getLandingRouter } from "@/features/landing-page/services/LandingRouter";
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
 const { AuthLayout, Register, Login, Verification, PasswordReset } =
   getAuthRouter();
+const { Landing } = getLandingRouter();
 
 export const AppRouter = () => {
   return (
     <Suspense fallback={<div>Loading.....</div>}>
       <Routes>
-        <Route path="/" element={<div>Lading Page</div>} />
+        <Route path="/" element={<Landing />} />
         <Route path="/auth" caseSensitive>
           <Route index element={<AuthLayout />} />
           <Route path="login" element={<Login />} caseSensitive />

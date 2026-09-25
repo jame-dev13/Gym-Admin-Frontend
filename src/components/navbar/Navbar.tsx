@@ -88,6 +88,54 @@ export const Navbar: FC<NavbarProps> = ({
   const renderLinkIcon = (link: NavbarLink) =>
     link.Icon ? <link.Icon size={18} aria-hidden="true" /> : null;
 
+  const renderDesktopLink = (link: NavbarLink) =>
+    link.href !== undefined ? (
+      <a
+        key={link.href}
+        href={link.href}
+        className={`${desktopLinkBase} text-text-secondary`}
+      >
+        {renderLinkIcon(link)}
+        {link.label}
+      </a>
+    ) : (
+      <NavLink
+        key={link.to}
+        to={link.to}
+        className={({ isActive }) =>
+          `${desktopLinkBase} ${isActive ? "text-accent" : "text-text-secondary"}`
+        }
+      >
+        {renderLinkIcon(link)}
+        {link.label}
+      </NavLink>
+    );
+
+  const renderMobileLink = (link: NavbarLink) =>
+    link.href !== undefined ? (
+      <a
+        key={link.href}
+        href={link.href}
+        onClick={() => setMenuOpen(false)}
+        className={mobileLinkBase}
+      >
+        {renderLinkIcon(link)}
+        <span>{link.label}</span>
+      </a>
+    ) : (
+      <NavLink
+        key={link.to}
+        to={link.to}
+        onClick={() => setMenuOpen(false)}
+        className={({ isActive }) =>
+          `${mobileLinkBase} ${isActive ? "text-accent" : ""}`
+        }
+      >
+        {renderLinkIcon(link)}
+        <span>{link.label}</span>
+      </NavLink>
+    );
+
   return (
     <header
       className={`border-b border-border bg-surface text-text-primary ${positionClasses[position]} ${className}`}
@@ -95,18 +143,7 @@ export const Navbar: FC<NavbarProps> = ({
       <nav aria-label={ariaLabel} className="flex items-center justify-between gap-4 px-4 py-3">
         {brand && <div className="flex min-w-0 items-center gap-2">{brand}</div>}
         <div className="hidden items-center gap-1 tab:flex">
-          {links.map((link) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              className={({ isActive }) =>
-                `${desktopLinkBase} ${isActive ? "text-accent" : "text-text-secondary"}`
-              }
-            >
-              {renderLinkIcon(link)}
-              {link.label}
-            </NavLink>
-          ))}
+          {links.map(renderDesktopLink)}
         </div>
         <BurgerButton
           open={menuOpen}
@@ -118,19 +155,7 @@ export const Navbar: FC<NavbarProps> = ({
       {menuOpen && (
         <div id={menuId} className="border-t border-border px-4 py-3 tab:hidden animate-fade-in-scale">
           <div className="flex flex-col gap-1">
-            {links.map((link) => (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                onClick={() => setMenuOpen(false)}
-                className={({ isActive }) =>
-                  `${mobileLinkBase} ${isActive ? "text-accent" : ""}`
-                }
-              >
-                {renderLinkIcon(link)}
-                <span>{link.label}</span>
-              </NavLink>
-            ))}
+            {links.map(renderMobileLink)}
           </div>
         </div>
       )}

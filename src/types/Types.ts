@@ -79,3 +79,7 @@ export type NavbarAnchorLink = {
 };
 
 export type NavbarLink = NavbarRouteLink | NavbarAnchorLink;
+
+export type DrawerPosition = "top" | "left" | "right" | "bottom";
+
+export type DrawerSize = "sm" | "md" | "lg";

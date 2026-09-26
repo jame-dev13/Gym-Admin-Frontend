@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useId, useRef, useState, type FC, type Ref } from "react";
-import { Menu, X } from "lucide-react";
+import { useCallback, useEffect, useId, useRef, useState, type FC } from "react";
 import { NavLink } from "react-router-dom";
+import { BurgerBtn } from "@/components/buttons/Buttons";
 import type { NavbarProps } from "@/types/Props";
 import type { NavbarLink, NavbarPosition } from "@/types/Types";
 
@@ -15,29 +15,6 @@ const desktopLinkBase =
 
 const mobileLinkBase =
   "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-text-secondary transition-colors duration-200 hover:bg-surface-over hover:text-accent";
-
-type BurgerButtonProps = {
-  open: boolean;
-  controlsId: string;
-  onToggle: () => void;
-  buttonRef: Ref<HTMLButtonElement>;
-};
-
-// Inner toggle for the collapsible mobile menu. Kept in this file so it can
-// be extracted into a standalone BurgerButton component in a later branch.
-const BurgerButton: FC<BurgerButtonProps> = ({ open, controlsId, onToggle, buttonRef }) => (
-  <button
-    ref={buttonRef}
-    type="button"
-    aria-expanded={open}
-    aria-controls={controlsId}
-    aria-label={open ? "Close menu" : "Open menu"}
-    onClick={onToggle}
-    className="rounded-full p-1.5 text-text-secondary transition-colors hover:bg-surface-over hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent tab:hidden"
-  >
-    {open ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
-  </button>
-);
 
 export const Navbar: FC<NavbarProps> = ({
   links,
@@ -145,7 +122,7 @@ export const Navbar: FC<NavbarProps> = ({
         <div className="hidden items-center gap-1 tab:flex">
           {links.map(renderDesktopLink)}
         </div>
-        <BurgerButton
+        <BurgerBtn
           open={menuOpen}
           controlsId={menuId}
           onToggle={() => setMenuOpen(!menuOpen)}

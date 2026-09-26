@@ -1,4 +1,4 @@
-import type { ChangeEvent, FormEvent, ReactNode, InputHTMLAttributes } from "react";
+import type { ChangeEvent, FormEvent, ReactNode, Ref, InputHTMLAttributes } from "react";
 import { type LucideIcon } from "lucide-react";
 import type { Column, DropdownOption, Identifiable, NavbarLink, NavbarPosition, SelectOption } from "@/types/Types";
 
@@ -225,6 +225,13 @@ export interface RefreshBtnProps {
   disabled?: boolean;
   className?: string;
   "aria-label"?: string;
+}
+
+export interface BurgerBtnProps {
+  open: boolean;
+  controlsId: string;
+  onToggle: () => void;
+  buttonRef: Ref<HTMLButtonElement>;
 }
 
 export type PropsWithChildren = { children?: ReactNode };

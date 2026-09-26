@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { useFormStatus } from 'react-dom'
-import { Check, Loader2, RefreshCw, X } from 'lucide-react'
+import { Check, Loader2, Menu, RefreshCw, X } from 'lucide-react'
 import type {
   SubmitBtnProps,
   CommandBtnProps,
   PillBtnProps,
   SwitchBtnProps,
   RefreshBtnProps,
+  BurgerBtnProps,
 } from '@/types/Props'
 
 const submitStyles = [
@@ -377,6 +378,44 @@ export const RefreshBtn = ({
         className={isCoolingDown ? 'animate-spin' : undefined}
       />
       {content}
+    </button>
+  )
+}
+
+const burgerStyles = [
+  'rounded-full',
+  'p-1.5',
+  'text-text-secondary',
+  'transition-colors',
+  'hover:bg-surface-over',
+  'hover:text-text-primary',
+  'focus-visible:outline-2',
+  'focus-visible:outline-offset-2',
+  'focus-visible:outline-accent',
+  'tab:hidden',
+].join(' ')
+
+export const BurgerBtn = ({
+  open,
+  controlsId,
+  onToggle,
+  buttonRef,
+}: BurgerBtnProps) => {
+  return (
+    <button
+      ref={buttonRef}
+      type="button"
+      aria-expanded={open}
+      aria-controls={controlsId}
+      aria-label={open ? 'Close menu' : 'Open menu'}
+      onClick={onToggle}
+      className={burgerStyles}
+    >
+      {open ? (
+        <X size={20} aria-hidden="true" />
+      ) : (
+        <Menu size={20} aria-hidden="true" />
+      )}
     </button>
   )
 }

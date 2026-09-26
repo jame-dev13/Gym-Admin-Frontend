@@ -1,6 +1,6 @@
 import type { ChangeEvent, FormEvent, ReactNode, Ref, InputHTMLAttributes } from "react";
 import { type LucideIcon } from "lucide-react";
-import type { Column, DropdownOption, Identifiable, NavbarLink, NavbarPosition, SelectOption } from "@/types/Types";
+import type { Column, DrawerPosition, DrawerSize, DropdownOption, Identifiable, NavbarLink, NavbarPosition, SelectOption } from "@/types/Types";
 
 type AvailableIcon = LucideIcon;
 
@@ -320,6 +320,22 @@ export interface NavbarProps {
   defaultOpen?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  "aria-label"?: string;
+  className?: string;
+}
+
+export interface DrawerProps {
+  open: boolean;
+  onClose: () => void;
+  title: string;
+  children: ReactNode;
+  position?: DrawerPosition;
+  size?: DrawerSize;
+  description?: string;
+  headerActions?: ReactNode;
+  footer?: ReactNode;
+  showCloseButton?: boolean;
+  closeOnOverlayClick?: boolean;
   "aria-label"?: string;
   className?: string;
 }

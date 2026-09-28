@@ -88,3 +88,18 @@ export type SidebarSection = {
   label?: string;
   links: NavbarLink[];
 };
+
+export type ChartDatum = Record<string, string | number>;
+
+export type ChartSeries = {
+  dataKey: string;
+  name?: string;
+  color?: string;
+};
+
+export type ChartTooltipVariant = "default" | "money" | "rate";
+
+export type ChartLegendItem = {
+  name: string;
+  color: string;
+};

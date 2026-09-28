@@ -1,6 +1,6 @@
 import type { ChangeEvent, FormEvent, ReactNode, Ref, InputHTMLAttributes } from "react";
 import { type LucideIcon } from "lucide-react";
-import type { Column, DrawerPosition, DrawerSize, DropdownOption, Identifiable, NavbarLink, NavbarPosition, SelectOption } from "@/types/Types";
+import type { Column, DrawerPosition, DrawerSize, DropdownOption, Identifiable, NavbarLink, NavbarPosition, SelectOption, SidebarSection } from "@/types/Types";
 
 type AvailableIcon = LucideIcon;
 
@@ -336,6 +336,18 @@ export interface DrawerProps {
   footer?: ReactNode;
   showCloseButton?: boolean;
   closeOnOverlayClick?: boolean;
+  "aria-label"?: string;
+  className?: string;
+}
+
+export interface SidebarProps {
+  sections: SidebarSection[];
+  brand: ReactNode;
+  collapsedBrand?: ReactNode;
+  footer?: ReactNode;
+  defaultCollapsed?: boolean;
+  collapsed?: boolean;
+  onCollapsedChange?: (collapsed: boolean) => void;
   "aria-label"?: string;
   className?: string;
 }

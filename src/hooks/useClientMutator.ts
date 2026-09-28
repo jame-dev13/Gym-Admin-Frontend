@@ -12,7 +12,11 @@ export type MakeMutationArgs<T, R> = {
   method: "post" | "put" | "patch" | "delete";
   body?: T;
   invalidateKey: ReadonlyArray<unknown>;
-  options?: UseMutationOptions<MutationResponse<R>, ApiErrorResponse, T>;
+  options?: UseMutationOptions<
+    MutationResponse<R>,
+    ApiErrorResponse,
+    T | undefined
+  >;
 };
 
 export type ConcreteMutationArgs<T, R> = Omit<
@@ -29,9 +33,9 @@ export const useMutationMapping = <T, R>({
   options,
 }: Omit<MakeMutationArgs<T, R>, "body">) => {
   const qc = useQueryClient(QUERY_CLIENT);
-  return useMutation<MutationResponse<R>, ApiErrorResponse, T>(
+  return useMutation<MutationResponse<R>, ApiErrorResponse, T | undefined>(
     {
-      mutationFn: async (body?: T) => {
+      mutationFn: async (body: T | undefined) => {
         const { data, status } = await api.request<R>({
           method,
           url: uri,

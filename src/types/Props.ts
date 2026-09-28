@@ -1,6 +1,6 @@
 import type { ChangeEvent, FormEvent, ReactNode, Ref, InputHTMLAttributes } from "react";
 import { type LucideIcon } from "lucide-react";
-import type { Column, DrawerPosition, DrawerSize, DropdownOption, Identifiable, NavbarLink, NavbarPosition, SelectOption, SidebarSection } from "@/types/Types";
+import type { ChartDatum, ChartLegendItem, ChartSeries, ChartTooltipVariant, Column, DrawerPosition, DrawerSize, DropdownOption, Identifiable, NavbarLink, NavbarPosition, SelectOption, SidebarSection } from "@/types/Types";
 
 type AvailableIcon = LucideIcon;
 
@@ -350,4 +350,59 @@ export interface SidebarProps {
   onCollapsedChange?: (collapsed: boolean) => void;
   "aria-label"?: string;
   className?: string;
+}
+
+export type ChartTooltipEntry = {
+  name?: string;
+  value?: string | number;
+  color?: string;
+  dataKey?: string | number;
+};
+
+export interface ChartTooltipProps {
+  variant?: ChartTooltipVariant;
+  active?: boolean;
+  label?: string | number;
+  payload?: ChartTooltipEntry[];
+  data?: ChartDatum[];
+  xKey?: string;
+  locale?: string;
+  currency?: string;
+}
+
+export interface ChartBaseProps {
+  data: ChartDatum[];
+  height?: number;
+  responsive?: boolean;
+  animate?: boolean;
+  "aria-label"?: string;
+  className?: string;
+}
+
+export interface LineChartProps extends ChartBaseProps {
+  series: ChartSeries[];
+  xKey?: string;
+  tooltipVariant?: ChartTooltipVariant;
+  locale?: string;
+  currency?: string;
+}
+
+export interface BarChartProps extends ChartBaseProps {
+  series: ChartSeries[];
+  xKey?: string;
+  tooltipVariant?: ChartTooltipVariant;
+  locale?: string;
+  currency?: string;
+}
+
+export interface PieChartProps extends ChartBaseProps {
+  dataKey?: string;
+  nameKey?: string;
+  tooltipVariant?: Extract<ChartTooltipVariant, "default" | "money">;
+  locale?: string;
+  currency?: string;
+}
+
+export interface ChartLegendProps {
+  items: ChartLegendItem[];
 }

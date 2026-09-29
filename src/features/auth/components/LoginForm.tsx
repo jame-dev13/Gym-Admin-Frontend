@@ -1,4 +1,4 @@
-import { type FormEvent, useEffect } from "react";
+import { useEffect } from "react";
 import { SubmitBtn } from "@/components/buttons/Buttons";
 import { LinkTo } from "@/components/links/LinkTo";
 import { SocialAuthButtons } from "@/components/social/SocialAuthButtons";
@@ -7,17 +7,18 @@ import { AuthHeader } from "@/features/auth/components/AuthHeader";
 import { BackToLandingLink } from "@/features/auth/components/BackToLandingLink";
 import { getLoginFormConfig } from "@/features/auth/services/LoginFormConfig";
 import { UserRoundArrowLeft } from "lucide-react";
+import { AppForm } from "@/components/form/AppForm";
+import { Fieldset } from "@/components/form/Fieldset";
+import { useHandleLogin } from "@/features/auth/hooks/useLoginHandler";
 
 const PAGE_TITLE = "Login | Gym Admin";
 
 const LoginForm = () => {
+  const { handleSubmit, isPending } = useHandleLogin();
+
   useEffect(() => {
     document.title = PAGE_TITLE;
   }, []);
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
 
   return (
     <AuthCard aria-labelledby="auth-title">
@@ -37,23 +38,21 @@ const LoginForm = () => {
         }
       />
 
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <fieldset
-          aria-label="Login form"
-          className="flex min-h-fit flex-col items-center justify-center rounded-2xl border border-slate-300/30 bg-surface-over px-4 py-3.5"
-        >
-          <legend className="rounded-full bg-surface p-2.5 font-serif text-sm">
-            User Login
-          </legend>
-
+      <AppForm className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <Fieldset aria-label="Login form" legend="User Login">
           <section className="flex w-full flex-col shrink gap-3">
             <LoginFormBody />
           </section>
-        </fieldset>
-        <SubmitBtn className="w-full" Icon={UserRoundArrowLeft}>
+        </Fieldset>
+        <SubmitBtn
+          className="w-full"
+          Icon={UserRoundArrowLeft}
+          aria-label="Login button"
+          disabled={isPending}
+        >
           Login
         </SubmitBtn>
-      </form>
+      </AppForm>
 
       <SocialAuthButtons />
 

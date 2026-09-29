@@ -257,6 +257,10 @@ export interface ModalProps {
   size?: ModalSize;
 }
 
+export interface ToastProviderProps {
+  children: ReactNode;
+}
+
 export type TableSize = "sm" | "md";
 
 export type TableResponsive = "cards" | "scroll";

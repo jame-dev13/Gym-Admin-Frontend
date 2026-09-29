@@ -105,3 +105,13 @@ export type ChartLegendItem = {
 };
 
 export type ToastType = "success" | "error" | "warning" | "info" | "default";
+
+export type ToastShowFn = (message: string) => void;
+
+export interface ToastFactory {
+  showSuccess: ToastShowFn;
+  showError: ToastShowFn;
+  showWarning: ToastShowFn;
+  showInfo: ToastShowFn;
+  showDefault: ToastShowFn;
+}

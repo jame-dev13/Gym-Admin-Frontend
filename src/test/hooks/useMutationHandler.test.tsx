@@ -3,9 +3,9 @@ import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { server } from "@/test/mocks/server";
 import { waitFor } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
-import type { FormEvent } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { API_BASE_URL, renderClientHook, type Show } from "./test-utils";
+import type React from "react";
 
 const CREATE_URI = "/handler-shows";
 const FAIL_URI = "/handler-shows/fail";
@@ -47,7 +47,7 @@ const buildSubmitEvent = (title: string) => {
     event: {
       preventDefault: vi.fn(),
       currentTarget: form,
-    } as unknown as FormEvent<HTMLFormElement>,
+    } as unknown as React.SubmitEvent<HTMLFormElement>,
     form,
     input,
   };

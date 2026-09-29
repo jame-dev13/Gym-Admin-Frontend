@@ -1,6 +1,7 @@
-import type { ChangeEvent, FormEvent, ReactNode, Ref, InputHTMLAttributes } from "react";
+import type { ChangeEvent, ReactNode, Ref, InputHTMLAttributes } from "react";
 import { type LucideIcon } from "lucide-react";
 import type { ChartDatum, ChartLegendItem, ChartSeries, ChartTooltipVariant, Column, DrawerPosition, DrawerSize, DropdownOption, Identifiable, NavbarLink, NavbarPosition, SelectOption, SidebarSection } from "@/types/Types";
+import type React from "react";
 
 type AvailableIcon = LucideIcon;
 
@@ -237,7 +238,7 @@ export interface BurgerBtnProps {
 export type PropsWithChildren = { children?: ReactNode };
 
 export interface AppFormProps {
-  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  onSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void;
   children: ReactNode;
   id?: string;
   className?: string;

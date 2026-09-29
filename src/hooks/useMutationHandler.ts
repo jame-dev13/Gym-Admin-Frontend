@@ -4,9 +4,9 @@ import type {
   MutationResponse,
 } from "@/types/Types";
 import type { UseMutationResult } from "@tanstack/react-query";
-import { useCallback, type FormEvent } from "react";
+import React, { useCallback } from "react";
 
-type useMutationConfig<T = void, R = unknown> = {
+type useMutationConfig<T = undefined, R = unknown> = {
   mutationHook: (
     id?: Identifiable,
   ) => UseMutationResult<
@@ -20,7 +20,7 @@ type useMutationConfig<T = void, R = unknown> = {
    * Builds the mutation body from the submitted form. Omit it for bodiless
    * mutations (e.g. body-less PATCH / DELETE): `mutate(undefined)` is sent.
    */
-  payloadBuilder?: (formData?: FormData) => T | undefined;
+  payloadBuilder?: (formData?: FormData) => T;
   resultHandlers?: Partial<{
     onSuccess: (data?: R) => void;
     onError: (error?: ApiErrorResponse) => void;
@@ -28,7 +28,7 @@ type useMutationConfig<T = void, R = unknown> = {
   }>;
 };
 
-function useMutationHandler<T = void, R = unknown>({
+function useMutationHandler<T = undefined, R = unknown>({
   mutationHook,
   id,
   payloadBuilder,
@@ -38,7 +38,7 @@ function useMutationHandler<T = void, R = unknown>({
   const { mutate, error, isPending } = mutationHook(id);
 
   const submit = useCallback(
-    (e: FormEvent<HTMLFormElement>) => {
+    (e: React.SubmitEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (isPending) return;
       const form = e.currentTarget;

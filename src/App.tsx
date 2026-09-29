@@ -1,5 +1,6 @@
 import { ErrorBoundary } from "@/components/error/ErrorBoundary";
 import { AppRouter } from "@/router/AppRouter";
+import { ToastProvider } from "@/context/ToastProvider";
 import "./App.css";
 import {
   QueryClientProvider,
@@ -16,7 +17,9 @@ function App() {
         <QueryErrorResetBoundary>
           {({ reset }) => (
             <ErrorBoundary onReset={reset}>
-              <AppRouter />
+              <ToastProvider>
+                <AppRouter />
+              </ToastProvider>
             </ErrorBoundary>
           )}
         </QueryErrorResetBoundary>

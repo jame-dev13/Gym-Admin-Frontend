@@ -103,3 +103,5 @@ export type ChartLegendItem = {
   name: string;
   color: string;
 };
+
+export type ToastType = "success" | "error" | "warning" | "info" | "default";

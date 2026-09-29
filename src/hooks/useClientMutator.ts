@@ -11,7 +11,7 @@ export type MakeMutationArgs<T, R> = {
   uri: string;
   method: "post" | "put" | "patch" | "delete";
   body?: T;
-  invalidateKey: ReadonlyArray<unknown>;
+  invalidateKey?: ReadonlyArray<unknown>;
   options?: UseMutationOptions<
     MutationResponse<R>,
     ApiErrorResponse,

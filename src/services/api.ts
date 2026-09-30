@@ -23,19 +23,19 @@ const interceptorHandler = getInterceptorHandler();
 api.interceptors.response.use(
   (res) => res,
   async (err: AxiosError) => {
-    const originalRequest = err.request as RequestType;
+    const originalRequest = err.config as RequestType;
     const apiError = extractApiError(err);
-
+    
     if (isTooManyRequest(err)) {
       interceptorHandler.tooManyRequest();
       return Promise.reject(apiError);
     }
-
+    
     if (isLocked(err)) {
       interceptorHandler.locked();
       return Promise.reject(apiError);
     }
-
+    
     if (
       shouldSkip(originalRequest) ||
       !shouldReject(err) ||

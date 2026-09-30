@@ -39,4 +39,5 @@ export const isLocked = ({ response }: AxiosError) =>
 export const isTooManyRequest = ({ response }: AxiosError) =>
   response?.status === triggeringStatus.tooManyRequest;
 
-export const shouldSkip = (req: RequestType) => req.url?.includes("auth");
+export const shouldSkip = (req: RequestType) =>
+  req.url?.includes("auth") ?? false;

@@ -14,6 +14,11 @@ type RegisterRequest = Readonly<{
   password: string;
 }>;
 
+type VerificationRequest = Readonly<{
+  email: string;
+  token: string;
+}>;
+
 type AuthErrorLinkConfig = Readonly<{
   to: string;
   label: string;
@@ -25,4 +30,5 @@ export type {
   LoginRequest,
   LoginResponse,
   RegisterRequest,
+  VerificationRequest,
 };

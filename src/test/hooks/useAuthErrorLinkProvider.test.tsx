@@ -65,6 +65,19 @@ describe("useAuthErrorLinkProvider suite", () => {
     });
   });
 
+  it("Should provide the verification link when re-register finds an unverified account", () => {
+    const { result } = renderErrorLinkProvider({
+      code: "NOT_FOUND_OPERATION",
+      status: HttpStatusCode.NotFound,
+    });
+
+    expect(result.current).toEqual({
+      to: "/auth/verification",
+      label: "Verify account.",
+      ariaLabel: "Link to verification page.",
+    });
+  });
+
   it("Should return null when a known code arrives with an unexpected status", () => {
     const { result } = renderErrorLinkProvider({
       code: "NO_ACCESS",

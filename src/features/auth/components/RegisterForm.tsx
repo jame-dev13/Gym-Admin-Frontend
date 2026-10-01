@@ -1,4 +1,4 @@
-import { type FormEvent, useEffect } from "react";
+import { useEffect } from "react";
 import { SubmitBtn } from "@/components/buttons/Buttons";
 import { LinkTo } from "@/components/links/LinkTo";
 import { SocialAuthButtons } from "@/components/social/SocialAuthButtons";
@@ -7,17 +7,21 @@ import { AuthHeader } from "@/features/auth/components/AuthHeader";
 import { BackToLandingLink } from "@/features/auth/components/BackToLandingLink";
 import { getRegisterFormConfig } from "@/features/auth/services/RegisterFormConfig";
 import { UserPlus } from "lucide-react";
+import { AppForm } from "@/components/form/AppForm";
+import { Fieldset } from "@/components/form/Fieldset";
+import { useHandleRegister } from "@/features/auth/hooks/useRegisterHandler";
+import { useAuthErrorLinkProvider } from "@/features/auth/hooks/useAuthErrorLinkProvider";
 
 const PAGE_TITLE = "Register | Gym Admin";
 
 const RegisterForm = () => {
+  const { handleSubmit, isPending, error } = useHandleRegister();
+
+  const linkConfig = useAuthErrorLinkProvider(error ?? undefined);
+
   useEffect(() => {
     document.title = PAGE_TITLE;
   }, []);
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
 
   return (
     <AuthCard aria-labelledby="auth-title">
@@ -37,21 +41,27 @@ const RegisterForm = () => {
         }
       />
 
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <fieldset
-          aria-label="Register form"
-          className="flex min-h-fit flex-col items-center justify-center rounded-2xl border border-slate-300/30 bg-surface-over px-4 py-3.5"
+      <AppForm className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <Fieldset aria-label="Register form" legend="User Register">
+          <RegisterFormBody />
+        </Fieldset>
+        {linkConfig && (
+          <LinkTo
+            label={linkConfig.label}
+            to={linkConfig.to}
+            aria-label={linkConfig.ariaLabel}
+            className="font-serif w-fit text-sky-500"
+          />
+        )}
+        <SubmitBtn
+          className="w-full"
+          Icon={UserPlus}
+          aria-label="Register button"
+          disabled={isPending}
         >
-          <legend className="rounded-full bg-surface p-2.5 font-serif text-sm">
-            User Register
-          </legend>
-
-          <section className="flex w-full flex-col shrink gap-3">
-            <RegisterFormBody />
-          </section>
-        </fieldset>
-        <SubmitBtn className="w-full" Icon={UserPlus}>Create account</SubmitBtn>
-      </form>
+          Create account
+        </SubmitBtn>
+      </AppForm>
 
       <SocialAuthButtons />
 

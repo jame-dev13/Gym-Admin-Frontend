@@ -1,23 +1,23 @@
-import { type FormEvent, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
 import { CommandBtn, SubmitBtn } from "@/components/buttons/Buttons";
 import { AuthCard } from "@/features/auth/components/AuthCard";
 import { AuthHeader } from "@/features/auth/components/AuthHeader";
 import { getVerificationFormConfig } from "@/features/auth/services/VerificationFormConfig";
+import { AppForm } from "@/components/form/AppForm";
+import { Fieldset } from "@/components/form/Fieldset";
+import { useHandleVerify } from "@/features/auth/hooks/useVerifyHandler";
 
 const PAGE_TITLE = "Verification | Gym Admin";
 
 const VerificationForm = () => {
   const navigate = useNavigate();
+  const { handleSubmit, isPending } = useHandleVerify();
 
   useEffect(() => {
     document.title = PAGE_TITLE;
   }, []);
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
 
   return (
     <AuthCard aria-labelledby="auth-title">
@@ -38,23 +38,19 @@ const VerificationForm = () => {
         }
       />
 
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-        <fieldset
-          aria-label="Verification form"
-          className="flex min-h-fit flex-col items-center justify-center rounded-2xl border border-slate-300/30 bg-surface-over px-4 py-5"
+      <AppForm className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <Fieldset aria-label="Verification form" legend="Verification Code">
+          <VerificationFormBody />
+        </Fieldset>
+        <SubmitBtn
+          className="w-full"
+          Icon={ShieldCheck}
+          aria-label="Verify button"
+          disabled={isPending}
         >
-          <legend className="rounded-full bg-surface p-2.5 font-serif text-sm">
-            Verification Code
-          </legend>
-
-          <section className="flex w-full flex-col shrink gap-3">
-            <VerificationFormBody />
-          </section>
-        </fieldset>
-        <SubmitBtn className="w-full" Icon={ShieldCheck}>
           Verify
         </SubmitBtn>
-      </form>
+      </AppForm>
 
       <span className="h-px w-full bg-border" />
 

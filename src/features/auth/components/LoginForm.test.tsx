@@ -129,6 +129,15 @@ describe("LoginForm suite", () => {
     expect(navigateMock).not.toHaveBeenCalled();
     expect(screen.getByLabelText("Email input")).toHaveValue("user@gym.com");
     expect(screen.getByLabelText("Password")).toHaveValue("wrong");
+    expect(
+      screen.queryByRole("link", { name: "Link to password reset page." }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: "Link to activation page." }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: "Link to verification page." }),
+    ).not.toBeInTheDocument();
   });
 
   it("Should disable the login button while the request is pending", async () => {

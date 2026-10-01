@@ -13,6 +13,8 @@ import VerificationForm from "./VerificationForm";
 const VERIFY_URI = import.meta.env.VITE_VERIFICATION as string;
 const API_BASE_URL = import.meta.env.VITE_BASE as string;
 const LOGIN_ROUTE = "/auth/login";
+const REGISTER_ROUTE = "/auth/register";
+const STATE_EMAIL = "jane@gym.com";
 
 const { navigateMock } = vi.hoisted(() => ({ navigateMock: vi.fn() }));
 
@@ -27,11 +29,15 @@ const recordedVerifies: RecordedVerify[] = [];
 let verifyStatus = 200;
 let verifyDelayMs = 0;
 
-const renderVerificationForm = () => {
+const renderVerificationForm = (email: string | null = STATE_EMAIL) => {
   const queryClient = createTestQueryClient();
+  const initialEntries =
+    email === null
+      ? ["/auth/verification"]
+      : [{ pathname: "/auth/verification", state: { email } }];
   const wrapper = ({ children }: { children: ReactNode }) => (
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter>
+      <MemoryRouter initialEntries={initialEntries}>
         <ToastProvider>{children}</ToastProvider>
       </MemoryRouter>
     </QueryClientProvider>
@@ -63,9 +69,8 @@ beforeEach(() => {
   );
 });
 
-const fillAndSubmit = async (email: string, token: string) => {
+const fillTokenAndSubmit = async (token: string) => {
   const user = userEvent.setup();
-  await user.type(screen.getByLabelText("Email input"), email);
   const cells = token.split("");
   for (let index = 0; index < cells.length; index += 1) {
     await user.type(
@@ -89,6 +94,8 @@ describe("VerificationForm suite", () => {
     const email = screen.getByLabelText("Email input");
 
     expect(email).toBeRequired();
+    expect(email).toHaveValue(STATE_EMAIL);
+    expect(email).toHaveAttribute("readonly");
     expect(
       screen.getByRole("group", { name: "Verification code" }),
     ).toBeInTheDocument();
@@ -100,10 +107,24 @@ describe("VerificationForm suite", () => {
     ).toBeInTheDocument();
   });
 
-  it("Should patch the typed payload and navigate to login on success", async () => {
+  it("Should redirect to register when there is no email in location state", () => {
+    renderVerificationForm(null);
+
+    expect(navigateMock).toHaveBeenCalledWith(REGISTER_ROUTE, {
+      replace: true,
+    });
+    expect(
+      screen.queryByRole("button", { name: "Verify button" }),
+    ).not.toBeInTheDocument();
+    expect(recordedVerifies).toHaveLength(0);
+  });
+
+  it("Should patch the state email and token, then navigate to login on success", async () => {
     renderVerificationForm();
 
-    await fillAndSubmit("jane@gym.com", "ABC123");
+    expect(screen.getByLabelText("Email input")).toHaveValue(STATE_EMAIL);
+
+    await fillTokenAndSubmit("ABC123");
 
     await waitFor(() =>
       expect(navigateMock).toHaveBeenCalledWith(LOGIN_ROUTE),
@@ -112,7 +133,7 @@ describe("VerificationForm suite", () => {
     expect(recordedVerifies).toHaveLength(1);
     expect(recordedVerifies[0]).toEqual({
       path: VERIFY_URI,
-      body: { email: "jane@gym.com", token: "ABC123" },
+      body: { email: STATE_EMAIL, token: "ABC123" },
     });
   });
 
@@ -120,7 +141,7 @@ describe("VerificationForm suite", () => {
     verifyStatus = 400;
     renderVerificationForm();
 
-    await fillAndSubmit("jane@gym.com", "ABC123");
+    await fillTokenAndSubmit("ABC123");
 
     const toast = await screen.findByRole("status");
     expect(toast).toHaveTextContent(
@@ -128,25 +149,16 @@ describe("VerificationForm suite", () => {
     );
 
     expect(navigateMock).not.toHaveBeenCalled();
-    expect(screen.getByLabelText("Email input")).toHaveValue("jane@gym.com");
+    expect(screen.getByLabelText("Email input")).toHaveValue(STATE_EMAIL);
     expect(screen.getByLabelText("Character 1")).toHaveValue("A");
     expect(screen.getByLabelText("Character 6")).toHaveValue("3");
   });
 
   it("Should disable the verify button while the request is pending", async () => {
     verifyDelayMs = 50;
-    const user = userEvent.setup();
     renderVerificationForm();
 
-    await user.type(screen.getByLabelText("Email input"), "jane@gym.com");
-    const token = "ABC123".split("");
-    for (let index = 0; index < token.length; index += 1) {
-      await user.type(
-        screen.getByLabelText(`Character ${index + 1}`),
-        token[index],
-      );
-    }
-    await user.click(screen.getByRole("button", { name: "Verify button" }));
+    await fillTokenAndSubmit("ABC123");
 
     await waitFor(() =>
       expect(

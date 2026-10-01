@@ -117,7 +117,9 @@ describe("useHandleRegister suite", () => {
     result.current.handleSubmit(event);
 
     await waitFor(() =>
-      expect(navigateMock).toHaveBeenCalledWith(VERIFICATION_ROUTE),
+      expect(navigateMock).toHaveBeenCalledWith(VERIFICATION_ROUTE, {
+        state: { email: "jane@gym.com" },
+      }),
     );
 
     expect(recordedRegisters).toHaveLength(1);
@@ -167,7 +169,9 @@ describe("useHandleRegister suite", () => {
     result.current.handleSubmit(event);
 
     await waitFor(() =>
-      expect(navigateMock).toHaveBeenCalledWith(VERIFICATION_ROUTE),
+      expect(navigateMock).toHaveBeenCalledWith(VERIFICATION_ROUTE, {
+        state: { email: "jane@gym.com" },
+      }),
     );
 
     expect(recordedRegisters).toHaveLength(1);

@@ -109,7 +109,9 @@ describe("RegisterForm suite", () => {
     await fillAndSubmit("Jane Doe", "jane@gym.com", "secret");
 
     await waitFor(() =>
-      expect(navigateMock).toHaveBeenCalledWith(VERIFICATION_ROUTE),
+      expect(navigateMock).toHaveBeenCalledWith(VERIFICATION_ROUTE, {
+        state: { email: "jane@gym.com" },
+      }),
     );
 
     expect(recordedRegisters).toHaveLength(1);
@@ -153,7 +155,9 @@ describe("RegisterForm suite", () => {
     );
 
     await waitFor(() =>
-      expect(navigateMock).toHaveBeenCalledWith(VERIFICATION_ROUTE),
+      expect(navigateMock).toHaveBeenCalledWith(VERIFICATION_ROUTE, {
+        state: { email: "jane@gym.com" },
+      }),
     );
     expect(recordedRegisters).toHaveLength(1);
   });

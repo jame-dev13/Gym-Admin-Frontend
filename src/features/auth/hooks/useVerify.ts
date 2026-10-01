@@ -9,4 +9,10 @@ const useVerify = () =>
     uri: URI,
   });
 
-export { useVerify };
+const useResendVerificationToken = (email: string) =>
+  useMutationMapping<undefined, void>({
+    method: "patch",
+    uri: `${URI}/${email}/token`,
+  });
+
+export { useVerify, useResendVerificationToken };

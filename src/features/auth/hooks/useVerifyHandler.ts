@@ -8,10 +8,16 @@ const useHandleVerify = () => {
   const { nav } = useAppNavigation("/auth/login");
   const { submit, error, isPending } = useMutationHandler({
     mutationHook: useVerify,
-    payloadBuilder: (formData) => ({
-      email: String(formData?.get("email")),
-      token: (formData?.getAll("token") ?? []).map(String).join(""),
-    }),
+    payloadBuilder: (formData) => {
+      const email = formData?.get("email");
+      if (typeof email !== "string" || email.length === 0) {
+        throw new Error("Email is required to verify the account");
+      }
+      return {
+        email,
+        token: (formData?.getAll("token") ?? []).map(String).join(""),
+      };
+    },
     resultHandlers: {
       onSuccess: nav,
       onError: (err) => {

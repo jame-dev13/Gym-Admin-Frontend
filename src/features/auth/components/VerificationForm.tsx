@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
 import { CommandBtn, SubmitBtn } from "@/components/buttons/Buttons";
 import { AuthCard } from "@/features/auth/components/AuthCard";
@@ -8,16 +8,31 @@ import { getVerificationFormConfig } from "@/features/auth/services/Verification
 import { AppForm } from "@/components/form/AppForm";
 import { Fieldset } from "@/components/form/Fieldset";
 import { useHandleVerify } from "@/features/auth/hooks/useVerifyHandler";
+import { RequestNewVerificationTokenLink } from "@/features/auth/components/RequestNewVerificationTokenLink";
+import { EmailInput } from "@/components/input/Input";
 
 const PAGE_TITLE = "Verification | Gym Admin";
+const REGISTER_ROUTE = "/auth/register";
 
 const VerificationForm = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const emailFromState = location?.state?.email ?? "";
   const { handleSubmit, isPending } = useHandleVerify();
 
   useEffect(() => {
     document.title = PAGE_TITLE;
   }, []);
+
+  useEffect(() => {
+    if (!emailFromState) {
+      navigate(REGISTER_ROUTE, { replace: true });
+    }
+  }, [emailFromState, navigate]);
+
+  if (!emailFromState) {
+    return null;
+  }
 
   return (
     <AuthCard aria-labelledby="auth-title">
@@ -27,19 +42,20 @@ const VerificationForm = () => {
         aside={
           <>
             Didn&apos;t receive it?{" "}
-            <button
-              type="button"
-              className="text-sm font-medium text-accent underline-offset-4 transition-colors hover:underline"
-              aria-label="Resend verification code"
-            >
-              Resend code
-            </button>
+            <RequestNewVerificationTokenLink email={emailFromState} />
           </>
         }
       />
 
       <AppForm className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <Fieldset aria-label="Verification form" legend="Verification Code">
+          <EmailInput
+            name="email"
+            required
+            defaultValue={emailFromState}
+            aria-label="Email input"
+            readOnly
+          />
           <VerificationFormBody />
         </Fieldset>
         <SubmitBtn

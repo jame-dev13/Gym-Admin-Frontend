@@ -35,6 +35,7 @@ export type EmailInputProps = InputBaseProps &
     | "disabled"
     | "name"
     | "pattern"
+    | "readOnly"
     | "required"
     | "value"
     | "defaultValue"

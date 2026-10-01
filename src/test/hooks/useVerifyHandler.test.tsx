@@ -152,6 +152,25 @@ describe("useHandleVerify suite", () => {
     expect(tokenInputs.map((cell) => cell.value).join("")).toBe("ABC123");
   });
 
+  it("Should fail fast without mutating when the email entry is missing", () => {
+    const { result } = renderVerifyHandler();
+    const form = document.createElement("form");
+    const cell = document.createElement("input");
+    cell.name = "token";
+    cell.value = "A";
+    form.append(cell);
+    const event = {
+      preventDefault: vi.fn(),
+      currentTarget: form,
+    } as unknown as React.SubmitEvent<HTMLFormElement>;
+
+    expect(() => result.current.handleSubmit(event)).toThrow(
+      "Email is required to verify the account",
+    );
+    expect(recordedVerifies).toHaveLength(0);
+    expect(navigateMock).not.toHaveBeenCalled();
+  });
+
   it("Should ignore a second submit while the verify request is pending", async () => {
     verifyDelayMs = 50;
     const { result } = renderVerifyHandler();

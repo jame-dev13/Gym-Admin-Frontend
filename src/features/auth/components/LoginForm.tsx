@@ -10,11 +10,14 @@ import { UserRoundArrowLeft } from "lucide-react";
 import { AppForm } from "@/components/form/AppForm";
 import { Fieldset } from "@/components/form/Fieldset";
 import { useHandleLogin } from "@/features/auth/hooks/useLoginHandler";
+import { useAuthErrorLinkProvider } from "@/features/auth/hooks/useAuthErrorLinkProvider";
 
 const PAGE_TITLE = "Login | Gym Admin";
 
 const LoginForm = () => {
-  const { handleSubmit, isPending } = useHandleLogin();
+  const { handleSubmit, isPending, error } = useHandleLogin();
+
+  const linkConfig = useAuthErrorLinkProvider(error ?? undefined);
 
   useEffect(() => {
     document.title = PAGE_TITLE;
@@ -44,6 +47,14 @@ const LoginForm = () => {
             <LoginFormBody />
           </section>
         </Fieldset>
+        {linkConfig && (
+          <LinkTo
+            label={linkConfig.label}
+            to={linkConfig.to}
+            aria-label={linkConfig.ariaLabel}
+            className="font-serif w-fit text-sky-500"
+          />
+        )}
         <SubmitBtn
           className="w-full"
           Icon={UserRoundArrowLeft}

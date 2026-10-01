@@ -8,4 +8,10 @@ type LoginResponse = Readonly<{
   email: string;
 }>;
 
-export type { LoginRequest, LoginResponse };
+type AuthErrorLinkConfig = Readonly<{
+  to: string;
+  label: string;
+  ariaLabel: string;
+}>;
+
+export type { AuthErrorLinkConfig, LoginRequest, LoginResponse };

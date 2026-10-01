@@ -244,7 +244,8 @@ export interface AppFormProps {
   className?: string;
 }
 
-export interface FieldsetProps {
+export interface FieldsetProps
+  extends React.FieldsetHTMLAttributes<HTMLFieldSetElement> {
   legend?: string;
   children: ReactNode;
 }

@@ -36,6 +36,15 @@ const AUTH_ERROR_LINKS: ReadonlyArray<AuthErrorMatch> = [
       ariaLabel: "Link to verification page.",
     },
   },
+  {
+    code: "NOT_FOUND_OPERATION",
+    status: HttpStatusCode.NotFound,
+    link: {
+      to: "/auth/verification",
+      label: "Verify account.",
+      ariaLabel: "Link to verification page.",
+    },
+  },
 ];
 
 const useAuthErrorLinkProvider = (

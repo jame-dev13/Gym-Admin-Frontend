@@ -1,7 +1,7 @@
 import { EmailInput, PasswordInput } from "@/components/input/Input";
 
 export const getEmailConfirmationConfig = () => emailConfirmationConfig;
-export const getNewPasswordConfig = () => newPasswordConfig;
+export const getSetPasswordConfig = () => setPasswordConfig;
 
 const emailConfirmationConfig = [
   {
@@ -13,7 +13,15 @@ const emailConfirmationConfig = [
   },
 ];
 
-const newPasswordConfig = [
+const setPasswordConfig = [
+  {
+    key: "set-password-email-input-key",
+    name: "email",
+    labelText: "Email",
+    autoComplete: "email",
+    required: true,
+    Field: EmailInput,
+  },
   {
     key: "password-input-key",
     name: "password",

@@ -10,6 +10,7 @@ type InputHTMLProps = InputHTMLAttributes<HTMLInputElement>;
 export interface InputBaseProps {
   labelText?: string;
   Icon?: AvailableIcon;
+  error?: string;
 }
 
 export type InputProps = InputBaseProps & InputHTMLProps;
@@ -240,6 +241,7 @@ export type PropsWithChildren = { children?: ReactNode };
 
 export interface AppFormProps {
   onSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void;
+  onChange?: (e: React.FormEvent<HTMLFormElement>) => void;
   children: ReactNode;
   id?: string;
   className?: string;

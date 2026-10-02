@@ -30,29 +30,44 @@ export const Input: FC<InputProps> = ({
   Icon = Info,
   type = "text",
   className = "",
+  error,
+  id,
+  "aria-describedby": ariaDescribedBy,
   ...props
 }) => {
   const autoId = useId();
+  const inputId = id ?? autoId;
+  const errorId = `${inputId}-error`;
+  const describedBy = [ariaDescribedBy, error ? errorId : null]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div className="group relative isolate w-full font-serif">
       <input
         type={type}
-        id={autoId}
+        id={inputId}
         inputMode="text"
-        className={`block py-2.5 px-0 w-full text-left tracking-wide bg-transparent border-0 border-b-2 border-border appearance-none focus:outline-none focus:ring-0 focus:border-accent focus:text-accent peer ${className} invalid:focus:text-rose-500 invalid:focus:border-rose-500`}
+        className={`block py-2.5 px-0 w-full text-left tracking-wide bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:text-accent peer ${error ? "border-danger focus:border-danger" : "border-border focus:border-accent"} ${className} invalid:focus:text-rose-500 invalid:focus:border-rose-500`}
         placeholder=" "
         required
+        aria-describedby={describedBy || undefined}
+        aria-invalid={Boolean(error) || undefined}
         {...props}
       />
       <label
-        htmlFor={autoId}
+        htmlFor={inputId}
         className={`inline-flex gap-x-1 items-center absolute tracking-wider duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-left peer-focus:inset-s peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75
         peer-focus:text-accent peer-invalid:not-focus-visible:text-rose-500 peer-focus:-translate-y-6 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto`}
       >
         <Icon className="scale-75" />
         {labelText}
       </label>
+      {error && (
+        <p id={errorId} aria-live="polite" className="text-sm text-danger">
+          {error}
+        </p>
+      )}
     </div>
   );
 };
@@ -144,7 +159,7 @@ export const PhoneInput = ({
   );
 };
 
-export const PasswordInput = ({ name, className, labelText="Password", ...props }: InputProps) => {
+export const PasswordInput = ({ name, className, labelText="Password", error, "aria-describedby": ariaDescribedBy, ...props }: InputProps) => {
   const autoId = useId();
   const [type, setType] = useState<"text" | "password">(() => "password");
   const handleChangeType = useCallback(() => {
@@ -153,6 +168,10 @@ export const PasswordInput = ({ name, className, labelText="Password", ...props 
 
   const show = type === "text";
   const Icon = useMemo(() => (show ? Eye : EyeClosed), [show]);
+  const errorId = `${autoId}-error`;
+  const describedBy = [ariaDescribedBy, error ? errorId : null]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <>
@@ -162,9 +181,11 @@ export const PasswordInput = ({ name, className, labelText="Password", ...props 
           id={autoId}
           inputMode="text"
           name={name}
-          className={`block py-2.5 px-0 w-full text-left tracking-wide bg-transparent border-0 border-b-2 border-border appearance-none focus:outline-none focus:ring-0 focus:border-accent focus:text-accent peer ${className} invalid:focus:text-rose-500 invalid:focus:border-rose-500`}
+          className={`block py-2.5 px-0 w-full text-left tracking-wide bg-transparent border-0 border-b-2 appearance-none focus:outline-none focus:ring-0 focus:text-accent peer ${error ? "border-danger focus:border-danger" : "border-border focus:border-accent"} ${className} invalid:focus:text-rose-500 invalid:focus:border-rose-500`}
           placeholder=" "
           required
+          aria-describedby={describedBy || undefined}
+          aria-invalid={Boolean(error) || undefined}
           {...props}
         />
         <label
@@ -183,6 +204,11 @@ export const PasswordInput = ({ name, className, labelText="Password", ...props 
         >
           {""}
         </CommandBtn>
+        {error && (
+          <p id={errorId} aria-live="polite" className="text-sm text-danger">
+            {error}
+          </p>
+        )}
       </div>
     </>
   );

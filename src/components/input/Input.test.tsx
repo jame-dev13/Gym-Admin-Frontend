@@ -33,3 +33,28 @@ describe("PasswordInput", () => {
     expect(field).toHaveAttribute("type", "text");
   });
 });
+
+describe("PasswordInput error", () => {
+  it("exposes an error accessibly and highlights the field", () => {
+    render(<PasswordInput name="password" error="Passwords do not match" />);
+
+    const field = screen.getByLabelText("Password");
+    const message = screen.getByText("Passwords do not match");
+
+    expect(field).toHaveAttribute("aria-invalid", "true");
+    expect(field).toHaveAttribute("aria-describedby", message.id);
+    expect(message).toHaveAttribute("aria-live", "polite");
+    expect(field.className).toMatch(/border-danger/);
+  });
+
+  it("renders no error state without the error prop", () => {
+    render(<PasswordInput name="password" />);
+
+    const field = screen.getByLabelText("Password");
+
+    expect(field).not.toHaveAttribute("aria-invalid");
+    expect(
+      screen.queryByText("Passwords do not match"),
+    ).not.toBeInTheDocument();
+  });
+});

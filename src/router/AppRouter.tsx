@@ -3,7 +3,7 @@ import { getLandingRouter } from "@/features/landing-page/services/LandingRouter
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
-const { AuthLayout, Register, Login, Verification, PasswordReset } =
+const { AuthLayout, Register, Login, Verification, PasswordReset, SetPassword } =
   getAuthRouter();
 const { Landing } = getLandingRouter();
 
@@ -18,6 +18,7 @@ export const AppRouter = () => {
           <Route path="register" element={<Register />} caseSensitive />
           <Route path="verification" element={<Verification />} caseSensitive />
           <Route path="password-reset" element={<PasswordReset />} caseSensitive />
+          <Route path="set-password" element={<SetPassword />} caseSensitive />
         </Route>
       </Routes>
     </Suspense>

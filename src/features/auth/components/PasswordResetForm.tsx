@@ -1,41 +1,37 @@
-import { type FormEvent, useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, KeyRound, Send } from "lucide-react";
+import { ArrowLeft, Send } from "lucide-react";
 import { CommandBtn, SubmitBtn } from "@/components/buttons/Buttons";
 import { LinkTo } from "@/components/links/LinkTo";
 import { AuthCard } from "@/features/auth/components/AuthCard";
 import { AuthHeader } from "@/features/auth/components/AuthHeader";
-import {
-  getEmailConfirmationConfig,
-  getNewPasswordConfig,
-} from "@/features/auth/services/PasswordResetConfig";
+import { useHandlePasswordResetRequest } from "@/features/auth/hooks/usePasswordResetHandler";
+import { getEmailConfirmationConfig } from "@/features/auth/services/PasswordResetConfig";
 
 const PAGE_TITLE = "Reset Password | Gym Admin";
 
 const PasswordResetForm = () => {
   const navigate = useNavigate();
   const [sent, setSent] = useState(false);
+  const [sentEmail, setSentEmail] = useState("");
+  const emailRef = useRef<string>("");
+  const { handleSubmit: handleEmailSubmit, isPending: isRequestPending } =
+    useHandlePasswordResetRequest(emailRef, () => {
+      setSentEmail(emailRef.current);
+      setSent(true);
+    });
 
   useEffect(() => {
     document.title = PAGE_TITLE;
   }, []);
 
-  const handleEmailSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setSent(true);
-  };
-
-  const handlePasswordSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-  };
-
   return (
     <AuthCard aria-labelledby="auth-title">
       <AuthHeader
-        title={sent ? "Set a new password" : "Forgot your password?"}
+        title={sent ? "Check your email" : "Forgot your password?"}
         subtitle={
           sent
-            ? "Choose a new password and confirm it below."
+            ? "Your password reset link is on its way."
             : "Enter your email and we'll send you a link to reset your password."
         }
         aside={
@@ -62,29 +58,46 @@ const PasswordResetForm = () => {
         }
       />
 
-      <form
-        className="flex flex-col gap-4"
-        onSubmit={sent ? handlePasswordSubmit : handleEmailSubmit}
-      >
-        <fieldset
-          aria-label={sent ? "New password form" : "Email confirmation form"}
-          className="flex min-h-fit flex-col items-center justify-center rounded-2xl border border-slate-300/30 bg-surface-over px-4 py-3.5"
+      {sent ? (
+        <section
+          aria-label="Reset link sent confirmation"
+          className="flex min-h-fit flex-col items-center justify-center gap-2 rounded-2xl border border-slate-300/30 bg-surface-over px-4 py-3.5 text-center animate-fade-in-scale"
         >
-          <legend className="rounded-full bg-surface p-2.5 font-serif text-sm">
-            {sent ? "New Password" : "Email Confirmation"}
-          </legend>
-
-          <section
-            key={sent ? "new-password-step" : "email-confirmation-step"}
-            className="flex w-full flex-col shrink gap-3 animate-fade-in-scale"
+          <p className="text-sm text-text-primary">
+            We sent a password reset link to{" "}
+            <strong className="font-semibold">{sentEmail}</strong>.
+          </p>
+          <p className="text-sm text-text-secondary">
+            Check your inbox and follow the link to continue with the reset
+            process.
+          </p>
+        </section>
+      ) : (
+        <form className="flex flex-col gap-4" onSubmit={handleEmailSubmit}>
+          <fieldset
+            aria-label="Email confirmation form"
+            className="flex min-h-fit flex-col items-center justify-center rounded-2xl border border-slate-300/30 bg-surface-over px-4 py-3.5"
           >
-            {sent ? <PasswordResetBody /> : <EmailConfirmationBody />}
-          </section>
-        </fieldset>
-        <SubmitBtn className="w-full" Icon={sent ? KeyRound : Send}>
-          {sent ? "Reset password" : "Send reset link"}
-        </SubmitBtn>
-      </form>
+            <legend className="rounded-full bg-surface p-2.5 font-serif text-sm">
+              Email Confirmation
+            </legend>
+
+            <section
+              key="email-confirmation-step"
+              className="flex w-full flex-col shrink gap-3 animate-fade-in-scale"
+            >
+              <EmailConfirmationBody />
+            </section>
+          </fieldset>
+          <SubmitBtn
+            className="w-full"
+            Icon={Send}
+            disabled={isRequestPending}
+          >
+            Send reset link
+          </SubmitBtn>
+        </form>
+      )}
 
       <span className="h-px w-full bg-border" />
 
@@ -102,7 +115,6 @@ const PasswordResetForm = () => {
 };
 
 const emailConfirmationConfig = getEmailConfirmationConfig();
-const newPasswordConfig = getNewPasswordConfig();
 
 const EmailConfirmationBody = () => (
   <>
@@ -116,20 +128,6 @@ const EmailConfirmationBody = () => (
         />
       ),
     )}
-  </>
-);
-
-const PasswordResetBody = () => (
-  <>
-    {newPasswordConfig.map(({ key, name, labelText,  autoComplete, required, Field }) => (
-      <Field
-        key={key}
-        name={name}
-        labelText={labelText}
-        autoComplete={autoComplete}
-        required={required}
-      />
-    ))}
   </>
 );
 

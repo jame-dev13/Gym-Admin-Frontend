@@ -3,12 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, KeyRound } from "lucide-react";
 import { CommandBtn, SubmitBtn } from "@/components/buttons/Buttons";
 import { LinkTo } from "@/components/links/LinkTo";
-import { AuthCard } from "@/features/auth/components/AuthCard";
-import { AuthHeader } from "@/features/auth/components/AuthHeader";
+import { AuthCard, AuthHeader } from "@/features/auth/components/shared";
 import { AppForm } from "@/components/form/AppForm";
 import { Fieldset } from "@/components/form/Fieldset";
-import { useHandleResetPassword } from "@/features/auth/hooks/usePasswordResetHandler";
-import { getSetPasswordConfig } from "@/features/auth/services/PasswordResetConfig";
+import { useHandleResetPassword } from "@/features/auth/hooks/password-reset";
+import { getSetPasswordConfig } from "@/features/auth/services/password-reset";
 
 const PAGE_TITLE = "Set New Password | Gym Admin";
 const PASSWORD_MISMATCH_MESSAGE = "Passwords do not match";

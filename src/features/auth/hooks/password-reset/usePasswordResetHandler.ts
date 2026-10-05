@@ -1,7 +1,7 @@
 import {
   usePasswordResetRequest,
   useResetPassword,
-} from "@/features/auth/hooks/usePasswordReset";
+} from "./usePasswordReset";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { useToastFactory } from "@/hooks/useToastFactory";
 import { useNavigate } from "react-router-dom";

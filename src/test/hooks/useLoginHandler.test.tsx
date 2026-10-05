@@ -1,5 +1,5 @@
 import { ToastProvider } from "@/context/ToastProvider";
-import { useHandleLogin } from "@/features/auth/hooks/useLoginHandler";
+import { useHandleLogin } from "@/features/auth/hooks/login";
 import { getQueryAppClient } from "@/services/query-client";
 import { server } from "@/test/mocks/server";
 import { QueryClientProvider } from "@tanstack/react-query";

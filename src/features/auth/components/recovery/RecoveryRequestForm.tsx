@@ -2,7 +2,7 @@ import { SubmitBtn } from "@/components/buttons/Buttons";
 import { AppForm } from "@/components/form/AppForm";
 import { Fieldset } from "@/components/form/Fieldset";
 import { EmailInput } from "@/components/input/Input";
-import { useHandleRecoveryRequest } from "@/features/auth/hooks/useRecoveryRequestHandler";
+import { useHandleRecoveryRequest } from "@/features/auth/hooks/recovery";
 import { Plane } from "lucide-react";
 import { type FC } from "react";
 

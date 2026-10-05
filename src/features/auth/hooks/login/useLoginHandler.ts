@@ -1,4 +1,4 @@
-import { useLogin } from "@/features/auth/hooks/useLogin";
+import { useLogin } from "./useLogin";
 import { useAppNavigation } from "@/hooks/useAppNavigation";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { useToastFactory } from "@/hooks/useToastFactory";

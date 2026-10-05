@@ -1,5 +1,5 @@
 import { ToastProvider } from "@/context/ToastProvider";
-import { RecoveryRequestForm } from "@/features/auth/components/RecoveryRequestForm";
+import { RecoveryRequestForm } from "./RecoveryRequestForm";
 import { server } from "@/test/mocks/server";
 import { createTestQueryClient } from "@/test/test-utils";
 import { QueryClientProvider } from "@tanstack/react-query";

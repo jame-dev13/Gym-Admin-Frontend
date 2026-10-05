@@ -9,7 +9,7 @@ import { MemoryRouter } from "react-router-dom";
 import { http, HttpResponse } from "msw";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { API_BASE_URL } from "./test-utils";
-import { useHandleVerify } from "@/features/auth/hooks/useVerifyHandler";
+import { useHandleVerify } from "@/features/auth/hooks/verification";
 
 const VERIFY_URI = import.meta.env.VITE_VERIFICATION as string;
 const LOGIN_ROUTE = "/auth/login";

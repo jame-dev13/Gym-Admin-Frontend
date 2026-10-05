@@ -1,4 +1,4 @@
-import { useVerify } from "@/features/auth/hooks/useVerify";
+import { useVerify } from "./useVerify";
 import { useAppNavigation } from "@/hooks/useAppNavigation";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { useToastFactory } from "@/hooks/useToastFactory";

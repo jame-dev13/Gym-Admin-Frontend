@@ -1,4 +1,4 @@
-import { useLogin } from "@/features/auth/hooks/useLogin";
+import { useLogin } from "@/features/auth/hooks/login";
 import type { LoginResponse } from "@/features/auth/types";
 import { server } from "@/test/mocks/server";
 import { waitFor } from "@testing-library/react";

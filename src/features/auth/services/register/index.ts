@@ -1,0 +1,1 @@
+export { getRegisterFormConfig } from "./RegisterFormConfig";

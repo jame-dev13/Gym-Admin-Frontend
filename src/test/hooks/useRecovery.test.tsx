@@ -1,7 +1,7 @@
 import {
   useRecover,
   useRequestRecovery,
-} from "@/features/auth/hooks/useRecovery";
+} from "@/features/auth/hooks/recovery";
 import { server } from "@/test/mocks/server";
 import { http, HttpResponse } from "msw";
 import { beforeEach, describe, expect, it } from "vitest";

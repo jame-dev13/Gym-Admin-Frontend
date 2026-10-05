@@ -1,4 +1,4 @@
-import { useRequestRecovery } from "@/features/auth/hooks/useRecovery";
+import { useRequestRecovery } from "./useRecovery";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { useToastFactory } from "@/hooks/useToastFactory";
 

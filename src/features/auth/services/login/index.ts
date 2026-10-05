@@ -1,0 +1,1 @@
+export { getLoginFormConfig } from "./LoginFormConfig";

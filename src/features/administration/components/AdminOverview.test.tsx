@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import AdministrationHomePage from "./AdministrationHomePage";
+import AdminOverview from "./AdminOverview";
 
-describe("AdministrationHomePage", () => {
+describe("AdminOverview", () => {
   it("renders the administration heading", () => {
-    render(<AdministrationHomePage />);
+    render(<AdminOverview />);
 
     expect(
       screen.getByRole("heading", { level: 1, name: "Administration" }),

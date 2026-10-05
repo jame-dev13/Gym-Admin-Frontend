@@ -1,4 +1,4 @@
-const AdministrationHomePage = () => {
+const AdminOverview = () => {
   return (
     <section className="flex w-full flex-1 flex-col gap-4" aria-labelledby="administration-heading">
       <div className="flex flex-col gap-2">
@@ -17,4 +17,4 @@ const AdministrationHomePage = () => {
   );
 };
 
-export default AdministrationHomePage;
+export default AdminOverview;

@@ -106,6 +106,8 @@ export type ChartLegendItem = {
 
 export type ToastType = "success" | "error" | "warning" | "info" | "default";
 
+export type ThemeMode = "dark" | "light";
+
 export type ToastShowFn = (message: string) => void;
 
 export interface ToastFactory {

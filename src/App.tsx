@@ -1,5 +1,6 @@
 import { ErrorBoundary } from "@/components/error/ErrorBoundary";
 import { AppRouter } from "@/router/AppRouter";
+import { ThemeProvider } from "@/context/ThemeProvider";
 import { ToastProvider } from "@/context/ToastProvider";
 import "./App.css";
 import {
@@ -17,9 +18,11 @@ function App() {
         <QueryErrorResetBoundary>
           {({ reset }) => (
             <ErrorBoundary onReset={reset}>
-              <ToastProvider>
-                <AppRouter />
-              </ToastProvider>
+              <ThemeProvider>
+                <ToastProvider>
+                  <AppRouter />
+                </ToastProvider>
+              </ThemeProvider>
             </ErrorBoundary>
           )}
         </QueryErrorResetBoundary>

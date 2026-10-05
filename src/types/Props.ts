@@ -265,6 +265,10 @@ export interface ToastProviderProps {
   children: ReactNode;
 }
 
+export interface ThemeProviderProps {
+  children: ReactNode;
+}
+
 export type TableSize = "sm" | "md";
 
 export type TableResponsive = "cards" | "scroll";

@@ -6,7 +6,10 @@ const AdministrationRouter = {
   Administration: lazy(
     () => import("@/features/administration/layouts/AdministrationLayout"),
   ),
-  AdministrationHome: lazy(
-    () => import("@/features/administration/components/AdministrationHomePage"),
+  AdminOverview: lazy(
+    () => import("@/features/administration/components/AdminOverview"),
+  ),
+  AdministrationPanel: lazy(
+    () => import("@/features/administration/components/AdministrationPanel"),
   ),
 };

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 import { AdministrationFooter } from "@/features/administration/components/AdministrationFooter";
 import { AdministrationNavbar } from "@/features/administration/components/AdministrationNavbar";
@@ -11,7 +12,9 @@ const AdministrationLayout = () => {
         <AdministrationSidebar />
         <div className="flex min-w-0 flex-1 flex-col">
           <main className="flex-1 px-4 py-6 tab:px-8">
-            <Outlet />
+            <Suspense fallback={<div>Loading.....</div>}>
+              <Outlet />
+            </Suspense>
           </main>
           <AdministrationFooter />
         </div>

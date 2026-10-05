@@ -1,14 +1,14 @@
 import { screen } from "@testing-library/react";
 import { Route, Routes } from "react-router-dom";
 import { renderWithProviders } from "@/test/test-utils";
-import AdministrationHomePage from "@/features/administration/components/AdministrationHomePage";
+import AdminOverview from "@/features/administration/components/AdminOverview";
 import AdministrationLayout from "./AdministrationLayout";
 
 const renderShell = (route = "/administration") =>
   renderWithProviders(
     <Routes>
       <Route path="/administration" element={<AdministrationLayout />}>
-        <Route index element={<AdministrationHomePage />} />
+        <Route index element={<AdminOverview />} />
       </Route>
     </Routes>,
     { route },

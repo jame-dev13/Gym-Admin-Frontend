@@ -1,4 +1,5 @@
 import { getAdministrationRouter } from "@/features/administration/services/AdministrationRouter";
+import { administrationPanelRoutes } from "@/features/administration/services/AdministrationPanels";
 import { getAuthRouter } from "@/features/auth/services/AuthRouter";
 import { getLandingRouter } from "@/features/landing-page/services/LandingRouter";
 import { Suspense } from "react";
@@ -7,7 +8,7 @@ import { Route, Routes } from "react-router-dom";
 const { AuthLayout, Register, Login, Verification, PasswordReset, SetPassword, Recovery } =
   getAuthRouter();
 const { Landing } = getLandingRouter();
-const { Administration, AdministrationHome } = getAdministrationRouter();
+const { Administration, AdminOverview, AdministrationPanel } = getAdministrationRouter();
 
 export const AppRouter = () => {
   return (
@@ -15,7 +16,20 @@ export const AppRouter = () => {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/administration" element={<Administration />} caseSensitive>
-          <Route index element={<AdministrationHome />} />
+          <Route index element={<AdminOverview />} />
+          {administrationPanelRoutes.map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={
+                <AdministrationPanel
+                  title={route.title}
+                  description={route.description}
+                />
+              }
+              caseSensitive
+            />
+          ))}
         </Route>
         <Route path="/auth" caseSensitive>
           <Route index element={<AuthLayout />} />

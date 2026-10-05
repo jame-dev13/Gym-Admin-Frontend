@@ -12,7 +12,7 @@ import { API_BASE_URL } from "./test-utils";
 import {
   useHandlePasswordResetRequest,
   useHandleResetPassword,
-} from "@/features/auth/hooks/usePasswordResetHandler";
+} from "@/features/auth/hooks/password-reset";
 
 const RESET_URI = import.meta.env.VITE_PASSWORD_RESET as string;
 const LOGIN_ROUTE = "/auth/login";

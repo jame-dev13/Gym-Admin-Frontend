@@ -2,14 +2,16 @@ import { useEffect } from "react";
 import { SubmitBtn } from "@/components/buttons/Buttons";
 import { LinkTo } from "@/components/links/LinkTo";
 import { SocialAuthButtons } from "@/components/social/SocialAuthButtons";
-import { AuthCard } from "@/features/auth/components/AuthCard";
-import { AuthHeader } from "@/features/auth/components/AuthHeader";
-import { BackToLandingLink } from "@/features/auth/components/BackToLandingLink";
-import { getRegisterFormConfig } from "@/features/auth/services/RegisterFormConfig";
+import {
+  AuthCard,
+  AuthHeader,
+  BackToLandingLink,
+} from "@/features/auth/components/shared";
+import { getRegisterFormConfig } from "@/features/auth/services/register";
 import { UserPlus } from "lucide-react";
 import { AppForm } from "@/components/form/AppForm";
 import { Fieldset } from "@/components/form/Fieldset";
-import { useHandleRegister } from "@/features/auth/hooks/useRegisterHandler";
+import { useHandleRegister } from "@/features/auth/hooks/register";
 import { useAuthErrorLinkProvider } from "@/features/auth/hooks/useAuthErrorLinkProvider";
 
 const PAGE_TITLE = "Register | Gym Admin";

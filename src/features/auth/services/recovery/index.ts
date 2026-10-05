@@ -1,0 +1,1 @@
+export { getRecoveryActivateConfig } from "./RecoveryFormConfig";

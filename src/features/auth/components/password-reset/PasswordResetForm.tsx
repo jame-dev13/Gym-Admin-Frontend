@@ -3,10 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Send } from "lucide-react";
 import { CommandBtn, SubmitBtn } from "@/components/buttons/Buttons";
 import { LinkTo } from "@/components/links/LinkTo";
-import { AuthCard } from "@/features/auth/components/AuthCard";
-import { AuthHeader } from "@/features/auth/components/AuthHeader";
-import { useHandlePasswordResetRequest } from "@/features/auth/hooks/usePasswordResetHandler";
-import { getEmailConfirmationConfig } from "@/features/auth/services/PasswordResetConfig";
+import { AuthCard, AuthHeader } from "@/features/auth/components/shared";
+import { useHandlePasswordResetRequest } from "@/features/auth/hooks/password-reset";
+import { getEmailConfirmationConfig } from "@/features/auth/services/password-reset";
 
 const PAGE_TITLE = "Reset Password | Gym Admin";
 

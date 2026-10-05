@@ -2,13 +2,12 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
 import { CommandBtn, SubmitBtn } from "@/components/buttons/Buttons";
-import { AuthCard } from "@/features/auth/components/AuthCard";
-import { AuthHeader } from "@/features/auth/components/AuthHeader";
-import { getVerificationFormConfig } from "@/features/auth/services/VerificationFormConfig";
+import { AuthCard, AuthHeader } from "@/features/auth/components/shared";
+import { getVerificationFormConfig } from "@/features/auth/services/verification";
 import { AppForm } from "@/components/form/AppForm";
 import { Fieldset } from "@/components/form/Fieldset";
-import { useHandleVerify } from "@/features/auth/hooks/useVerifyHandler";
-import { RequestNewVerificationTokenLink } from "@/features/auth/components/RequestNewVerificationTokenLink";
+import { useHandleVerify } from "@/features/auth/hooks/verification";
+import { RequestNewVerificationTokenLink } from "./RequestNewVerificationTokenLink";
 import { EmailInput } from "@/components/input/Input";
 
 const PAGE_TITLE = "Verification | Gym Admin";

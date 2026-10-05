@@ -4,10 +4,18 @@ export const getAuthRouter = () => AuthRouter;
 
 const AuthRouter = {
   AuthLayout: lazy(() => import("@/features/auth/layouts/AuthLayout")),
-  Register: lazy(() => import("@/features/auth/components/RegisterForm")),
-  Login: lazy(() => import("@/features/auth/components/LoginForm")),
-  Verification: lazy(() => import("@/features/auth/components/VerificationForm")),
-  PasswordReset: lazy(() => import("@/features/auth/components/PasswordResetForm")),
-  SetPassword: lazy(() => import("@/features/auth/components/SetPasswordForm")),
-  Recovery: lazy(() => import("@/features/auth/components/RecoveryForm")),
+  Register: lazy(() => import("@/features/auth/components/register/RegisterForm")),
+  Login: lazy(() => import("@/features/auth/components/login/LoginForm")),
+  Verification: lazy(
+    () => import("@/features/auth/components/verification/VerificationForm"),
+  ),
+  PasswordReset: lazy(
+    () => import("@/features/auth/components/password-reset/PasswordResetForm"),
+  ),
+  SetPassword: lazy(
+    () => import("@/features/auth/components/password-reset/SetPasswordForm"),
+  ),
+  Recovery: lazy(
+    () => import("@/features/auth/components/recovery/RecoveryForm"),
+  ),
 };

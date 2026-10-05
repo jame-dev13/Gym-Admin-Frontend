@@ -3,14 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ShieldCheck } from "lucide-react";
 import { CommandBtn, SubmitBtn } from "@/components/buttons/Buttons";
 import { LinkTo } from "@/components/links/LinkTo";
-import { AuthCard } from "@/features/auth/components/AuthCard";
-import { AuthHeader } from "@/features/auth/components/AuthHeader";
+import { AuthCard, AuthHeader } from "@/features/auth/components/shared";
 import { AppForm } from "@/components/form/AppForm";
 import { Fieldset } from "@/components/form/Fieldset";
 import { EmailInput } from "@/components/input/Input";
-import { useHandleRecover } from "@/features/auth/hooks/useRecoveryHandler";
-import { getRecoveryActivateConfig } from "@/features/auth/services/RecoveryFormConfig";
-import { RecoveryRequestForm } from "@/features/auth/components/RecoveryRequestForm";
+import { useHandleRecover } from "@/features/auth/hooks/recovery";
+import { getRecoveryActivateConfig } from "@/features/auth/services/recovery";
+import { RecoveryRequestForm } from "./RecoveryRequestForm";
 
 const PAGE_TITLE = "Recover Account | Gym Admin";
 

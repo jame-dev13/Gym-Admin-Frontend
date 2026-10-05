@@ -1,5 +1,5 @@
 import { AppForm } from "@/components/form/AppForm";
-import { useResendVerificationToken } from "@/features/auth/hooks/useVerify";
+import { useResendVerificationToken } from "@/features/auth/hooks/verification";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { useEffect, useState, type FC } from "react";
 

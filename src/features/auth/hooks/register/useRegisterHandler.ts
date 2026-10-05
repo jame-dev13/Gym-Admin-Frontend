@@ -1,4 +1,4 @@
-import { useRegister } from "@/features/auth/hooks/useRegister";
+import { useRegister } from "./useRegister";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { useToastFactory } from "@/hooks/useToastFactory";
 import { useRef } from "react";

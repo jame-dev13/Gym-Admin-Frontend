@@ -1,0 +1,1 @@
+export { getVerificationFormConfig } from "./VerificationFormConfig";

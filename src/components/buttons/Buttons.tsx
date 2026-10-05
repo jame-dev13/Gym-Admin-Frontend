@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useFormStatus } from 'react-dom'
-import { Check, Loader2, Menu, RefreshCw, X } from 'lucide-react'
+import { Check, Loader2, Menu, Moon, RefreshCw, Sun, X } from 'lucide-react'
 import type {
   SubmitBtnProps,
   CommandBtnProps,
@@ -8,7 +8,9 @@ import type {
   SwitchBtnProps,
   RefreshBtnProps,
   BurgerBtnProps,
+  ThemeBtnProps,
 } from '@/types/Props'
+import { useThemeContext } from '@/context/useThemeContext'
 
 const submitStyles = [
   'inline-flex',
@@ -416,6 +418,73 @@ export const BurgerBtn = ({
       ) : (
         <Menu size={20} aria-hidden="true" />
       )}
+    </button>
+  )
+}
+
+const themeBtnStyles = [
+  'inline-flex',
+  'size-9',
+  'items-center',
+  'justify-center',
+  'rounded-full',
+  'border',
+  'border-transparent',
+  'text-text-secondary',
+  'transition-all',
+  'duration-200',
+  'hover:border-border',
+  'hover:bg-surface-over',
+  'hover:text-text-primary',
+  'active:scale-90',
+  'focus-visible:outline-2',
+  'focus-visible:outline-offset-2',
+  'focus-visible:outline-accent',
+].join(' ')
+
+export const ThemeBtn = ({ className = '' }: ThemeBtnProps) => {
+  const { mode, toggle } = useThemeContext()
+  const isDark = mode === 'dark'
+  const label = isDark ? 'Switch to light mode' : 'Switch to dark mode'
+
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      aria-label={label}
+      title={label}
+      className={`${themeBtnStyles} ${className}`}
+    >
+      <span aria-hidden="true" className="relative block size-5">
+        <Sun
+          size={18}
+          aria-hidden="true"
+          className={[
+            'absolute',
+            'inset-0',
+            'm-auto',
+            'transition-all',
+            'duration-300',
+            isDark
+              ? 'opacity-100 scale-100 rotate-0'
+              : 'opacity-0 scale-50 rotate-90',
+          ].join(' ')}
+        />
+        <Moon
+          size={18}
+          aria-hidden="true"
+          className={[
+            'absolute',
+            'inset-0',
+            'm-auto',
+            'transition-all',
+            'duration-300',
+            isDark
+              ? 'opacity-0 scale-50 -rotate-90'
+              : 'opacity-100 scale-100 rotate-0',
+          ].join(' ')}
+        />
+      </span>
     </button>
   )
 }

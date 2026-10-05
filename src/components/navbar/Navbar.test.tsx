@@ -34,6 +34,31 @@ describe("Navbar", () => {
     );
   });
 
+  it("renders with empty links when actions are provided", () => {
+    renderNavbar(
+      <Navbar
+        brand={<span>Brand</span>}
+        links={[]}
+        actions={<button type="button">Action</button>}
+      />,
+    );
+    expect(
+      screen.getByRole("button", { name: "Action" }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders actions in the desktop row and the mobile menu panel", () => {
+    renderNavbar(
+      <Navbar
+        brand={<span>Brand</span>}
+        links={[]}
+        actions={<button type="button">Action</button>}
+        defaultOpen
+      />,
+    );
+    expect(screen.getAllByRole("button", { name: "Action" })).toHaveLength(2);
+  });
+
   it.each([
     ["static", "static"],
     ["sticky", "sticky"],

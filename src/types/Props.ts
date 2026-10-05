@@ -237,6 +237,10 @@ export interface BurgerBtnProps {
   buttonRef: Ref<HTMLButtonElement>;
 }
 
+export interface ThemeBtnProps {
+  className?: string;
+}
+
 export type PropsWithChildren = { children?: ReactNode };
 
 export interface AppFormProps {
@@ -329,6 +333,7 @@ export interface SelectProps {
 export interface NavbarProps {
   links: NavbarLink[];
   brand?: ReactNode;
+  actions?: ReactNode;
   position?: NavbarPosition;
   defaultOpen?: boolean;
   open?: boolean;

@@ -1,8 +1,7 @@
 import { Dumbbell } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ThemeBtn } from "@/components/buttons/Buttons";
 import { Navbar } from "@/components/navbar/Navbar";
-
-const links = [{ to: "/", label: "Back to site" }];
 
 export const AdministrationNavbar = () => (
   <Navbar
@@ -19,6 +18,7 @@ export const AdministrationNavbar = () => (
         </span>
       </Link>
     }
-    links={links}
+    links={[]}
+    actions={<ThemeBtn />}
   />
 );

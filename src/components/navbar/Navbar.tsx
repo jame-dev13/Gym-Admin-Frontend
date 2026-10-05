@@ -19,6 +19,7 @@ const mobileLinkBase =
 export const Navbar: FC<NavbarProps> = ({
   links,
   brand,
+  actions,
   position = "sticky",
   defaultOpen = false,
   open,
@@ -26,7 +27,7 @@ export const Navbar: FC<NavbarProps> = ({
   "aria-label": ariaLabel = "Main navigation",
   className = "",
 }) => {
-  if (links.length === 0) {
+  if (links.length === 0 && !actions) {
     throw new Error("Navbar requires at least one link");
   }
 
@@ -121,6 +122,7 @@ export const Navbar: FC<NavbarProps> = ({
         {brand && <div className="flex min-w-0 items-center gap-2">{brand}</div>}
         <div className="hidden items-center gap-1 tab:flex">
           {links.map(renderDesktopLink)}
+          {actions}
         </div>
         <BurgerBtn
           open={menuOpen}
@@ -133,6 +135,7 @@ export const Navbar: FC<NavbarProps> = ({
         <div id={menuId} className="border-t border-border px-4 py-3 tab:hidden animate-fade-in-scale">
           <div className="flex flex-col gap-1">
             {links.map(renderMobileLink)}
+            {actions}
           </div>
         </div>
       )}

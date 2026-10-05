@@ -16,6 +16,9 @@ export default defineConfig({
     css: false,
     restoreMocks: true,
     clearMocks: true,
+    env: {
+      VITE_RECOVERY: process.env.VITE_RECOVERY ?? "/auth/recover",
+    },
     include: ["src/**/*.{test,spec}.{ts,tsx}"],
     coverage: {
       provider: "v8",

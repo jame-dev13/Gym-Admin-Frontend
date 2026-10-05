@@ -28,6 +28,15 @@ type ResetPasswordRequest = Readonly<{
   newPassword: string;
 }>;
 
+type RecoveryRequest = Readonly<{
+  email: string;
+  token: string;
+}>;
+
+type RecoveryEmailRequest = Readonly<{
+  email: string;
+}>;
+
 type AuthErrorLinkConfig = Readonly<{
   to: string;
   label: string;
@@ -39,6 +48,8 @@ export type {
   LoginRequest,
   LoginResponse,
   PasswordResetRequest,
+  RecoveryEmailRequest,
+  RecoveryRequest,
   RegisterRequest,
   ResetPasswordRequest,
   VerificationRequest,

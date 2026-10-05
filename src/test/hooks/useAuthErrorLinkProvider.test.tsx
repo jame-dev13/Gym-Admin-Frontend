@@ -39,14 +39,14 @@ describe("useAuthErrorLinkProvider suite", () => {
     });
   });
 
-  it("Should provide the activation link for a deactivated account", () => {
+  it("Should provide the recovery link for a deactivated account", () => {
     const { result } = renderErrorLinkProvider({
       code: "VALIDATION_OPERATION",
       status: HttpStatusCode.Conflict,
     });
 
     expect(result.current).toEqual({
-      to: "/auth/activation",
+      to: "/auth/recover",
       label: "Activate account here!",
       ariaLabel: "Link to activation page.",
     });

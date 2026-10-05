@@ -22,7 +22,7 @@ const AUTH_ERROR_LINKS: ReadonlyArray<AuthErrorMatch> = [
     code: "VALIDATION_OPERATION",
     status: HttpStatusCode.Conflict,
     link: {
-      to: "/auth/activation",
+      to: "/auth/recover",
       label: "Activate account here!",
       ariaLabel: "Link to activation page.",
     },

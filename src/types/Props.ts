@@ -1,6 +1,6 @@
 import type { ChangeEvent, ReactNode, Ref, InputHTMLAttributes } from "react";
 import { type LucideIcon } from "lucide-react";
-import type { ChartDatum, ChartLegendItem, ChartSeries, ChartTooltipVariant, Column, DrawerPosition, DrawerSize, DropdownOption, Identifiable, NavbarLink, NavbarPosition, SelectOption, SidebarSection } from "@/types/Types";
+import type { ChartDatum, ChartLegendItem, ChartSeries, ChartTooltipVariant, Column, DrawerPosition, DrawerSize, DropdownOption, Identifiable, NavbarLink, NavbarPosition, SelectOption, SidebarSection, TableAction } from "@/types/Types";
 import type React from "react";
 
 type AvailableIcon = LucideIcon;
@@ -298,6 +298,31 @@ export type TableProps<T extends Identifiable> = {
   size?: TableSize;
   responsive?: TableResponsive;
   cardTitleKey?: keyof T;
+  className?: string;
+};
+
+export type TableLayoutProps<T extends Identifiable> = {
+  title: string;
+  description?: string;
+  data: T[];
+  columns: Column<T>[];
+  caption?: string;
+  "aria-label"?: string;
+  searchValue?: string;
+  onSearchChange?: (value: string) => void;
+  onSearchSubmit?: (value: string) => void;
+  searchPlaceholder?: string;
+  actions?: TableAction[];
+  actionsLabel?: string;
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+  emptyMessage?: string;
+  striped?: boolean;
+  size?: TableSize;
+  responsive?: TableResponsive;
+  cardTitleKey?: keyof T;
+  disabled?: boolean;
   className?: string;
 };
 

@@ -241,6 +241,15 @@ export interface ThemeBtnProps {
   className?: string;
 }
 
+export interface PaginationProps {
+  totalElements: number;
+  currentPage: number;
+  onPageChange: (page: number) => void;
+  disabled?: boolean;
+  "aria-label"?: string;
+  className?: string;
+}
+
 export type PropsWithChildren = { children?: ReactNode };
 
 export interface AppFormProps {

@@ -56,6 +56,14 @@ export type DropdownOption = {
   disabled?: boolean;
 };
 
+export type TableAction = {
+  id: string;
+  label?: string;
+  Icon?: LucideIcon;
+  disabled?: boolean;
+  onSelect: () => void;
+};
+
 export type SelectOption = {
   value: string;
   label: string;

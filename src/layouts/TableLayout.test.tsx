@@ -1,0 +1,160 @@
+import userEvent from "@testing-library/user-event";
+import { screen } from "@testing-library/react";
+import { Plus, Upload } from "lucide-react";
+import { renderWithProviders } from "@/test/test-utils";
+import { TableLayout } from "./TableLayout";
+import type { Column, TableAction } from "@/types/Types";
+
+type Member = {
+  id: number;
+  name: string;
+  plan: string;
+};
+
+const columns: Column<Member>[] = [
+  { key: "name", header: "Name" },
+  { key: "plan", header: "Plan" },
+];
+
+const data: Member[] = [
+  { id: 1, name: "Ada Lovelace", plan: "Pro" },
+  { id: 2, name: "Grace Hopper", plan: "Basic" },
+];
+
+const actions: TableAction[] = [
+  { id: "add", label: "Add member", Icon: Plus, onSelect: vi.fn() },
+  { id: "import", label: "Import", Icon: Upload, onSelect: vi.fn() },
+];
+
+const baseProps = {
+  title: "Members",
+  description: "Everyone with an active membership",
+  data,
+  columns,
+  caption: "Gym members",
+  searchPlaceholder: "Search members...",
+  actions,
+  actionsLabel: "Member actions",
+  currentPage: 1,
+  totalPages: 5,
+  onPageChange: vi.fn(),
+};
+
+beforeEach(() => {
+  vi.clearAllMocks();
+});
+
+describe("TableLayout", () => {
+  it("renders the visible title, description, table, and pagination", () => {
+    renderWithProviders(<TableLayout {...baseProps} />);
+
+    expect(
+      screen.getByRole("heading", { name: "Members" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Everyone with an active membership"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("table", { name: "Gym members" }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("cell", { name: "Ada Lovelace" })).toBeInTheDocument();
+    expect(screen.getByRole("navigation", { name: "Pagination" })).toBeInTheDocument();
+  });
+
+  it("keeps the toolbar sticky at the top of the scroll container", () => {
+    renderWithProviders(<TableLayout {...baseProps} />);
+
+    const toolbar = screen.getByTestId("table-layout-toolbar");
+    expect(toolbar).toHaveClass("sticky", "top-0", "z-10");
+  });
+
+  it("caps the scroll region with a fixed max height", () => {
+    renderWithProviders(<TableLayout {...baseProps} />);
+
+    expect(screen.getByTestId("table-layout-body")).toHaveClass("max-h-160");
+  });
+
+  it("reports search typing and submit to the consumer", async () => {
+    const user = userEvent.setup();
+    const onSearchChange = vi.fn();
+    const onSearchSubmit = vi.fn();
+    renderWithProviders(
+      <TableLayout
+        {...baseProps}
+        onSearchChange={onSearchChange}
+        onSearchSubmit={onSearchSubmit}
+      />,
+    );
+
+    const search = screen.getByPlaceholderText("Search members...");
+    await user.type(search, "ada");
+    expect(onSearchChange).toHaveBeenLastCalledWith("ada");
+
+    await user.type(search, "{enter}");
+    expect(onSearchSubmit).toHaveBeenCalledWith("ada");
+  });
+
+  it("runs the action when its desktop button is pressed", async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<TableLayout {...baseProps} />);
+
+    await user.click(screen.getByRole("button", { name: "Add member" }));
+
+    expect(actions[0]?.onSelect).toHaveBeenCalledTimes(1);
+  });
+
+  it("runs the action when its dropdown option is selected", async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<TableLayout {...baseProps} />);
+
+    await user.click(
+      screen.getByRole("button", { name: "Member actions" }),
+    );
+    await user.click(screen.getByRole("menuitemradio", { name: "Import" }));
+
+    expect(actions[1]?.onSelect).toHaveBeenCalledTimes(1);
+  });
+
+  it("shows the button group on large screens and the dropdown on small ones", () => {
+    renderWithProviders(<TableLayout {...baseProps} />);
+
+    expect(
+      screen.getByRole("group", { name: "Member actions" }),
+    ).toHaveClass("hidden", "tab:inline-flex");
+    expect(
+      screen.getByRole("button", { name: "Member actions" }).parentElement,
+    ).toHaveClass("tab:hidden");
+  });
+
+  it("renders no action controls when actions is empty", () => {
+    renderWithProviders(<TableLayout {...baseProps} actions={[]} />);
+
+    expect(screen.queryByRole("group")).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Member actions" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("hides pagination when there are no pages to show", () => {
+    renderWithProviders(
+      <TableLayout {...baseProps} data={[]} currentPage={1} totalPages={0} />,
+    );
+
+    expect(screen.getByRole("status")).toBeInTheDocument();
+    expect(
+      screen.queryByRole("navigation", { name: "Pagination" }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("reports page changes to the consumer", async () => {
+    const user = userEvent.setup();
+    const onPageChange = vi.fn();
+    renderWithProviders(
+      <TableLayout {...baseProps} currentPage={2} onPageChange={onPageChange} />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Go to next page" }));
+
+    expect(onPageChange).toHaveBeenCalledWith(3);
+  });
+});

@@ -99,6 +99,7 @@
 
 html {
   overflow-x: hidden;
+  scrollbar-color: var(--color-border) var(--color-surface);
 }
 
 body {
@@ -107,4 +108,14 @@ body {
   flex-direction: column;
   min-height: 100vh;
   box-sizing: border-box;
+}
+
+@media(width < 600px) {
+  * {
+    font-size: 15px;
+  }
+  button {
+    padding: 10px;
+    text-size-adjust: 10px;
+  }
 }

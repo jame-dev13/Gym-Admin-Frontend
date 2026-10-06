@@ -61,7 +61,6 @@ export const useMutationMapping = <T, R>({
             predicate: (query) => query.queryKey.includes("audit"),
           });
           outerSettled();
-          return;
         }
 
         if (!error && invalidateKey) {

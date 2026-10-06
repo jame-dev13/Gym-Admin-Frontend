@@ -18,3 +18,5 @@ const userQueryKeyProvider = {
     ],
   },
 };
+
+export { userQueryKeyProvider };

@@ -84,7 +84,7 @@ describe("useFetchMapping", () => {
       useFetchMapping<Show>({
         uri: "/shows",
         queryKey: ["shows"],
-        options: { queryKey: ["shows"], enabled: false },
+        options: { enabled: false },
       }),
     );
 

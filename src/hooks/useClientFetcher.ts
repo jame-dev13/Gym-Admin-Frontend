@@ -10,7 +10,7 @@ type FetchMappingParams<T> = {
   uri: string;
   params?: Record<string, unknown>;
   queryKey: ReadonlyArray<unknown>;
-  options?: UndefinedInitialDataOptions<FetchResponse<T>, ApiErrorResponse>;
+  options?: Omit<UndefinedInitialDataOptions<FetchResponse<T>, ApiErrorResponse>, "queryKey">;
 };
 
 export function useFetchMapping<T>(paramArgs: FetchMappingParams<T>) {

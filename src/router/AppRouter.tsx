@@ -2,6 +2,7 @@ import { getAdministrationRouter } from "@/features/administration/services/Admi
 import { administrationPanelRoutes } from "@/features/administration/services/AdministrationPanels";
 import { getAuthRouter } from "@/features/auth/services/AuthRouter";
 import { getLandingRouter } from "@/features/landing-page/services/LandingRouter";
+import { EntityDomainProvider } from "@/context/EntityDomainProvider";
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
@@ -15,7 +16,15 @@ export const AppRouter = () => {
     <Suspense fallback={<div>Loading.....</div>}>
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/administration" element={<Administration />} caseSensitive>
+        <Route
+          path="/administration"
+          element={
+            <EntityDomainProvider>
+              <Administration />
+            </EntityDomainProvider>
+          }
+          caseSensitive
+        >
           <Route index element={<AdminOverview />} />
           {administrationPanelRoutes.map((route) => (
             <Route

@@ -1,6 +1,9 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { Eye } from "lucide-react";
 import { Table } from "./Table";
+import { TableRowActions } from "./TableRowActions";
 import type { Column } from "@/types/Types";
 
 type Member = {
@@ -229,5 +232,139 @@ describe("Table card layout", () => {
     const cells = within(adaRow).getAllByRole("cell");
     expect(cells[0]).not.toHaveAttribute("data-label");
     expect(cells[0]).not.toHaveAttribute("data-card-title");
+  });
+});
+
+describe("Table action column", () => {
+  type ActionMember = {
+    id: number;
+    name: string;
+    customerId: string;
+  };
+
+  const actionData: ActionMember[] = [
+    { id: 1, name: "Ada Lovelace", customerId: "c-1" },
+    { id: 2, name: "Grace Hopper", customerId: "c-2" },
+  ];
+
+  it("renders row-scoped action buttons bound to a property value", async () => {
+    const seen: string[] = [];
+    const user = userEvent.setup();
+
+    render(
+      <Table<ActionMember>
+        data={actionData}
+        caption="Members"
+        columns={[
+          { key: "name", header: "Name" },
+          {
+            kind: "action",
+            key: "actions",
+            header: "Actions",
+            align: "right",
+            renderActions: (row) => (
+              <button type="button" onClick={() => seen.push(row.customerId)}>
+                View details for {row.name}
+              </button>
+            ),
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.getByRole("columnheader", { name: "Actions" }))
+      .toBeInTheDocument();
+
+    await user.click(
+      screen.getByRole("button", { name: "View details for Ada Lovelace" }),
+    );
+
+    expect(seen).toEqual(["c-1"]);
+  });
+
+  it("supports the shared TableRowActions renderer inside an action column", async () => {
+    const onSelect = vi.fn();
+    const user = userEvent.setup();
+
+    render(
+      <Table<ActionMember>
+        data={actionData}
+        caption="Members"
+        columns={[
+          { key: "name", header: "Name" },
+          {
+            kind: "action",
+            key: "actions",
+            header: "Actions",
+            renderActions: (row) => (
+              <TableRowActions
+                row={row}
+                actions={[
+                  {
+                    id: "view",
+                    label: `View details for ${row.name}`,
+                    Icon: Eye,
+                    onSelect,
+                  },
+                ]}
+              />
+            ),
+          },
+        ]}
+      />,
+    );
+
+    await user.click(
+      screen.getByRole("button", { name: "View details for Grace Hopper" }),
+    );
+
+    expect(onSelect).toHaveBeenCalledTimes(1);
+    expect(onSelect).toHaveBeenCalledWith(actionData[1]);
+  });
+
+  it("falls back to the placeholder when renderActions returns null", () => {
+    render(
+      <Table<ActionMember>
+        data={actionData}
+        caption="Members"
+        columns={[
+          { key: "name", header: "Name" },
+          {
+            kind: "action",
+            key: "actions",
+            header: "Actions",
+            renderActions: () => null,
+          },
+        ]}
+      />,
+    );
+
+    const adaRow = screen.getByRole("row", { name: /Ada Lovelace/ });
+    expect(within(adaRow).getByRole("cell", { name: "—" })).toBeInTheDocument();
+  });
+
+  it("tags action cells for the card layout without title markers", () => {
+    render(
+      <Table<ActionMember>
+        data={actionData}
+        caption="Members"
+        cardTitleKey="name"
+        columns={[
+          { key: "name", header: "Name" },
+          {
+            kind: "action",
+            key: "actions",
+            header: "Actions",
+            renderActions: (row) => <span>Details of {row.customerId}</span>,
+          },
+        ]}
+      />,
+    );
+
+    const adaRow = screen.getByRole("row", { name: /Ada Lovelace/ });
+    const cells = within(adaRow).getAllByRole("cell");
+    expect(cells[1]).toHaveAttribute("data-label", "Actions");
+    expect(cells[1]).toHaveAttribute("data-actions", "true");
+    expect(cells[1]).not.toHaveAttribute("data-card-title");
   });
 });

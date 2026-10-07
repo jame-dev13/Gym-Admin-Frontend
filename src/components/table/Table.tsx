@@ -1,7 +1,16 @@
 import type { CSSProperties } from "react";
-import type { ColumnAlign, Identifiable } from "@/types/Types";
+import type {
+  ActionColumn,
+  Column,
+  ColumnAlign,
+  Identifiable,
+} from "@/types/Types";
 import type { TableProps } from "@/types/Props";
 import "./Table.css";
+
+function isActionColumn<T>(column: Column<T>): column is ActionColumn<T> {
+  return column.kind === "action";
+}
 
 const DEFAULT_EMPTY_MESSAGE = "No data available";
 const DEFAULT_EMPTY_VALUE = "—";
@@ -107,6 +116,34 @@ export function Table<T extends Identifiable>({
                 ].join(" ")}
               >
                 {columns.map((column) => {
+                  if (isActionColumn(column)) {
+                    const rendered = column.renderActions(row);
+                    const content =
+                      rendered === null ||
+                      rendered === undefined ||
+                      rendered === ""
+                        ? DEFAULT_EMPTY_VALUE
+                        : rendered;
+
+                    return (
+                      <td
+                        key={column.key}
+                        data-label={isCards ? column.header : undefined}
+                        data-actions="true"
+                        data-hide-on-cards={
+                          isCards && column.hideOnCards ? "true" : undefined
+                        }
+                        className={[
+                          cellPadding,
+                          "text-text-primary",
+                          alignClasses[column.align ?? "left"],
+                        ].join(" ")}
+                      >
+                        {content}
+                      </td>
+                    );
+                  }
+
                   const rawValue = row[column.key];
                   const emptyValue = column.emptyValue ?? DEFAULT_EMPTY_VALUE;
                   const rendered = column.render

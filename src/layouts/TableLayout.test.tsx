@@ -26,6 +26,11 @@ const actions: TableAction[] = [
   { id: "import", label: "Import", Icon: Upload, onSelect: vi.fn() },
 ];
 
+const sortOptions = [
+  { value: "name", label: "Name" },
+  { value: "plan", label: "Plan" },
+];
+
 const baseProps = {
   title: "Members",
   description: "Everyone with an active membership",
@@ -156,5 +161,69 @@ describe("TableLayout", () => {
     await user.click(screen.getByRole("button", { name: "Go to next page" }));
 
     expect(onPageChange).toHaveBeenCalledWith(3);
+  });
+});
+
+describe("TableLayout toolbar slots", () => {
+  it("reports sort field and direction changes", async () => {
+    const user = userEvent.setup();
+    const onSortByChange = vi.fn();
+    const onSortDirectionChange = vi.fn();
+    renderWithProviders(
+      <TableLayout
+        {...baseProps}
+        sortOptions={sortOptions}
+        onSortByChange={onSortByChange}
+        onSortDirectionChange={onSortDirectionChange}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: "Sort by" }));
+    await user.click(screen.getByRole("menuitemradio", { name: "Plan" }));
+    expect(onSortByChange).toHaveBeenCalledWith("plan");
+
+    await user.click(
+      screen.getByRole("button", {
+        name: "Sort direction: ascending, activate to sort descending",
+      }),
+    );
+    expect(onSortDirectionChange).toHaveBeenCalledWith("desc");
+  });
+
+  it("renders the domain controls slot", () => {
+    renderWithProviders(
+      <TableLayout {...baseProps} controls={<button>Export users</button>} />,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "Export users" }),
+    ).toBeInTheDocument();
+  });
+
+  it("hides the search input when it is not searchable", () => {
+    renderWithProviders(
+      <TableLayout {...baseProps} isSearchable={false} />,
+    );
+
+    expect(screen.queryByRole("searchbox")).not.toBeInTheDocument();
+  });
+
+  it("shows an alert instead of the table on error", () => {
+    renderWithProviders(
+      <TableLayout {...baseProps} errorMessage="Members could not be loaded" />,
+    );
+
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Members could not be loaded",
+    );
+    expect(screen.queryByRole("table")).not.toBeInTheDocument();
+  });
+
+  it("shows a loading status when the first page is pending", () => {
+    renderWithProviders(
+      <TableLayout {...baseProps} data={[]} isLoading loadingMessage="Loading members…" />,
+    );
+
+    expect(screen.getByRole("status")).toHaveTextContent("Loading members…");
   });
 });

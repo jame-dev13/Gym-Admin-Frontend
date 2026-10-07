@@ -1,3 +1,5 @@
+// @vitest-environment node
+// Pure unit test: no DOM access, so it skips the jsdom setup cost.
 import type { Domain, Entity } from "@/context/EntityDomainContext";
 import { resolveEntityDomain } from "@/context/resolveEntityDomain";
 

@@ -293,6 +293,7 @@ export type TableProps<T extends Identifiable> = {
   "aria-label"?: string;
   emptyMessage?: string;
   getRowKey?: (row: T) => string | number;
+  stickyHeader?: boolean;
   striped?: boolean;
   size?: TableSize;
   responsive?: TableResponsive;

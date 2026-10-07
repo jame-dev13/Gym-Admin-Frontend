@@ -1,0 +1,33 @@
+/* Caps the avatar menu height so long option lists scroll internally.
+ * Colors come from the theme tokens in index.css, so dark/light both work.
+ */
+
+.avatar-menu-panel {
+  max-height: 20rem;
+  /* Never exceed the viewport: on narrow screens the w-64 panel shrinks
+   * instead of overflowing, whatever side it is anchored to. */
+  max-width: calc(100vw - 2rem);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-emphasis) transparent;
+}
+
+/* Subtle staggered entrance for menu items. Delay is set inline per
+ * item and capped in the component; disabled entirely when the user
+ * prefers reduced motion.
+ */
+@keyframes avatar-menu-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .avatar-menu-item {
+    animation: avatar-menu-item-in 0.18s ease-out both;
+  }
+}

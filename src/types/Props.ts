@@ -1,6 +1,6 @@
 import type { ChangeEvent, ReactNode, Ref, InputHTMLAttributes } from "react";
 import { type LucideIcon } from "lucide-react";
-import type { ChartDatum, ChartLegendItem, ChartSeries, ChartTooltipVariant, Column, DrawerPosition, DrawerSize, DropdownOption, Identifiable, NavbarLink, NavbarPosition, SelectOption, SidebarSection, TableAction } from "@/types/Types";
+import type { ChartDatum, ChartLegendItem, ChartSeries, ChartTooltipVariant, Column, DrawerPosition, DrawerSize, DropdownOption, Identifiable, NavbarLink, NavbarPosition, SelectOption, SidebarSection, SortDirection, SortOption, TableAction } from "@/types/Types";
 import type React from "react";
 
 type AvailableIcon = LucideIcon;
@@ -293,7 +293,6 @@ export type TableProps<T extends Identifiable> = {
   "aria-label"?: string;
   emptyMessage?: string;
   getRowKey?: (row: T) => string | number;
-  stickyHeader?: boolean;
   striped?: boolean;
   size?: TableSize;
   responsive?: TableResponsive;
@@ -362,6 +361,37 @@ export interface SelectProps {
   className?: string;
   "aria-label"?: string;
   "aria-describedby"?: string;
+}
+
+export interface SortDropdownProps<T extends string = string> {
+  options: ReadonlyArray<SortOption<T>>;
+  value?: T;
+  defaultValue?: T;
+  onChange?: (value: T) => void;
+  label?: string;
+  Icon?: AvailableIcon;
+  placeholder?: string;
+  disabled?: boolean;
+  size?: DropdownSize;
+  placement?: DropdownPlacement;
+  "aria-label"?: string;
+  className?: string;
+}
+
+export interface SortDirectionToggleProps {
+  direction: SortDirection;
+  onToggle?: () => void;
+  onChange?: (next: SortDirection) => void;
+  disabled?: boolean;
+  size?: DropdownSize;
+  "aria-label"?: string;
+  className?: string;
+}
+
+export interface SortControlsProps extends PropsWithChildren {
+  label?: string;
+  "aria-label"?: string;
+  className?: string;
 }
 
 export interface NavbarProps {

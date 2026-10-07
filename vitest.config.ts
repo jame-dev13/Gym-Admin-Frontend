@@ -12,8 +12,21 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
-    setupFiles: ["./src/test/setup.ts"],
+    setupFiles: ["./src/test/setup.polyfills.ts", "./src/test/setup.ts"],
     css: false,
+    // jsdom setup dominated the suite (60 fresh environments, ~47% of run
+    // time). vmThreads builds the environment once per worker while keeping
+    // per-file isolation, as suggested by Vitest's own run diagnostics.
+    pool: "vmThreads",
+    // Persist transformed modules between runs so repeat/CI-adjacent runs
+    // skip re-transforming the unchanged module graph.
+    fsModuleCache: true,
+    deps: {
+      web: {
+        // No test imports static assets; skip the Vite asset pipeline.
+        transformAssets: false,
+      },
+    },
     restoreMocks: true,
     clearMocks: true,
     env: {

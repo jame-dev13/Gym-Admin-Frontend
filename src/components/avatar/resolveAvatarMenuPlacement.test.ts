@@ -1,3 +1,5 @@
+// @vitest-environment node
+// Pure unit test: no DOM access, so it skips the jsdom setup cost.
 import { describe, expect, it } from "vitest";
 import { resolveAvatarMenuPlacement } from "./resolveAvatarMenuPlacement";
 

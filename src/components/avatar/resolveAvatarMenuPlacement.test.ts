@@ -4,7 +4,11 @@ import { resolveAvatarMenuPlacement } from "./resolveAvatarMenuPlacement";
 describe("resolveAvatarMenuPlacement", () => {
   it("honors an explicit placement regardless of available space", () => {
     expect(
-      resolveAvatarMenuPlacement("bottom-start", { left: 300, right: 340 }, 360),
+      resolveAvatarMenuPlacement(
+        "bottom-start",
+        { left: 300, right: 340 },
+        360,
+      ),
     ).toBe("bottom-start");
     expect(
       resolveAvatarMenuPlacement("bottom-end", { left: 8, right: 48 }, 360),
@@ -40,3 +44,4 @@ describe("resolveAvatarMenuPlacement", () => {
       resolveAvatarMenuPlacement("auto", { left: 8, right: 48 }, Number.NaN),
     ).toBe("bottom-end");
   });
+});

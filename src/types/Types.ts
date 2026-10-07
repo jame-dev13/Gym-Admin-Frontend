@@ -56,6 +56,16 @@ export type DropdownOption = {
   disabled?: boolean;
 };
 
+export type SortDirection = "asc" | "desc";
+
+export type SortOption<T extends string = string> = {
+  value: T;
+  label: string;
+  description?: string;
+  Icon?: LucideIcon;
+  disabled?: boolean;
+};
+
 export type TableAction = {
   id: string;
   label?: string;

@@ -216,7 +216,7 @@ export const Dropdown = ({
           role="menu"
           aria-labelledby={triggerId}
           onKeyDown={handleMenuKeyDown}
-          className={`dropdown-panel absolute top-full z-50 mt-2 min-w-56 overflow-y-auto rounded-2xl border border-border bg-surface-raised p-1.5 shadow-xl animate-fade-in-scale ${placementClasses[placement]}`}
+          className={`dropdown-panel absolute top-full z-50 mt-2 min-w-56 max-w-[calc(100vw-2rem)] overflow-y-auto rounded-2xl border border-border bg-surface-raised p-1.5 shadow-xl animate-fade-in-scale ${placementClasses[placement]}`}
         >
           {options.map((option, index) => {
             const isSelected = option.value === selectedValue;

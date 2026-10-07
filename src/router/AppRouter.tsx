@@ -3,8 +3,15 @@ import { administrationPanelRoutes } from "@/features/administration/services/Ad
 import { getAuthRouter } from "@/features/auth/services/AuthRouter";
 import { getLandingRouter } from "@/features/landing-page/services/LandingRouter";
 import { EntityDomainProvider } from "@/context/EntityDomainProvider";
-import { Suspense } from "react";
+import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
+
+// TODO(TEMP): remove the sort preview route before the final PR.
+const SortPreviewPage = lazy(() =>
+  import("@/pages/SortPreviewPage").then((module) => ({
+    default: module.SortPreviewPage,
+  })),
+);
 
 const { AuthLayout, Register, Login, Verification, PasswordReset, SetPassword, Recovery } =
   getAuthRouter();
@@ -16,6 +23,8 @@ export const AppRouter = () => {
     <Suspense fallback={<div>Loading.....</div>}>
       <Routes>
         <Route path="/" element={<Landing />} />
+        {/* TODO(TEMP): remove the sort preview route before the final PR. */}
+        <Route path="/_preview/sort" element={<SortPreviewPage />} />
         <Route
           path="/administration"
           element={

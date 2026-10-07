@@ -1,6 +1,6 @@
 import type { ChangeEvent, ReactNode, Ref, InputHTMLAttributes } from "react";
 import { type LucideIcon } from "lucide-react";
-import type { ChartDatum, ChartLegendItem, ChartSeries, ChartTooltipVariant, Column, DrawerPosition, DrawerSize, DropdownOption, Identifiable, NavbarLink, NavbarPosition, SelectOption, SidebarSection, SortDirection, SortOption, TableAction } from "@/types/Types";
+import type { ChartDatum, ChartLegendItem, ChartSeries, ChartTooltipVariant, Column, DrawerPosition, DrawerSize, DropdownOption, Identifiable, NavbarLink, NavbarPosition, SelectOption, SidebarSection, SortDirection, SortOption, TableAction, AvatarMenuItem, AvatarSize, AvatarStatus, AvatarUser } from "@/types/Types";
 import type React from "react";
 
 type AvailableIcon = LucideIcon;
@@ -330,6 +330,8 @@ export type DropdownSize = "sm" | "md";
 
 export type DropdownPlacement = "bottom-start" | "bottom-end";
 
+export type AvatarMenuPlacement = DropdownPlacement | "auto";
+
 export interface DropdownProps {
   options: DropdownOption[];
   value?: string;
@@ -488,4 +490,23 @@ export interface PieChartProps extends ChartBaseProps {
 
 export interface ChartLegendProps {
   items: ChartLegendItem[];
+}
+
+export interface AvatarProps {
+  name?: string;
+  src?: string;
+  size?: AvatarSize;
+  status?: AvatarStatus;
+  className?: string;
+}
+
+export interface AvatarMenuProps {
+  user: AvatarUser;
+  items?: AvatarMenuItem[];
+  onAction?: (value: string) => void;
+  size?: AvatarSize;
+  placement?: AvatarMenuPlacement;
+  disabled?: boolean;
+  "aria-label"?: string;
+  className?: string;
 }

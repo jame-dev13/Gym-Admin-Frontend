@@ -258,6 +258,7 @@ export interface AppFormProps {
   children: ReactNode;
   id?: string;
   className?: string;
+  noValidate?: boolean;
 }
 
 export interface FieldsetProps

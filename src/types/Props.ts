@@ -1,6 +1,6 @@
 import type { ChangeEvent, ReactNode, Ref, InputHTMLAttributes } from "react";
 import { type LucideIcon } from "lucide-react";
-import type { ChartDatum, ChartLegendItem, ChartSeries, ChartTooltipVariant, Column, DrawerPosition, DrawerSize, DropdownOption, Identifiable, NavbarLink, NavbarPosition, SelectOption, SidebarSection, SortDirection, SortOption, TableAction, AvatarMenuItem, AvatarSize, AvatarStatus, AvatarUser } from "@/types/Types";
+import type { ChartDatum, ChartLegendItem, ChartSeries, ChartTooltipVariant, Column, DrawerPosition, DrawerSize, DropdownOption, Identifiable, NavbarLink, NavbarPosition, RowAction, SelectOption, SidebarSection, SortDirection, SortOption, TableAction, AvatarMenuItem, AvatarSize, AvatarStatus, AvatarUser } from "@/types/Types";
 import type React from "react";
 
 type AvailableIcon = LucideIcon;
@@ -301,6 +301,12 @@ export type TableProps<T extends Identifiable> = {
   cardTitleKey?: keyof T;
   className?: string;
 };
+
+export interface TableRowActionsProps<T> {
+  row: T;
+  actions: RowAction<T>[];
+  "aria-label"?: string;
+}
 
 export type TableLayoutProps<T extends Identifiable> = {
   title: string;

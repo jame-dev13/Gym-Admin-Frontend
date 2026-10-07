@@ -38,7 +38,8 @@ export type Identifiable = { id: string | number | null };
 
 export type ColumnAlign = "left" | "center" | "right";
 
-export type Column<T> = {
+export type DataColumn<T> = {
+  kind?: "data";
   key: keyof T;
   header: string;
   align?: ColumnAlign;
@@ -47,6 +48,28 @@ export type Column<T> = {
   hideOnCards?: boolean;
   render?: (value: T[keyof T], row: T) => ReactNode;
 };
+
+export type RowAction<T> = {
+  id: string;
+  label: string;
+  Icon?: LucideIcon;
+  destructive?: boolean;
+  disabled?: boolean | ((row: T) => boolean);
+  hidden?: (row: T) => boolean;
+  onSelect: (row: T) => void;
+};
+
+export type ActionColumn<T> = {
+  kind: "action";
+  key: string;
+  header: string;
+  align?: ColumnAlign;
+  width?: string;
+  hideOnCards?: boolean;
+  renderActions: (row: T) => ReactNode;
+};
+
+export type Column<T> = DataColumn<T> | ActionColumn<T>;
 
 export type DropdownOption = {
   value: string;

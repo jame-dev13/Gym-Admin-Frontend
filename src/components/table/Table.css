@@ -93,6 +93,12 @@
     display: none;
   }
 
+  /* Action cells keep the header label on the left and push the
+   * button group to the right edge of the card. */
+  .table-cards td[data-actions="true"] > div[role="group"] {
+    margin-left: auto;
+  }
+
   /* Empty state: single centered card, no label row. */
   .table-cards td:not([data-label]) {
     display: block;

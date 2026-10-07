@@ -118,6 +118,26 @@ export type ThemeMode = "dark" | "light";
 
 export type ToastShowFn = (message: string) => void;
 
+export type AvatarSize = "sm" | "md" | "lg";
+
+export type AvatarStatus = "online" | "busy" | "offline" | "none";
+
+export type AvatarUser = {
+  name: string;
+  email: string;
+  src?: string;
+  status?: AvatarStatus;
+};
+
+export type AvatarMenuItem = {
+  value: string;
+  label: string;
+  description?: string;
+  Icon?: LucideIcon;
+  destructive?: boolean;
+  disabled?: boolean;
+};
+
 export interface ToastFactory {
   showSuccess: ToastShowFn;
   showError: ToastShowFn;

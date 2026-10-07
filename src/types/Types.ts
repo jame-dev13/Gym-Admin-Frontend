@@ -133,7 +133,5 @@ export interface ToastFactory {
   showError: ToastShowFn;
   showWarning: ToastShowFn;
   showInfo: ToastShowFn;
-  showWarning: ToastShowFn;
-  showInfo: ToastShowFn;
   showDefault: ToastShowFn;
 }

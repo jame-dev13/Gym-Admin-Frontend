@@ -60,6 +60,17 @@ describe("Dropdown", () => {
     ).toBeInTheDocument();
   });
 
+  it("caps the menu panel to the viewport width", async () => {
+    const user = userEvent.setup();
+    renderDropdown();
+
+    await openMenu(user);
+
+    expect(screen.getByRole("menu").className).toMatch(
+      /max-w-\[calc\(100vw-2rem\)\]/,
+    );
+  });
+
   it("shows descriptions and marks disabled options", async () => {
     const user = userEvent.setup();
     renderDropdown();

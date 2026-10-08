@@ -1,4 +1,4 @@
-import type { FieldsetProps } from "@/types/Props";
+import type { FieldsetProps } from "./FormTypes";
 
 export const Fieldset = ({ legend, children, ...rest }: FieldsetProps) => {
   return (

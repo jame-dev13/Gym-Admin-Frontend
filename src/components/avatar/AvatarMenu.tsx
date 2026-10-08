@@ -2,8 +2,9 @@ import { ChevronDown, LogOut, Settings, SunMoon, UserRound } from "lucide-react"
 import { useEffect, useId, useRef, useState } from "react";
 import { Avatar } from "./Avatar";
 import { resolveAvatarMenuPlacement } from "./resolveAvatarMenuPlacement";
-import type { AvatarMenuProps, DropdownPlacement } from "@/types/Props";
-import type { AvatarMenuItem } from "@/types/Types";
+import type { AvatarMenuProps } from "./AvatarTypes";
+import type { DropdownPlacement } from "@/components/dropdown/DropdownTypes";
+import type { AvatarMenuItem } from "@/types/SharedTypes";
 import "./Avatar.css";
 
 const placementClasses: Record<DropdownPlacement, string> = {

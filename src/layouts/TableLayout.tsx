@@ -7,7 +7,7 @@ import { SortControls } from "@/components/sort/SortControls";
 import { SortDirectionToggle } from "@/components/sort/SortDirectionToggle";
 import { SortDropdown } from "@/components/sort/SortDropdown";
 import { Table } from "@/components/table/Table";
-import type { TableLayoutProps } from "@/types/Props";
+import type { TableLayoutProps } from "@/components/table/TableTypes";
 import type { DropdownOption, Identifiable } from "@/types/Types";
 
 const DEFAULT_ACTIONS_LABEL = "Table actions";

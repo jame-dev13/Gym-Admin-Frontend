@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Toast } from "@/components/toast/Toast";
-import type { ToastProviderProps } from "@/types/Props";
+import type { ToastProviderProps } from "@/components/toast/ToastTypes";
 import type { ToastType } from "@/types/Types";
 import { ToastContext, TOAST_DURATION_MS } from "./ToastContext";
 

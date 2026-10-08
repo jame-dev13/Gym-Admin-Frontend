@@ -1,5 +1,5 @@
 import { useId, type FC } from "react";
-import type { SelectProps } from "@/types/Props";
+import type { SelectProps } from "./InputTypes";
 
 export const Select: FC<SelectProps> = ({
   options,

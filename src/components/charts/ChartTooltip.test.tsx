@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { ChartTooltip } from "./ChartTooltip";
-import type { ChartTooltipEntry } from "@/types/Props";
+import type { ChartTooltipEntry } from "./ChartTypes";
 import type { ChartDatum } from "@/types/Types";
 
 const payload: ChartTooltipEntry[] = [

@@ -1,14 +1,14 @@
 import type { UseQueryResult } from "@tanstack/react-query";
 import type { ReactNode } from "react";
-import type { TableResponsive, TableSize } from "@/types/Props";
+import type { TableResponsive, TableSize } from "./TableTypes";
 import type {
   ApiErrorResponse,
   Column,
   Identifiable,
   Page,
   SortDirection,
-  TableAction,
 } from "@/types/Types";
+import type { TableAction } from "@/types/SharedTypes";
 
 /**
  * A React Query page hook, e.g. `useGetUserPage`.

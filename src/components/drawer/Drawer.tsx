@@ -1,8 +1,8 @@
 import { X } from "lucide-react";
 import { useEffect, useId, useRef } from "react";
 import { createPortal } from "react-dom";
-import type { DrawerProps } from "@/types/Props";
-import type { DrawerPosition, DrawerSize } from "@/types/Types";
+import type { DrawerProps } from "./DrawerTypes";
+import type { DrawerPosition, DrawerSize } from "@/types/SharedTypes";
 import "./Drawer.css";
 
 const sideSizeClasses: Record<DrawerSize, string> = {

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useId, useRef, useState, type FC } from "react";
 import { NavLink } from "react-router-dom";
 import { BurgerBtn } from "@/components/buttons/Buttons";
-import type { NavbarProps } from "@/types/Props";
-import type { NavbarLink, NavbarPosition } from "@/types/Types";
+import type { NavbarProps } from "./NavbarTypes";
+import type { NavbarLink, NavbarPosition } from "@/types/SharedTypes";
 
 const positionClasses: Record<NavbarPosition, string> = {
   static: "static",

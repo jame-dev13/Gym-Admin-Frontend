@@ -1,4 +1,4 @@
-import type { AppFormProps } from "@/types/Props";
+import type { AppFormProps } from "./FormTypes";
 
 export const AppForm = ({
   onSubmit,

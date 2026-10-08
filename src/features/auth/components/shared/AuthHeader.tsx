@@ -1,5 +1,5 @@
 import { Dumbbell } from "lucide-react";
-import type { AuthHeaderProps } from "@/types/Props";
+import type { AuthHeaderProps } from "@/components/buttons/ButtonTypes";
 
 export const AuthHeader = ({ title, subtitle, aside }: AuthHeaderProps) => {
   return (

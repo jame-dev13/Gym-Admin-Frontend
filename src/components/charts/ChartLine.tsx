@@ -10,7 +10,7 @@ import {
 import { ChartContainer } from "./ChartContainer";
 import { ChartTooltip } from "./ChartTooltip";
 import { resolveSeriesColor } from "./chartPalette";
-import type { LineChartProps } from "@/types/Props";
+import type { LineChartProps } from "./ChartTypes";
 
 const MAX_SERIES = 3;
 

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import type { LinkToProps } from '@/types/Props'
+import type { LinkToProps } from './LinkTypes'
 
 type LinkToIconProps = NonNullable<LinkToProps['Icon']>
 

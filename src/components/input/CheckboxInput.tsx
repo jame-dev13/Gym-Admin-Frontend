@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, type FC } from "react";
-import type { CheckboxInputProps } from "@/types/Props";
+import type { CheckboxInputProps } from "./InputTypes";
 
 export const CheckboxInput: FC<CheckboxInputProps> = ({
   label,

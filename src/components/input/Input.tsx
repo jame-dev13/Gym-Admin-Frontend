@@ -22,7 +22,7 @@ import type {
   NumberInputProps,
   PhoneInputProps,
   TextInputProps,
-} from "@/types/Props";
+} from "./InputTypes";
 import { CommandBtn } from "@/components/buttons/Buttons";
 
 export const Input: FC<InputProps> = ({

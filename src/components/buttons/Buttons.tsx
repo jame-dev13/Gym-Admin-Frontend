@@ -9,7 +9,7 @@ import type {
   RefreshBtnProps,
   BurgerBtnProps,
   ThemeBtnProps,
-} from '@/types/Props'
+} from './ButtonTypes'
 import { useThemeContext } from '@/context/useThemeContext'
 
 const submitStyles = [

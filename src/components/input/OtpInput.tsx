@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
-import type { OtpInputProps } from "@/types/Props";
+import type { OtpInputProps } from "./InputTypes";
 
 const DEFAULT_LENGTH = 6;
 const DEFAULT_LABEL = "Verification code";

@@ -5,7 +5,7 @@ import type {
   ColumnAlign,
   Identifiable,
 } from "@/types/Types";
-import type { TableProps } from "@/types/Props";
+import type { TableProps } from "./TableTypes";
 import "./Table.css";
 
 function isActionColumn<T>(column: Column<T>): column is ActionColumn<T> {

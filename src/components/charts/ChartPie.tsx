@@ -8,7 +8,7 @@ import {
 import { ChartContainer } from "./ChartContainer";
 import { ChartTooltip } from "./ChartTooltip";
 import { CHART_PALETTE } from "./chartPalette";
-import type { PieChartProps } from "@/types/Props";
+import type { PieChartProps } from "./ChartTypes";
 
 export const ChartPie: FC<PieChartProps> = ({
   data,

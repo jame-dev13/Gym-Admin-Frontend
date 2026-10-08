@@ -6,8 +6,8 @@ import {
   ChevronsRight,
   ChevronsUp,
 } from "lucide-react";
-import type { SidebarProps } from "@/types/Props";
-import type { NavbarLink } from "@/types/Types";
+import type { SidebarProps } from "./SidebarTypes";
+import type { NavbarLink } from "@/types/SharedTypes";
 
 const linkBase =
   "flex w-auto items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-200 hover:bg-surface-over hover:text-accent tab:w-full";

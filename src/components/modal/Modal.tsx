@@ -2,7 +2,7 @@ import { X } from "lucide-react";
 import { useEffect, useId, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useModalContext } from "@/context/useModalContext";
-import type { ModalProps, ModalSize } from "@/types/Props";
+import type { ModalProps, ModalSize } from "./ModalTypes";
 
 const sizeClasses: Record<ModalSize, string> = {
   sm: "max-w-sm",

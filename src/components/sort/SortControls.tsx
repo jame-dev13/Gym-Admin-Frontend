@@ -1,5 +1,5 @@
 import { useId } from "react";
-import type { SortControlsProps } from "@/types/Props";
+import type { SortControlsProps } from "./SortTypes";
 
 const DEFAULT_GROUP_LABEL = "Sort controls";
 

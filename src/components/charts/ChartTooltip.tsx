@@ -3,7 +3,7 @@ import { ArrowDown, ArrowUp } from "lucide-react";
 import type {
   ChartTooltipEntry,
   ChartTooltipProps,
-} from "@/types/Props";
+} from "./ChartTypes";
 import type { ChartDatum } from "@/types/Types";
 
 const DEFAULT_LOCALE = "es-MX";

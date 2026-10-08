@@ -1,11 +1,11 @@
 import { Check, ChevronDown } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
-import type { DropdownOption } from "@/types/Types";
+import type { DropdownOption } from "@/types/SharedTypes";
 import type {
   DropdownPlacement,
   DropdownProps,
   DropdownSize,
-} from "@/types/Props";
+} from "./DropdownTypes";
 import "./Dropdown.css";
 
 const sizeTriggerClasses: Record<DropdownSize, string> = {

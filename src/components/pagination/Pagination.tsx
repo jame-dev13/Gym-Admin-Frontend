@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import type { PaginationProps } from "@/types/Props";
+import type { PaginationProps } from "./PaginationTypes";
 
 const focusRing = [
   "focus-visible:outline-none",

@@ -1,4 +1,4 @@
-import type { AvatarMenuPlacement, DropdownPlacement } from "@/types/Props";
+import type { DropdownPlacement, AvatarMenuPlacement } from "@/components/dropdown/DropdownTypes";
 
 /** Panel width in px (w-64) plus a viewport safety margin. */
 const PANEL_WIDTH_PX = 256;

@@ -1,5 +1,5 @@
 import { IconFacebook, IconGoogle } from "@/components/icons/Icons";
-import type { SocialAuthButtonsProps } from "@/types/Props";
+import type { SocialAuthButtonsProps } from "@/components/buttons/ButtonTypes";
 
 const providerButtonStyles = [
   "inline-flex",

@@ -10,7 +10,7 @@ import {
 import { ChartContainer } from "./ChartContainer";
 import { ChartTooltip } from "./ChartTooltip";
 import { resolveSeriesColor } from "./chartPalette";
-import type { BarChartProps } from "@/types/Props";
+import type { BarChartProps } from "./ChartTypes";
 
 export const ChartBar: FC<BarChartProps> = ({
   data,

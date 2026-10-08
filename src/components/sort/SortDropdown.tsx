@@ -1,7 +1,7 @@
 import { ArrowUpDown } from "lucide-react";
 import { Dropdown } from "@/components/dropdown/Dropdown";
-import type { SortDropdownProps } from "@/types/Props";
-import type { DropdownOption } from "@/types/Types";
+import type { SortDropdownProps } from "./SortTypes";
+import type { DropdownOption } from "@/types/SharedTypes";
 
 export function SortDropdown<T extends string>({
   options,

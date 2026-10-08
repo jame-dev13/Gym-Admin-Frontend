@@ -1,6 +1,6 @@
 import type { ComponentType } from "react";
 import type { Identifiable, RowAction } from "@/types/Types";
-import type { TableRowActionsProps } from "@/types/Props";
+import type { TableRowActionsProps } from "./TableTypes";
 
 export type { TableRowActionsProps };
 

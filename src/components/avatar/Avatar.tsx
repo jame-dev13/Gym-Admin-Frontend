@@ -1,7 +1,7 @@
 import { User } from "lucide-react";
 import { getInitials } from "./getInitials";
-import type { AvatarProps } from "@/types/Props";
-import type { AvatarSize } from "@/types/Types";
+import type { AvatarProps } from "./AvatarTypes";
+import type { AvatarSize } from "@/types/SharedTypes";
 
 const sizeClasses: Record<AvatarSize, string> = {
   sm: "size-8 text-xs",

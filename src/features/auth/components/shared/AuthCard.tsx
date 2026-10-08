@@ -1,4 +1,4 @@
-import type { AuthCardProps } from "@/types/Props";
+import type { AuthCardProps } from "@/components/buttons/ButtonTypes";
 
 const DEFAULT_ANIMATION = "animate-fade-in-up";
 

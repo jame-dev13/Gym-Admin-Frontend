@@ -1,11 +1,11 @@
 import { ArrowDown, ArrowUp } from "lucide-react";
-import type { SortDirectionToggleProps } from "@/types/Props";
+import type { SortDirectionToggleProps } from "./SortTypes";
 import type { SortDirection } from "@/types/Types";
 
-const sizeClasses = {
+const sizeClasses: Record<"sm" | "md", string> = {
   sm: "px-3 py-1.5 text-xs",
   md: "px-4 py-2.5 text-sm",
-} as const;
+};
 
 function nextDirection(current: SortDirection): SortDirection {
   return current === "asc" ? "desc" : "asc";

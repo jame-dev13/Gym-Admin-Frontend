@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import type { NavLinkProps, NavLinkToProps } from '@/types/Props'
+import type { NavLinkProps, NavLinkToProps } from './LinkTypes'
 
 type NavLinkToIconProps = NonNullable<NavLinkToProps['Icon']>
 

@@ -7,7 +7,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import { CommandBtn } from "@/components/buttons/Buttons";
-import type { SearchInputProps } from "@/types/Props";
+import type { SearchInputProps } from "./InputTypes";
 
 export const SearchInput: FC<SearchInputProps> = ({
   labelText = "Search",

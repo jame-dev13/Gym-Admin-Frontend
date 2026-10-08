@@ -1,6 +1,6 @@
 import { EntityDomainContext } from "@/context/EntityDomainContext";
 import { resolveEntityDomain } from "@/context/resolveEntityDomain";
-import type { PropsWithChildren } from "@/types/Props";
+import type { PropsWithChildren } from "@/components/form/FormTypes";
 import { useMemo, type FC } from "react";
 import { useLocation } from "react-router-dom";
 

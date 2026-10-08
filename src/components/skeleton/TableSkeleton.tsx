@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import type { TableSize, TableResponsive } from "@/types/Props";
+import type { TableSize, TableResponsive } from "@/components/table/TableTypes";
 import "./Skeleton.css";
 
 export interface TableSkeletonProps {

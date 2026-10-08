@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import type { ChartLegendProps } from "@/types/Props";
+import type { ChartLegendProps } from "./ChartTypes";
 
 export const ChartLegend: FC<ChartLegendProps> = ({ items }) => {
   if (items.length === 0) {

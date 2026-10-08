@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { ThemeProviderProps } from "@/types/Props";
+import type { ThemeProviderProps } from "@/context/ContextTypes";
 import type { ThemeMode } from "@/types/Types";
 import { isThemeMode, THEME_STORAGE_KEY, ThemeContext } from "./ThemeContext";
 

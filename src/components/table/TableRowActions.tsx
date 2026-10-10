@@ -1,4 +1,4 @@
-import type { ComponentType } from "react";
+import { memo, type ComponentType } from "react";
 import type { Identifiable, RowAction } from "@/types/Types";
 import type { TableRowActionsProps } from "./TableTypes";
 
@@ -21,7 +21,7 @@ function isDisabled<T>(action: RowAction<T>, row: T): boolean {
     : (action.disabled ?? false);
 }
 
-export function TableRowActions<T extends Identifiable>({
+function TableRowActionsComponent<T extends Identifiable>({
   row,
   actions,
   "aria-label": ariaLabel = "Row actions",
@@ -69,3 +69,7 @@ export function TableRowActions<T extends Identifiable>({
     </div>
   );
 }
+
+export const TableRowActions = memo(TableRowActionsComponent) as {
+  <T extends Identifiable>(props: TableRowActionsProps<T>): ReturnType<typeof TableRowActionsComponent<T>>;
+};

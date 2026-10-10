@@ -20,6 +20,11 @@ export type TableProps<T extends Identifiable> = {
   className?: string;
 };
 
+export type TableOptions<T extends Identifiable> = Omit<
+  TableProps<T>,
+  "data" | "columns"
+>;
+
 export interface TableRowActionsProps<T> {
   row: T;
   actions: import("@/types/Types").RowAction<T>[];
@@ -31,8 +36,6 @@ export type TableLayoutProps<T extends Identifiable> = {
   description?: string;
   data: T[];
   columns: Column<T>[];
-  caption?: string;
-  "aria-label"?: string;
   searchValue?: string;
   onSearchChange?: (value: string) => void;
   onSearchSubmit?: (value: string) => void;
@@ -45,21 +48,13 @@ export type TableLayoutProps<T extends Identifiable> = {
   onSortDirectionChange?: (direction: import("@/types/Types").SortDirection) => void;
   sortLabel?: string;
   controls?: React.ReactNode;
-  actions?: import("@/types/SharedTypes").TableAction[];
-  actionsLabel?: string;
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
-  emptyMessage?: string;
   isLoading?: boolean;
   loadingMessage?: string;
   errorMessage?: string | null;
-  striped?: boolean;
-  size?: TableSize;
-  responsive?: TableResponsive;
-  cardTitleKey?: keyof T;
-  stickyHeader?: boolean;
-  getRowKey?: (row: T) => string | number;
   disabled?: boolean;
   className?: string;
+  table: TableOptions<T>;
 };

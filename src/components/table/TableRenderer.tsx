@@ -3,7 +3,9 @@ import { TableLayout } from "@/layouts/TableLayout";
 import type {
   SortableField,
   TableRendererProps,
+  TableRendererTableConfig,
 } from "@/components/table/tableRendererConfig";
+import type { TableOptions } from "@/components/table/TableTypes";
 import type {
   Identifiable,
   SortDirection,
@@ -47,6 +49,23 @@ function toErrorMessage(error: unknown): string {
   return DEFAULT_ERROR_MESSAGE;
 }
 
+function toTableOptions<T extends Identifiable>(
+  tableOptions: TableRendererTableConfig<T> | undefined
+): TableOptions<T> {
+  return {
+    caption: tableOptions?.caption,
+    "aria-label": tableOptions?.["aria-label"],
+    emptyMessage: tableOptions?.emptyMessage,
+    striped: tableOptions?.striped ?? false,
+    size: tableOptions?.size ?? "md",
+    responsive: tableOptions?.responsive ?? "cards",
+    cardTitleKey: tableOptions?.cardTitleKey,
+    stickyHeader: tableOptions?.stickyHeader ?? false,
+    getRowKey: tableOptions?.getRowKey,
+    className: tableOptions?.className,
+  };
+}
+
 export function TableRenderer<T extends Identifiable>({
   config,
 }: TableRendererProps<T>) {
@@ -55,15 +74,13 @@ export function TableRenderer<T extends Identifiable>({
     columns,
     title,
     description,
-    table = {},
+    tableOptions = {},
     search = { enabled: false },
     sort,
     queryParamNames = {},
     extraParams = {},
     pageSize = DEFAULT_PAGE_SIZE,
     controls,
-    actions,
-    actionsLabel,
     loadingMessage = DEFAULT_LOADING_MESSAGE,
     disabled = false,
   } = config;
@@ -143,14 +160,14 @@ export function TableRenderer<T extends Identifiable>({
     setCurrentPage(1);
   };
 
+  const table = toTableOptions(tableOptions);
+
   return (
     <TableLayout<T>
       title={title}
       description={description}
       data={rows}
       columns={columns}
-      caption={table.caption}
-      aria-label={table["aria-label"]}
       searchValue={searchValue}
       onSearchChange={setSearchValue}
       onSearchSubmit={handleSearchSubmit}
@@ -162,23 +179,14 @@ export function TableRenderer<T extends Identifiable>({
       onSortByChange={handleSortByChange}
       onSortDirectionChange={handleDirectionChange}
       controls={controls}
-      actions={actions}
-      actionsLabel={actionsLabel}
       currentPage={currentPage}
       totalPages={totalPages}
       onPageChange={setCurrentPage}
-      emptyMessage={table.emptyMessage}
-      striped={table.striped}
-      size={table.size}
-      responsive={table.responsive}
-      cardTitleKey={table.cardTitleKey}
-      stickyHeader={table.stickyHeader}
-      getRowKey={table.getRowKey}
       isLoading={query.isPending}
       loadingMessage={loadingMessage}
       errorMessage={query.isError ? toErrorMessage(query.error) : null}
       disabled={disabled}
-      className={table.className}
+      table={table}
     />
   );
 }

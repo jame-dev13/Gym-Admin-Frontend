@@ -10,7 +10,7 @@ const Harness = () => {
 
   return (
     <>
-      <button type="button" onClick={openModal}>
+      <button type="button" onClick={() => openModal({ title: "Settings" })}>
         Open settings
       </button>
       <Modal title="Settings">

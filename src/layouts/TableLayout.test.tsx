@@ -1,9 +1,8 @@
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/react";
-import { Plus, Upload } from "lucide-react";
 import { renderWithProviders } from "@/test/test-utils";
 import { TableLayout } from "./TableLayout";
-import type { Column, TableAction } from "@/types/Types";
+import type { Column } from "@/types/Types";
 
 type Member = {
   id: number;
@@ -21,11 +20,6 @@ const data: Member[] = [
   { id: 2, name: "Grace Hopper", plan: "Basic" },
 ];
 
-const actions: TableAction[] = [
-  { id: "add", label: "Add member", Icon: Plus, onSelect: vi.fn() },
-  { id: "import", label: "Import", Icon: Upload, onSelect: vi.fn() },
-];
-
 const sortOptions = [
   { value: "name", label: "Name" },
   { value: "plan", label: "Plan" },
@@ -36,13 +30,13 @@ const baseProps = {
   description: "Everyone with an active membership",
   data,
   columns,
-  caption: "Gym members",
   searchPlaceholder: "Search members...",
-  actions,
-  actionsLabel: "Member actions",
   currentPage: 1,
   totalPages: 5,
   onPageChange: vi.fn(),
+  table: {
+    caption: "Gym members",
+  },
 };
 
 beforeEach(() => {
@@ -97,47 +91,6 @@ describe("TableLayout", () => {
 
     await user.type(search, "{enter}");
     expect(onSearchSubmit).toHaveBeenCalledWith("ada");
-  });
-
-  it("runs the action when its desktop button is pressed", async () => {
-    const user = userEvent.setup();
-    renderWithProviders(<TableLayout {...baseProps} />);
-
-    await user.click(screen.getByRole("button", { name: "Add member" }));
-
-    expect(actions[0]?.onSelect).toHaveBeenCalledTimes(1);
-  });
-
-  it("runs the action when its dropdown option is selected", async () => {
-    const user = userEvent.setup();
-    renderWithProviders(<TableLayout {...baseProps} />);
-
-    await user.click(
-      screen.getByRole("button", { name: "Member actions" }),
-    );
-    await user.click(screen.getByRole("menuitemradio", { name: "Import" }));
-
-    expect(actions[1]?.onSelect).toHaveBeenCalledTimes(1);
-  });
-
-  it("shows the button group on large screens and the dropdown on small ones", () => {
-    renderWithProviders(<TableLayout {...baseProps} />);
-
-    expect(
-      screen.getByRole("group", { name: "Member actions" }),
-    ).toHaveClass("hidden", "tab:inline-flex");
-    expect(
-      screen.getByRole("button", { name: "Member actions" }).parentElement,
-    ).toHaveClass("tab:hidden");
-  });
-
-  it("renders no action controls when actions is empty", () => {
-    renderWithProviders(<TableLayout {...baseProps} actions={[]} />);
-
-    expect(screen.queryByRole("group")).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole("button", { name: "Member actions" }),
-    ).not.toBeInTheDocument();
   });
 
   it("hides pagination when there are no pages to show", () => {

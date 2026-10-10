@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { memo, type CSSProperties } from "react";
 import type {
   ActionColumn,
   Column,
@@ -46,7 +46,7 @@ function formatCellValue(value: unknown, emptyValue: string): string {
   return String(value);
 }
 
-export function Table<T extends Identifiable>({
+function TableComponent<T extends Identifiable>({
   data,
   columns,
   caption,
@@ -183,3 +183,7 @@ export function Table<T extends Identifiable>({
     </div>
   );
 }
+
+export const Table = memo(TableComponent) as {
+  <T extends Identifiable>(props: TableProps<T>): ReturnType<typeof TableComponent<T>>;
+};

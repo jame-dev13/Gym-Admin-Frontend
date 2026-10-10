@@ -61,7 +61,7 @@ function baseConfig(
     usePage: hook,
     columns,
     title: "Members",
-    table: { caption: "Gym members" },
+    tableOptions: { caption: "Gym members" },
     search: { enabled: true, placeholder: "Search members…" },
     sort: { properties: ["name", "plan"] },
     ...overrides,

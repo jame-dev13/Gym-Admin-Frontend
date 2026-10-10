@@ -8,7 +8,6 @@ import type {
   Page,
   SortDirection,
 } from "@/types/Types";
-import type { TableAction } from "@/types/SharedTypes";
 
 /**
  * A React Query page hook, e.g. `useGetUserPage`.
@@ -63,7 +62,7 @@ export interface TableRendererConfig<T extends Identifiable> {
   columns: Column<T>[];
   title: string;
   description?: string;
-  table?: TableRendererTableConfig<T>;
+  tableOptions?: TableRendererTableConfig<T>;
   search?: TableRendererSearchConfig;
   sort?: TableRendererSortConfig<T>;
   queryParamNames?: TableQueryParamNames;
@@ -75,8 +74,6 @@ export interface TableRendererConfig<T extends Identifiable> {
    * can be lifted into a render prop later (YAGNI for now).
    */
   controls?: ReactNode;
-  actions?: TableAction[];
-  actionsLabel?: string;
   loadingMessage?: string;
   disabled?: boolean;
 }

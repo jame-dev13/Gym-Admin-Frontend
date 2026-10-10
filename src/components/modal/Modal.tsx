@@ -10,8 +10,23 @@ const sizeClasses: Record<ModalSize, string> = {
   lg: "max-w-2xl",
 };
 
-export const Modal = ({ title, children, size = "md" }: ModalProps) => {
-  const { isOpen, closeModal } = useModalContext();
+export const Modal = ({
+  title,
+  children,
+  size = "md",
+  description,
+  showCloseButton = true,
+  closeOnOverlayClick = true,
+}: ModalProps) => {
+  const {
+    isOpen,
+    closeModal,
+    title: contextTitle,
+    description: contextDescription,
+    size: contextSize,
+    showCloseButton: contextShowCloseButton,
+    closeOnOverlayClick: contextCloseOnOverlayClick,
+  } = useModalContext();
   const titleId = useId();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -63,11 +78,16 @@ export const Modal = ({ title, children, size = "md" }: ModalProps) => {
     return null;
   }
 
+  const mergedSize = size ?? contextSize ?? "md";
+  const mergedDescription = description ?? contextDescription;
+  const mergedShowCloseButton = showCloseButton ?? contextShowCloseButton;
+  const mergedCloseOnOverlayClick = closeOnOverlayClick ?? contextCloseOnOverlayClick;
+
   return createPortal(
     <div
       data-testid="modal-overlay"
       onClick={(event) => {
-        if (event.target === event.currentTarget) {
+        if (mergedCloseOnOverlayClick && event.target === event.currentTarget) {
           closeModal();
         }
       }}
@@ -77,21 +97,30 @@ export const Modal = ({ title, children, size = "md" }: ModalProps) => {
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className={`w-full ${sizeClasses[size]} overflow-hidden rounded-2xl border border-border bg-surface-raised text-text-primary shadow-xl animate-fade-in-scale`}
+        className={`w-full ${sizeClasses[mergedSize]} overflow-hidden rounded-2xl border border-border bg-surface-raised text-text-primary shadow-xl animate-fade-in-scale`}
       >
         <div className="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
-          <h2 id={titleId} className="text-lg font-semibold">
-            {title}
-          </h2>
-          <button
-            ref={closeButtonRef}
-            type="button"
-            aria-label="Close dialog"
-            onClick={closeModal}
-            className="rounded-full p-1.5 text-text-secondary transition-colors hover:bg-surface-over hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-          >
-            <X size={18} aria-hidden="true" />
-          </button>
+          <div className="min-w-0">
+            <h2 id={titleId} className="text-lg font-semibold">
+              {title ?? contextTitle}
+            </h2>
+            {mergedDescription ? (
+              <p className="mt-1 text-sm text-text-secondary">{mergedDescription}</p>
+            ) : null}
+          </div>
+          <div className="flex shrink-0 items-center gap-2">
+            {mergedShowCloseButton ? (
+              <button
+                ref={closeButtonRef}
+                type="button"
+                aria-label="Close dialog"
+                onClick={closeModal}
+                className="rounded-full p-1.5 text-text-secondary transition-colors hover:bg-surface-over hover:text-text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              >
+                <X size={18} aria-hidden="true" />
+              </button>
+            ) : null}
+          </div>
         </div>
         <div className="px-5 py-4">{children}</div>
       </div>

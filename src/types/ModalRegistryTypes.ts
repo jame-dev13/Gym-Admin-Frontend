@@ -1,3 +1,4 @@
+import type { Action } from "@/context/ActionContext";
 import type { Entity, Domain } from "@/context/EntityDomainContext";
 import type { OpenModalOptions } from "@/context/ModalContext";
 import type { ComponentType, LazyExoticComponent } from "react";
@@ -10,17 +11,23 @@ export interface ModalComponentProps<T = Record<string, unknown>> {
   initialValues?: Partial<T>;
 }
 
-export type ModalLazyComponent<T = Record<string, unknown>> = LazyExoticComponent<
-  ComponentType<ModalComponentProps<T>>
->;
+export type ModalLazyComponent<T = Record<string, unknown>> =
+  LazyExoticComponent<ComponentType<ModalComponentProps<T>>>;
 
 export interface ModalRegistryEntry<T = Record<string, unknown>> {
   component: ModalLazyComponent<T>;
   modalOptions?: Partial<OpenModalOptions>;
 }
 
-export type ModalRegistryConfig = Partial<Record<ModalRegistryKey, ModalRegistryEntry>>;
+export type ModalAction = Exclude<Action, "add" | "edit">;
 
-export function createModalRegistryKey(domain: Domain, entity: Entity): ModalRegistryKey {
+export type ModalRegistryConfig = Partial<
+  Record<ModalRegistryKey, Record<Partial<ModalAction>, ModalRegistryEntry>>
+>;
+
+export function createModalRegistryKey(
+  domain: Domain,
+  entity: Entity,
+): ModalRegistryKey {
   return `${domain}:${entity}`;
 }

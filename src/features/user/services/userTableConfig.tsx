@@ -1,7 +1,8 @@
 import type { TableRendererConfig } from "@/components/table/tableRendererConfig";
 import { useGetUserPage } from "@/features/user/hooks/useFetchUser";
 import type { UserResponse } from "@/features/user/types";
-import type { Column } from "@/types/Types";
+import type { Column, ActionColumn } from "@/types/Types";
+import { UserTableRowActions } from "../components/UserTableRowActions";
 
 export const userColumns: Column<UserResponse>[] = [
   { key: "name", header: "Name" },
@@ -18,6 +19,14 @@ export const userColumns: Column<UserResponse>[] = [
     align: "center",
     render: (value) => (value ? "Yes" : "No"),
   },
+  {
+    kind: "action",
+    key: "actions",
+    header: "",
+    width: "120px",
+    hideOnCards: false,
+    renderActions: (row) => <UserTableRowActions row={row} />,
+  } satisfies ActionColumn<UserResponse>,
 ];
 
 /**

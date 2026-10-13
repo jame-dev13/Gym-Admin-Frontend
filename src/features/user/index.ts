@@ -16,4 +16,4 @@ export {
   AUTH_PROVIDER_OPTIONS,
   USER_ROLE_OPTIONS,
 } from "@/features/user/services/userFormOptions";
-export { userDrawerRegistry } from "@/features/user/userDrawerRegistry";
+export { userDrawerRegistry } from "@/features/user/services/userDrawerRegistry";

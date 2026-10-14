@@ -3,6 +3,7 @@ import { ActionProvider } from "@/context/ActionProvider";
 import { DrawerProvider } from "@/context/DrawerProvider";
 import { EntityDomainProvider } from "@/context/EntityDomainProvider";
 import { ModalProvider } from "@/context/ModalProvider";
+import { SelectionProvider } from "@/context/SelectionProvider";
 import { useMemo } from "react";
 
 export const AdministrationProvider = ({ children }: PropsWithChildren) => {
@@ -12,6 +13,7 @@ export const AdministrationProvider = ({ children }: PropsWithChildren) => {
       ModalProvider,
       EntityDomainProvider,
       ActionProvider,
+      SelectionProvider,
     ].reduce((acc, Provider) => {
       return <Provider>{acc}</Provider>;
     }, children);

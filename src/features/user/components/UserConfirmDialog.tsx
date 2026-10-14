@@ -1,14 +1,15 @@
 import { AlertTriangle, Loader2, RotateCcw, Trash2 } from "lucide-react";
-import { CommandBtn } from "@/components/buttons/Buttons";
+import { CommandBtn, SubmitBtn } from "@/components/buttons/Buttons";
+import { AppForm } from "@/components/form/AppForm";
+import type React from "react";
 
 export type UserConfirmVariant = "recover" | "delete" | "hard-delete";
 
 export interface UserConfirmDialogProps {
   variant: UserConfirmVariant;
-  userName: string;
   isPending?: boolean;
   error?: string | null;
-  onConfirm: () => void;
+  onConfirmSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void;
   onCancel?: () => void;
 }
 
@@ -22,13 +23,12 @@ type VariantCopy = {
 
 const buildCopy = (
   variant: UserConfirmVariant,
-  userName: string,
 ): VariantCopy => {
   switch (variant) {
     case "recover":
       return {
         title: "Recover user",
-        description: `"${userName}" will regain access to the administration panel.`,
+        description: `The user will regain access to the application depending on his own role.`,
         confirmLabel: "Recover user",
         pendingLabel: "Recovering…",
         destructive: false,
@@ -36,7 +36,7 @@ const buildCopy = (
     case "delete":
       return {
         title: "Delete user",
-        description: `"${userName}" will lose access immediately. You can recover this user later.`,
+        description: `The user will lose access immediately. You can recover this user later.`,
         confirmLabel: "Delete user",
         pendingLabel: "Deleting…",
         destructive: true,
@@ -44,7 +44,7 @@ const buildCopy = (
     case "hard-delete":
       return {
         title: "Permanently delete user",
-        description: `"${userName}" will be permanently removed. This action cannot be undone.`,
+        description: `The user will be permanently removed. This action cannot be undone.`,
         confirmLabel: "Delete permanently",
         pendingLabel: "Deleting…",
         destructive: true,
@@ -61,13 +61,12 @@ const VariantIcon = ({ variant }: { variant: UserConfirmVariant }) => {
 
 export const UserConfirmDialog = ({
   variant,
-  userName,
   isPending = false,
   error,
-  onConfirm,
+  onConfirmSubmit,
   onCancel,
 }: UserConfirmDialogProps) => {
-  const copy = buildCopy(variant, userName);
+  const copy = buildCopy(variant);
 
   return (
     <div className="flex flex-col gap-4">
@@ -96,17 +95,16 @@ export const UserConfirmDialog = ({
         </p>
       )}
 
-      <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+      <AppForm noValidate={false} onSubmit={onConfirmSubmit} className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
         {onCancel && (
           <CommandBtn type="button" onClick={onCancel} disabled={isPending}>
             Cancel
           </CommandBtn>
         )}
-        <CommandBtn
-          type="button"
-          onClick={onConfirm}
+        <SubmitBtn
           disabled={isPending}
-          aria-busy={isPending || undefined}
+          aria-busy={isPending}
+          aria-label={`${variant} dialog confirm button.`}
           className={
             copy.destructive
               ? "border-danger font-semibold text-danger hover:border-danger hover:bg-danger/10"
@@ -117,8 +115,8 @@ export const UserConfirmDialog = ({
             <Loader2 size={18} aria-hidden="true" className="animate-spin" />
           )}
           {isPending ? copy.pendingLabel : copy.confirmLabel}
-        </CommandBtn>
-      </div>
+        </SubmitBtn>
+      </AppForm>
     </div>
   );
 };

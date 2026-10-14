@@ -1,25 +1,53 @@
 import { Pencil, Trash2 } from "lucide-react";
 import { TableRowActions } from "@/components/table/TableRowActions";
-import { useToastContext } from "@/context/useToastContext";
+import { useSelectionContext } from "@/context/useSelectionContext";
+import { useEntityDomainContext } from "@/context/useEntityDomainContext";
+import { useActionContext } from "@/context/useActionContext";
+import { useDrawerContext } from "@/context/useDrawerContext";
+import { useModalContext } from "@/context/useModalContext";
 import type { RowAction } from "@/types/Types";
 import type { UserResponse } from "../types";
 
 export const UserTableRowActions = ({ row }: { row: UserResponse }) => {
-  const { show } = useToastContext();
+  const { setCurrentSelection } = useSelectionContext();
+  const { entity } = useEntityDomainContext();
+  const { setAction } = useActionContext();
+  const { isOpen: isDrawerOpen, openDrawer } = useDrawerContext();
+  const { isOpen: isModalOpen, openModal } = useModalContext();
+
+  if (entity !== "user") {
+    throw new Error("UserTableRowActions can only be used in user entity context");
+  }
 
   const actions: RowAction<UserResponse>[] = [
     {
       id: "edit",
       label: "Edit user",
       Icon: Pencil,
-      onSelect: (r) => show(`Edit user: ${r.name}`, "info"),
+      disabled: isDrawerOpen,
+      onSelect: (r) => {
+        setCurrentSelection({ id: r.id });
+        setAction("edit");
+        openDrawer({
+          title: "Edit User",
+          description: `Editing ${r.name}`,
+        });
+      },
     },
     {
       id: "remove",
       label: "Remove user",
       Icon: Trash2,
       destructive: true,
-      onSelect: (r) => show(`Remove user: ${r.name}`, "warning"),
+      disabled: isModalOpen,
+      onSelect: (r) => {
+        setCurrentSelection({ id: r.id });
+        setAction("delete");
+        openModal({
+          title: "Remove User",
+          description: `Are you sure you want to remove ${r.name}?`,
+        });
+      },
     },
   ];
 

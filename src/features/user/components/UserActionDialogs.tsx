@@ -1,89 +1,62 @@
 import { UserConfirmDialog } from "@/features/user/components/UserConfirmDialog";
+import { useConfirmActionUserHandler } from "@/features/user/hooks/useConfirmActionUserHandler";
 import {
   useDeleteUser,
   useHardDeleteUser,
   useRecoverUser,
 } from "@/features/user/hooks/useMutateUser";
-import type { Identifiable } from "@/types/Types";
 
-export interface UserActionDialogProps {
-  id: Identifiable;
-  userName: string;
-  onSuccess?: () => void;
-  onCancel?: () => void;
-}
 
-const requireId = (id: Identifiable) => {
-  if (!id.id) {
-    throw new Error("User id is required");
-  }
-};
-
-export const UserRecoverDialog = ({
-  id,
-  userName,
-  onSuccess,
-  onCancel,
-}: UserActionDialogProps) => {
-  const { mutate, isPending, error } = useRecoverUser(id);
-  requireId(id);
+export const UserRecoverDialog = () => {
+  const { error, handleOnCancel, isPending, submit } = useConfirmActionUserHandler({
+    hook: useRecoverUser,
+    variant: "recover"
+  })
 
   return (
     <UserConfirmDialog
       variant="recover"
-      userName={userName}
       isPending={isPending}
       error={error?.message ?? null}
-      onCancel={onCancel}
-      onConfirm={() => {
-        mutate(undefined, { onSuccess: () => onSuccess?.() });
-      }}
+      onCancel={handleOnCancel}
+      onConfirmSubmit={submit}
     />
   );
 };
 
-export const UserDeleteDialog = ({
-  id,
-  userName,
-  onSuccess,
-  onCancel,
-}: UserActionDialogProps) => {
-  const { mutate, isPending, error } = useDeleteUser(id);
-  requireId(id);
+export const UserDeleteDialog = () => {
+const { error, handleOnCancel, isPending, submit } =
+  useConfirmActionUserHandler({
+    hook: useDeleteUser,
+    variant: "delete",
+  });
 
   return (
     <UserConfirmDialog
       variant="delete"
-      userName={userName}
       isPending={isPending}
       error={error?.message ?? null}
-      onCancel={onCancel}
-      onConfirm={() => {
-        mutate(undefined, { onSuccess: () => onSuccess?.() });
-      }}
+      onCancel={handleOnCancel}
+      onConfirmSubmit={submit}
     />
   );
 };
 
-export const UserHardDeleteDialog = ({
-  id,
-  userName,
-  onSuccess,
-  onCancel,
-}: UserActionDialogProps) => {
-  const { mutate, isPending, error } = useHardDeleteUser(id);
-  requireId(id);
+export const UserHardDeleteDialog = () => {
+  const { error, handleOnCancel, isPending, submit } =
+    useConfirmActionUserHandler({
+      hook: useHardDeleteUser,
+      variant: "hard-delete",
+    });
 
+  
   return (
     <UserConfirmDialog
       variant="hard-delete"
-      userName={userName}
       isPending={isPending}
       error={error?.message ?? null}
-      onCancel={onCancel}
-      onConfirm={() => {
-        mutate(undefined, { onSuccess: () => onSuccess?.() });
-      }}
+      onCancel={handleOnCancel}
+      onConfirmSubmit={submit}
     />
   );
 };

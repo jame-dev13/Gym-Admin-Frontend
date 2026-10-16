@@ -6,6 +6,13 @@ import { AdministrationSidebar } from "@/features/administration/components/Admi
 import { AdministrationProvider } from "@/context/AdministrationProvider";
 import { DrawerHost } from "@/components/drawer/DrawerHost";
 import { ModalHost } from "@/components/modal/ModalHost";
+import { getDrawerRegistry } from "@/features/administration/services/DrawerRegistry";
+import { getModalRegistry } from "@/features/administration/services/ModalRegistry";
+
+const [DRAWER_REGISTRY, MODAL_REGISTRY] = [
+  getDrawerRegistry(),
+  getModalRegistry(),
+];
 
 const AdministrationLayout = () => {
   return (
@@ -24,8 +31,8 @@ const AdministrationLayout = () => {
           </div>
         </div>
       </div>
-      <DrawerHost registry={{}} />
-      <ModalHost registry={{}} />
+      <DrawerHost registry={DRAWER_REGISTRY} />
+      <ModalHost registry={MODAL_REGISTRY} />
     </AdministrationProvider>
   );
 };

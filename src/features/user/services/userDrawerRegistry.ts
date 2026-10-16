@@ -23,10 +23,14 @@ const userDrawerRegistry: DrawerRegistryConfig["services:user"] = {
   },
   edit: {
     component: lazy(() =>
-      import("@/features/user/components/UserCreateForm").then((mod) => ({
-        default: mod.UserCreateForm,
+      import("@/features/user/components/UserUpdateForm").then((mod) => ({
+        default: mod.UserUpdateForm,
       })),
     ),
-    drawerOptions: DRAWER_OPTIONS,
+    drawerOptions: {
+      ...DRAWER_OPTIONS,
+      title: "Edit user",
+      description: "Edit selected user",
+    },
   },
 };

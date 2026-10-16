@@ -180,3 +180,31 @@ describe("TableLayout toolbar slots", () => {
     expect(screen.getByRole("status")).toHaveTextContent("Loading members…");
   });
 });
+
+describe("TableLayout refresh slot", () => {
+  it("reports refresh clicks to the consumer", async () => {
+    const user = userEvent.setup();
+    const onRefetch = vi.fn();
+    renderWithProviders(<TableLayout {...baseProps} onRefetch={onRefetch} />);
+
+    await user.click(screen.getByRole("button", { name: "Refresh" }));
+
+    expect(onRefetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("disables the refresh button while a refetch is in flight", () => {
+    renderWithProviders(
+      <TableLayout {...baseProps} onRefetch={vi.fn()} isRefetching />,
+    );
+
+    expect(screen.getByRole("button", { name: "Refresh" })).toBeDisabled();
+  });
+
+  it("omits the refresh button when no refetch handler is provided", () => {
+    renderWithProviders(<TableLayout {...baseProps} />);
+
+    expect(
+      screen.queryByRole("button", { name: "Refresh" }),
+    ).not.toBeInTheDocument();
+  });
+});

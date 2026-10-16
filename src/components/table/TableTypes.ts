@@ -51,6 +51,8 @@ export type TableLayoutProps<T extends Identifiable> = {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  onRefetch?: () => void | Promise<void>;
+  isRefetching?: boolean;
   isLoading?: boolean;
   loadingMessage?: string;
   errorMessage?: string | null;

@@ -64,18 +64,26 @@ export function TableRenderer<T extends Identifiable>({
 
   const isSortable = (sort?.properties.length ?? 0) > 0;
 
-  const { rows, error, isPending, search: searchState, sort: sortState, pagination } =
-    useTableRenderer<T>({
-      queryFn: usePage,
-      pageSize,
-      initialSearch: search.initialValue,
-      sortProperties: sort?.properties,
-      labels: sort?.labels,
-      initialSortBy: sort?.initialSortBy,
-      initialDirection: sort?.initialDirection,
-      queryParamNames,
-      extraParams,
-    });
+  const {
+    rows,
+    error,
+    isPending,
+    isRefetching,
+    doRefetch,
+    search: searchState,
+    sort: sortState,
+    pagination,
+  } = useTableRenderer<T>({
+    queryFn: usePage,
+    pageSize,
+    initialSearch: search.initialValue,
+    sortProperties: sort?.properties,
+    labels: sort?.labels,
+    initialSortBy: sort?.initialSortBy,
+    initialDirection: sort?.initialDirection,
+    queryParamNames,
+    extraParams,
+  });
 
   const table = toTableOptions(tableOptions);
 
@@ -99,6 +107,8 @@ export function TableRenderer<T extends Identifiable>({
       currentPage={pagination.currentPage}
       totalPages={pagination.totalPages}
       onPageChange={pagination.onPageChange}
+      onRefetch={doRefetch}
+      isRefetching={isRefetching}
       isLoading={isPending}
       loadingMessage={loadingMessage}
       errorMessage={error ? toErrorMessage(error) : null}

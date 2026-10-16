@@ -56,10 +56,11 @@ describe("EntityDomainProvider", () => {
     expect(screen.getByTestId("domain")).toHaveTextContent("recycle");
   });
 
-  it("throws when the route has no entity or domain", () => {
-    expect(() =>
-      renderEntityProbe("/administration/overview/subscriptions"),
-    ).toThrow("useEntityDomainContext must be used within an EntityDomainProvider");
+  it("returns null values when the route has no valid domain", () => {
+    const { getByTestId } = renderEntityProbe("/administration");
+
+    expect(getByTestId("entity")).toBeEmptyDOMElement();
+    expect(getByTestId("domain")).toBeEmptyDOMElement();
   });
 
   it("throws when used without a provider", () => {

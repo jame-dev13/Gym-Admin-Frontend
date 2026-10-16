@@ -7,10 +7,10 @@ import { useLocation } from "react-router-dom";
 export const EntityDomainProvider: FC<PropsWithChildren> = ({ children }) => {
   const location = useLocation();
 
-  const contextValue = useMemo(() => {
-    const { entity, domain } = resolveEntityDomain(location.pathname);
-    return entity && domain ? { entity, domain } : null;
-  }, [location.pathname]);
+  const contextValue = useMemo(
+    () => resolveEntityDomain(location.pathname),
+    [location.pathname],
+  );
 
   return (
     <EntityDomainContext.Provider value={contextValue}>

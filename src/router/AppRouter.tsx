@@ -34,15 +34,19 @@ export const AppRouter = () => {
           caseSensitive
         >
           <Route index element={<AdminOverview />} />
-          {administrationPanelRoutes.map((route) => (
+          {administrationPanelRoutes.map(({ path, title, description, Element }) => (
             <Route
-              key={route.path}
-              path={route.path}
+              key={path}
+              path={path}
               element={
-                <AdministrationPanel
-                  title={route.title}
-                  description={route.description}
-                />
+                Element ? (
+                  <Element />
+                ) : (
+                  <AdministrationPanel
+                    title={title}
+                    description={description}
+                  />
+                )
               }
               caseSensitive
             />

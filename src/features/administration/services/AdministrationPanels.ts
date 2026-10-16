@@ -1,7 +1,10 @@
+import { lazy, type JSX, type LazyExoticComponent } from "react";
+
 export type AdministrationPanelRoute = {
   path: string;
   title: string;
   description: string;
+  Element?: LazyExoticComponent<() => JSX.Element>
 };
 
 export const administrationPanelRoutes: AdministrationPanelRoute[] = [
@@ -34,6 +37,7 @@ export const administrationPanelRoutes: AdministrationPanelRoute[] = [
     title: "Users",
     description:
       "Create, edit, and deactivate gym staff and administrator accounts. Management tools will be added here.",
+    Element: lazy(() => import("@/features/user/layouts/UserLayout").then(mod => ({ default: mod.UserLayout })))
   },
   {
     path: "services/customers",

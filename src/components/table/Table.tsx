@@ -77,7 +77,7 @@ function TableComponent<T extends Identifiable>({
       >
         {caption && <caption className="sr-only">{caption}</caption>}
         <thead>
-          <tr className="border-b border-border">
+          <tr className="border-b border-border bg-surface-over/40">
             {columns.map((column) => (
               <th
                 key={String(column.key)}
@@ -87,7 +87,7 @@ function TableComponent<T extends Identifiable>({
                   cellPadding,
                   "whitespace-nowrap text-xs font-semibold uppercase tracking-wider text-text-secondary",
                   alignClasses[column.align ?? "left"],
-                  stickyHeader ? "sticky top-0 bg-surface-raised" : "",
+                  stickyHeader ? "sticky top-0 z-10 bg-surface-raised" : "",
                 ].join(" ")}
               >
                 {column.header}
@@ -95,7 +95,7 @@ function TableComponent<T extends Identifiable>({
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-border overflow-hidden">
+        <tbody className="divide-y divide-border/70 overflow-hidden">
           {data.length === 0 ? (
             <tr>
               <td

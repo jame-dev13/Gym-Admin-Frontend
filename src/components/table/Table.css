@@ -109,3 +109,14 @@
     text-align: center;
   }
 }
+
+/* When the table is hosted inside TableLayout it shares the layout's single
+ * card. The scoped descendant selector intentionally outweighs Tailwind's
+ * single-class utilities, so the table renders flush instead of drawing a
+ * second nested border/radius. */
+.table-layout-embed > div {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}

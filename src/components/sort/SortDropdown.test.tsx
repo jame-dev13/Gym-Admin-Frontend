@@ -73,13 +73,13 @@ describe("SortDropdown", () => {
     const { rerender } = render(<SortDropdown options={options} />);
 
     expect(screen.getByRole("button", { name: "Sort by" }).className).toMatch(
-      /px-3 py-1\.5 text-xs/,
+      /h-10 px-3 text-sm/,
     );
 
     rerender(<SortDropdown options={options} size="md" />);
 
     expect(screen.getByRole("button", { name: "Sort by" }).className).toMatch(
-      /px-4 py-2\.5 text-sm/,
+      /h-11 px-4 text-sm/,
     );
   });
 

@@ -3,8 +3,8 @@ import type { SortDirectionToggleProps } from "./SortTypes";
 import type { SortDirection } from "@/types/Types";
 
 const sizeClasses: Record<"sm" | "md", string> = {
-  sm: "px-3 py-1.5 text-xs",
-  md: "px-4 py-2.5 text-sm",
+  sm: "h-10 w-10 text-sm",
+  md: "h-11 w-11 text-sm",
 };
 
 function nextDirection(current: SortDirection): SortDirection {
@@ -43,12 +43,9 @@ export function SortDirectionToggle({
       disabled={disabled}
       aria-label={accessibleName}
       title={accessibleName}
-      className={`inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-surface-raised font-medium text-text-primary transition-all duration-150 hover:border-border-emphasis hover:bg-surface-over focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 ${sizeClasses[size]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-surface-raised text-text-primary transition-colors duration-150 hover:border-accent hover:bg-surface-over hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 ${sizeClasses[size]} ${className}`}
     >
-      <Icon size={16} aria-hidden="true" className="shrink-0" />
-      <span aria-hidden="true" className="font-semibold uppercase tracking-wide">
-        {isAscending ? "Asc" : "Desc"}
-      </span>
+      <Icon size={18} aria-hidden="true" className="shrink-0" />
     </button>
   );
 }

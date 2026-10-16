@@ -6,7 +6,6 @@ import {
   type FC,
   type KeyboardEvent,
 } from "react";
-import { CommandBtn } from "@/components/buttons/Buttons";
 import type { SearchInputProps } from "./InputTypes";
 
 export const SearchInput: FC<SearchInputProps> = ({
@@ -56,7 +55,7 @@ export const SearchInput: FC<SearchInputProps> = ({
   return (
     <div
       role="search"
-      className="flex w-full items-center gap-2 rounded-lg border border-border bg-surface-raised px-3 py-1.5 transition-colors duration-200 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/30"
+      className="group flex h-10 w-full items-center gap-2 rounded-lg border border-border bg-surface-raised pl-3 pr-1.5 transition-colors duration-200 focus-within:border-accent focus-within:ring-2 focus-within:ring-accent/30"
     >
       <label htmlFor={inputId} className="sr-only">
         {labelText}
@@ -73,17 +72,17 @@ export const SearchInput: FC<SearchInputProps> = ({
         value={currentValue}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        className={`w-full flex-1 bg-transparent text-text-primary outline-none placeholder:text-text-tertiary disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+        className={`h-full w-full flex-1 bg-transparent text-sm text-text-primary outline-none placeholder:text-text-tertiary disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
       />
-      <CommandBtn
-        Icon={Icon}
+      <button
+        type="button"
         onClick={handleSearch}
         aria-label={searchLabel}
         disabled={disabled}
-        className="shrink-0"
+        className="inline-flex size-7 shrink-0 items-center justify-center rounded-md text-text-secondary transition-colors duration-150 hover:bg-accent/10 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {""}
-      </CommandBtn>
+        <Icon size={16} aria-hidden="true" />
+      </button>
     </div>
   );
 };

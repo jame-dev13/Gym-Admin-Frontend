@@ -15,7 +15,7 @@ const stepStyles = [
   "shrink-0",
   "items-center",
   "justify-center",
-  "rounded-full",
+  "rounded-md",
   "text-text-secondary",
   "transition-colors",
   "duration-200",
@@ -75,11 +75,11 @@ export const Pagination = ({
 
   return (
     <nav aria-label={ariaLabel} className={`inline-flex items-center ${className}`}>
-      <div className="inline-flex max-w-full items-center gap-1 rounded-full border border-border bg-surface-raised p-1">
+      <div className="inline-flex max-w-full items-center gap-1 rounded-lg border border-border bg-surface-raised p-1">
         {step("previous")}
         <span
           aria-live="polite"
-          className="min-w-16 shrink-0 px-2 text-center text-sm whitespace-nowrap tabular-nums text-text-secondary"
+          className="min-w-16 shrink-0 px-2 text-center text-sm font-medium whitespace-nowrap tabular-nums text-text-primary"
         >
           <span aria-hidden="true">
             {currentPage} / {totalElements}

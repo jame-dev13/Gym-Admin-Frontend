@@ -51,25 +51,25 @@ export function TableLayout<T extends Identifiable>({
     >
       <div
         data-testid="table-layout-body"
-        className="overflow-auto overscroll-contain rounded-2xl bg-surface-raised shadow-sm max-h-160"
+        className="max-h-160 overflow-auto overscroll-contain rounded-2xl border border-border bg-surface-raised shadow-sm"
       >
         {/* Sticky inside the scroll container so controls stay reachable
             while the rows scroll underneath. Solid backing keeps the bar
             readable over sliding content. */}
         <div
           data-testid="table-layout-toolbar"
-          className="sticky top-0 z-10 flex flex-col gap-4 border-b border-border bg-surface-raised p-4"
+          className="sticky top-0 z-10 border-b border-border bg-surface-raised/95 backdrop-blur-sm"
         >
-          <div className="flex flex-col gap-3 tab:flex-row tab:items-end tab:justify-between">
+          <div className="flex flex-col gap-3 px-4 py-4 sm:px-5 tab:flex-row tab:items-start tab:justify-between">
             <div className="min-w-0">
               <h2
                 id={titleId}
-                className="truncate text-xl font-bold tracking-tight text-text-primary"
+                className="truncate text-lg font-semibold tracking-tight text-text-primary tab:text-xl"
               >
                 {title}
               </h2>
               {description && (
-                <p className="mt-1 text-sm text-text-secondary">
+                <p className="mt-1 max-w-prose text-sm text-text-secondary">
                   {description}
                 </p>
               )}
@@ -84,7 +84,7 @@ export function TableLayout<T extends Identifiable>({
             )}
           </div>
           {hasSecondRow && (
-            <div className="flex flex-col gap-3 tab:flex-row tab:flex-wrap tab:items-center">
+            <div className="flex flex-col gap-3 border-t border-border/60 bg-surface-over/30 px-4 py-3 sm:px-5 tab:flex-row tab:items-center tab:justify-between">
               {hasSort && (
                 <SortControls
                   label={sortLabel}
@@ -118,30 +118,32 @@ export function TableLayout<T extends Identifiable>({
             </div>
           )}
         </div>
-        {errorMessage ? (
-          <p role="alert" className="px-4 py-10 text-center text-sm text-text-secondary">
-            {errorMessage}
-          </p>
-        ) : isLoading && data.length === 0 ? (
-          <p role="status" className="px-4 py-10 text-center text-sm text-text-secondary">
-            {loadingMessage}
-          </p>
-        ) : (
-          <Table
-            data={data}
-            columns={columns}
-            caption={table.caption}
-            aria-label={table["aria-label"]}
-            emptyMessage={table.emptyMessage}
-            getRowKey={table.getRowKey}
-            stickyHeader={table.stickyHeader}
-            striped={table.striped}
-            size={table.size}
-            responsive={table.responsive}
-            cardTitleKey={table.cardTitleKey}
-            className={table.className}
-          />
-        )}
+        <div className="table-layout-embed">
+          {errorMessage ? (
+            <p role="alert" className="px-4 py-12 text-center text-sm text-text-secondary">
+              {errorMessage}
+            </p>
+          ) : isLoading && data.length === 0 ? (
+            <p role="status" className="px-4 py-12 text-center text-sm text-text-secondary">
+              {loadingMessage}
+            </p>
+          ) : (
+            <Table
+              data={data}
+              columns={columns}
+              caption={table.caption}
+              aria-label={table["aria-label"]}
+              emptyMessage={table.emptyMessage}
+              getRowKey={table.getRowKey}
+              stickyHeader={table.stickyHeader}
+              striped={table.striped}
+              size={table.size}
+              responsive={table.responsive}
+              cardTitleKey={table.cardTitleKey}
+              className={table.className}
+            />
+          )}
+        </div>
       </div>
       {hasPages && (
         <div className="flex justify-center pt-1 tab:justify-end">

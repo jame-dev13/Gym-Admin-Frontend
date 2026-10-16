@@ -9,8 +9,8 @@ import type {
 import "./Dropdown.css";
 
 const sizeTriggerClasses: Record<DropdownSize, string> = {
-  sm: "px-3 py-1.5 text-xs",
-  md: "px-4 py-2.5 text-sm",
+  sm: "h-10 px-3 text-sm",
+  md: "h-11 px-4 text-sm",
 };
 
 const sizeItemClasses: Record<DropdownSize, string> = {
@@ -195,7 +195,7 @@ export const Dropdown = ({
               )
         }
         onKeyDown={handleTriggerKeyDown}
-        className={`inline-flex w-full items-center justify-between gap-2 rounded-xl border border-border bg-surface-raised font-medium text-text-primary transition-all duration-150 hover:border-border-emphasis hover:bg-surface-over focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 ${sizeTriggerClasses[size]}`}
+        className={`inline-flex w-full items-center justify-between gap-2 rounded-lg border border-border bg-surface-raised font-medium text-text-primary transition-colors duration-150 hover:border-border-emphasis hover:bg-surface-over focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-50 ${sizeTriggerClasses[size]}`}
       >
         {trigger ?? (
           <span className="inline-flex min-w-0 items-center gap-2">

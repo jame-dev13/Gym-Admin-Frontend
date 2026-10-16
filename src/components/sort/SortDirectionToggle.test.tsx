@@ -63,13 +63,13 @@ describe("SortDirectionToggle", () => {
 
     expect(
       screen.getByRole("button", { name: /sort direction/i }).className,
-    ).toMatch(/px-3 py-1\.5 text-xs/);
+    ).toMatch(/h-10 w-10 text-sm/);
 
     rerender(<SortDirectionToggle direction="asc" size="md" />);
 
     expect(
       screen.getByRole("button", { name: /sort direction/i }).className,
-    ).toMatch(/px-4 py-2\.5 text-sm/);
+    ).toMatch(/h-11 w-11 text-sm/);
   });
 
   it("does nothing when disabled", async () => {

@@ -5,6 +5,11 @@ import type {
   DrawerRegistryKey,
 } from "@/types/DrawerRegistryTypes";
 
+const FALLBACK_VALUE = { entry: null, key: null };
+
+const checkConfirmableAction = (action: Action) =>
+  action !== "add" && action !== "edit";
+
 export function useDrawerRegistry<T = Record<string, unknown>>(
   registry: DrawerRegistryConfig,
 ): { entry: DrawerRegistryEntry<T> | null; key: DrawerRegistryKey | null } {
@@ -12,13 +17,16 @@ export function useDrawerRegistry<T = Record<string, unknown>>(
   const { action } = useActionContext();
 
   if (!domain || !entity || !action) {
-    return { entry: null, key: null };
+    return FALLBACK_VALUE;
   }
 
-  const key = `${domain}:${entity}` as DrawerRegistryKey;
-  const entry = registry[key]?.[action] as DrawerRegistryEntry<T> | undefined;
+  const isConfirmableAction = checkConfirmableAction(action);
+  if (isConfirmableAction) return FALLBACK_VALUE;
 
-  return { entry: entry ?? null, key };
+  const key = `${domain}:${entity}` as DrawerRegistryKey;
+  const entry = registry[key]?.[action] as DrawerRegistryEntry<T> | undefined ?? null;
+
+  return { entry: entry, key };
 }
 
 export function getDrawerRegistryEntry<T = Record<string, unknown>>(
@@ -30,6 +38,9 @@ export function getDrawerRegistryEntry<T = Record<string, unknown>>(
   if (!domain || !entity || !action) {
     return null;
   }
+
+  const isConfirmableAction = checkConfirmableAction(action);
+  if (isConfirmableAction) return null;
 
   const key = `${domain}:${entity}` as DrawerRegistryKey;
   return (

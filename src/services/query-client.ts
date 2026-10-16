@@ -7,7 +7,7 @@ const queryClient = new QueryClient({
     queries: {
       retry: 1,
       retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30_000),
-      refetchInterval: 5_000,
+      refetchOnWindowFocus: false,
       gcTime: 1000 * 60 * 10,
     },
     mutations: {

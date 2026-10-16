@@ -6,22 +6,22 @@ import type { DrawerPosition, DrawerSize } from "@/types/SharedTypes";
 import "./Drawer.css";
 
 const sideSizeClasses: Record<DrawerSize, string> = {
-  sm: "w-72",
-  md: "w-96",
-  lg: "w-[32rem]",
+  sm: "w-72 max-w-[92vw]",
+  md: "w-96 max-w-[92vw]",
+  lg: "w-[32rem] max-w-[92vw]",
 };
 
 const verticalSizeClasses: Record<DrawerSize, string> = {
-  sm: "h-64",
-  md: "h-96",
-  lg: "h-[32rem]",
+  sm: "h-64 max-h-[85vh]",
+  md: "h-96 max-h-[85vh]",
+  lg: "h-[32rem] max-h-[85vh]",
 };
 
 const positionClasses: Record<DrawerPosition, string> = {
-  right: "right-0 top-0 h-full",
-  left: "left-0 top-0 h-full",
-  top: "top-0 inset-x-0 w-full",
-  bottom: "bottom-0 inset-x-0 w-full",
+  right: "right-0 top-0 h-full rounded-l-2xl",
+  left: "left-0 top-0 h-full rounded-r-2xl",
+  top: "top-0 inset-x-0 w-full rounded-b-2xl",
+  bottom: "bottom-0 inset-x-0 w-full rounded-t-2xl",
 };
 
 const animationClasses: Record<DrawerPosition, string> = {
@@ -120,11 +120,11 @@ export const Drawer = ({
         aria-modal="true"
         aria-labelledby={titleId}
         aria-label={ariaLabel}
-        className={`fixed z-50 flex flex-col overflow-hidden bg-surface-raised text-text-primary shadow-xl ${positionClasses[position]} ${sizeClass} ${animationClasses[position]} ${className}`}
+        className={`fixed z-50 flex flex-col overflow-hidden bg-surface-raised text-text-primary shadow-2xl ${positionClasses[position]} ${sizeClass} ${animationClasses[position]} ${className}`}
       >
-        <div className="flex items-start justify-between gap-4 border-b border-border px-5 py-4">
+        <div className="flex items-start justify-between gap-3 border-b border-border px-4 py-3.5 sm:gap-4 sm:px-5 sm:py-4">
           <div className="min-w-0">
-            <h2 id={titleId} className="text-lg font-semibold">
+            <h2 id={titleId} className="text-base font-semibold sm:text-lg">
               {title}
             </h2>
             {description ? (
@@ -146,11 +146,13 @@ export const Drawer = ({
             ) : null}
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto px-5 py-4">{children}</div>
+        <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-5">
+          {children}
+        </div>
         {footer ? (
           <div
             data-testid="drawer-footer"
-            className="border-t border-border px-5 py-4"
+            className="border-t border-border px-4 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-5"
           >
             {footer}
           </div>

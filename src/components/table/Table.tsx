@@ -22,8 +22,8 @@ const alignClasses: Record<ColumnAlign, string> = {
 };
 
 const sizeCellClasses = {
-  sm: "px-3 py-2",
-  md: "px-4 py-3",
+  sm: "px-2.5 py-2 sm:px-3",
+  md: "px-3 py-2.5 sm:px-4 sm:py-3",
 } as const;
 
 function resolveRowKey<T extends Identifiable>(
@@ -73,7 +73,7 @@ function TableComponent<T extends Identifiable>({
     >
       <table
         aria-label={ariaLabel}
-        className={`w-full border-collapse text-sm ${isCards ? "table-cards" : ""}`}
+        className={`w-full min-w-full border-collapse text-sm ${isCards ? "table-cards" : ""}`}
       >
         {caption && <caption className="sr-only">{caption}</caption>}
         <thead>
@@ -101,7 +101,7 @@ function TableComponent<T extends Identifiable>({
               <td
                 colSpan={columns.length}
                 role="status"
-                className={`${cellPadding} py-10 text-center text-text-secondary`}
+                className="px-4 py-12 text-center text-sm text-text-secondary sm:py-16"
               >
                 {emptyMessage}
               </td>
@@ -135,7 +135,7 @@ function TableComponent<T extends Identifiable>({
                         }
                         className={[
                           cellPadding,
-                          "text-text-primary",
+                          "whitespace-nowrap align-middle text-text-primary",
                           alignClasses[column.align ?? "left"],
                         ].join(" ")}
                       >
@@ -167,7 +167,7 @@ function TableComponent<T extends Identifiable>({
                       }
                       className={[
                         cellPadding,
-                        "text-text-primary",
+                        "whitespace-nowrap align-middle text-text-primary",
                         alignClasses[column.align ?? "left"],
                       ].join(" ")}
                     >

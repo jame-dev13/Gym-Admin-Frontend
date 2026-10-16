@@ -5,6 +5,11 @@ import type {
   ModalRegistryKey,
 } from "@/types/ModalRegistryTypes";
 
+const FALLBACK_VALUE = { entry: null, key: null };
+
+const checkSavableAction = (action: Action) =>
+  action === "add" || action === "edit";
+
 export function useModalRegistry<T = Record<string, unknown>>(
   registry: ModalRegistryConfig,
 ): { entry: ModalRegistryEntry<T> | null; key: ModalRegistryKey | null } {
@@ -12,15 +17,18 @@ export function useModalRegistry<T = Record<string, unknown>>(
   const { action } = useActionContext();
 
   if (!domain || !entity || !action) {
-    return { entry: null, key: null };
+    return FALLBACK_VALUE;
   }
 
-  if (action === "add" || action === "edit") return { entry: null, key: null };
+  const isSavableAction = checkSavableAction(action);
+
+  if (isSavableAction) return FALLBACK_VALUE;
 
   const key = `${domain}:${entity}` as ModalRegistryKey;
-  const entry = registry[key]?.[action] as ModalRegistryEntry<T> | undefined;
+  const entry =
+    (registry[key]?.[action] as ModalRegistryEntry<T> | undefined) ?? null;
 
-  return { entry: entry ?? null, key };
+  return { entry: entry, key };
 }
 
 export function getModalRegistryEntry<T = Record<string, unknown>>(
@@ -33,7 +41,7 @@ export function getModalRegistryEntry<T = Record<string, unknown>>(
     return null;
   }
 
-  if (action === "add" || action === "edit") return null;
+  if (checkSavableAction(action)) return null;
 
   const key = `${domain}:${entity}` as ModalRegistryKey;
   return (registry[key]?.[action] as ModalRegistryEntry<T> | undefined) ?? null;

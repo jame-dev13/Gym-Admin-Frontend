@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { useTableRenderer } from "@/hooks/useTableRenderer";
 import type { PageQueryHook } from "@/components/table/tableRendererConfig";
 import type { ApiErrorResponse, Page } from "@/types/Types";
@@ -22,13 +22,24 @@ function pageOf(content: Member[] = []): Page<Member> {
   };
 }
 
-function createStub(error: ApiErrorResponse | null = null) {
+function createStub(
+  error: ApiErrorResponse | null = null,
+  { isRefetching = false }: { isRefetching?: boolean } = {},
+) {
   const seen: Array<Record<string, unknown>> = [];
+  const refetch = vi.fn(async () => ({}));
   const hook = ((params?: Record<string, unknown>) => {
     seen.push({ ...(params ?? {}) });
-    return { data: pageOf(), error, isPending: false, isFetching: false };
+    return {
+      data: pageOf(),
+      error,
+      isPending: false,
+      isFetching: false,
+      isRefetching,
+      refetch,
+    };
   }) as unknown as PageQueryHook<Member>;
-  return { hook, seen };
+  return { hook, seen, refetch };
 }
 
 describe("useTableRenderer", () => {
@@ -154,5 +165,27 @@ describe("useTableRenderer", () => {
     );
 
     expect(result.current.error).toMatchObject(error);
+  });
+
+  it("awaits the query refetch through doRefetch", async () => {
+    const { hook, refetch } = createStub();
+    const { result } = renderHook(() =>
+      useTableRenderer<Member>({ queryFn: hook }),
+    );
+
+    await act(async () => {
+      await result.current.doRefetch();
+    });
+
+    expect(refetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("surfaces the query's refetching state", () => {
+    const { hook } = createStub(null, { isRefetching: true });
+    const { result } = renderHook(() =>
+      useTableRenderer<Member>({ queryFn: hook }),
+    );
+
+    expect(result.current.isRefetching).toBe(true);
   });
 });

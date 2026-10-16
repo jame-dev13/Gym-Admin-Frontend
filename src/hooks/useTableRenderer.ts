@@ -58,6 +58,8 @@ export interface UseTableRendererResult<T extends Identifiable> {
   error: ApiErrorResponse | null;
   isPending: boolean;
   isFetching: boolean;
+  isRefetching: boolean;
+  doRefetch: () => Promise<void>;
   search: TableSearchControls;
   sort: TableSortControls;
   pagination: TablePagination;
@@ -154,9 +156,14 @@ export const useTableRenderer = <T extends Identifiable>({
     ],
   );
 
-  const { data, error, isPending, isFetching } = queryFn(params);
+  const { data, error, isPending, isFetching, isRefetching, refetch } =
+    queryFn(params);
   const rows = data?.content ?? [];
   const pageInfo = data?.page;
+
+  const doRefetch = useCallback(async () => {
+    await refetch();
+  }, [refetch]);
 
   const handleSearchChange = useCallback((value: string) => {
     setSearchValue(value);
@@ -200,6 +207,8 @@ export const useTableRenderer = <T extends Identifiable>({
     error,
     isPending,
     isFetching,
+    isRefetching,
+    doRefetch,
     search: {
       value: searchValue,
       onChange: handleSearchChange,

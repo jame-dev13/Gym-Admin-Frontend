@@ -1,4 +1,5 @@
 import { useId } from "react";
+import { RefreshBtn } from "@/components/buttons/Buttons";
 import { SearchInput } from "@/components/input/SearchInput";
 import { Pagination } from "@/components/pagination/Pagination";
 import { SortControls } from "@/components/sort/SortControls";
@@ -30,6 +31,8 @@ export function TableLayout<T extends Identifiable>({
   currentPage,
   totalPages,
   onPageChange,
+  onRefetch,
+  isRefetching = false,
   isLoading = false,
   loadingMessage = DEFAULT_LOADING_MESSAGE,
   errorMessage = null,
@@ -74,12 +77,20 @@ export function TableLayout<T extends Identifiable>({
                 </p>
               )}
             </div>
-            {controls !== undefined && (
+            {(controls !== undefined || onRefetch !== undefined) && (
               <div
                 data-testid="table-layout-controls"
                 className="flex shrink-0 flex-col gap-2 tab:flex-row tab:items-center"
               >
                 {controls}
+                {onRefetch !== undefined && (
+                  <RefreshBtn
+                    onClick={() => {
+                      void onRefetch();
+                    }}
+                    disabled={disabled || isRefetching}
+                  />
+                )}
               </div>
             )}
           </div>

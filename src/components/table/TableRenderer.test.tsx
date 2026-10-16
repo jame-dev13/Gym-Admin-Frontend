@@ -69,7 +69,7 @@ function baseConfig(
 }
 
 describe("TableRenderer", () => {
-  it("requests the first 0-based page with Spring-style sort", () => {
+  it("requests only the first 0-based page and size before any interaction", () => {
     const { hook, seen } = createStub({ 0: firstPage });
     renderWithProviders(<TableRenderer config={baseConfig(hook)} />);
 
@@ -80,8 +80,8 @@ describe("TableRenderer", () => {
     expect(seen[0]).toMatchObject({
       page: 0,
       size: 10,
-      sort: "name,asc",
     });
+    expect(seen[0]).not.toHaveProperty("sort");
     expect(seen[0]).not.toHaveProperty("search");
   });
 
@@ -114,7 +114,7 @@ describe("TableRenderer", () => {
     const { hook, seen } = createStub({ 0: firstPage });
     renderWithProviders(<TableRenderer config={baseConfig(hook)} />);
 
-    await user.click(screen.getByRole("button", { name: "Name" }));
+    await user.click(screen.getByRole("button", { name: "Sort by" }));
     await user.click(screen.getByRole("menuitemradio", { name: "Plan" }));
     expect(seen.at(-1)).toMatchObject({ page: 0, sort: "plan,asc" });
 

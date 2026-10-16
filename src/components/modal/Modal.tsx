@@ -91,17 +91,17 @@ export const Modal = ({
           closeModal();
         }
       }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 animate-fade-in"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 animate-fade-in sm:p-4"
     >
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className={`w-full ${sizeClasses[mergedSize]} overflow-hidden rounded-2xl border border-border bg-surface-raised text-text-primary shadow-xl animate-fade-in-scale`}
+        className={`flex max-h-[calc(100dvh-1.5rem)] w-full ${sizeClasses[mergedSize]} flex-col overflow-hidden rounded-2xl border border-border bg-surface-raised text-text-primary shadow-2xl animate-fade-in-scale sm:max-h-[calc(100dvh-2rem)]`}
       >
-        <div className="flex items-center justify-between gap-4 border-b border-border px-5 py-4">
+        <div className="flex shrink-0 items-center justify-between gap-3 border-b border-border px-4 py-3.5 sm:gap-4 sm:px-5 sm:py-4">
           <div className="min-w-0">
-            <h2 id={titleId} className="text-lg font-semibold">
+            <h2 id={titleId} className="text-base font-semibold sm:text-lg">
               {title ?? contextTitle}
             </h2>
             {mergedDescription ? (
@@ -122,7 +122,9 @@ export const Modal = ({
             ) : null}
           </div>
         </div>
-        <div className="px-5 py-4">{children}</div>
+        <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-5">
+          {children}
+        </div>
       </div>
     </div>,
     document.body,

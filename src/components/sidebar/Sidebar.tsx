@@ -10,7 +10,7 @@ import type { SidebarProps } from "./SidebarTypes";
 import type { NavbarLink } from "@/types/SharedTypes";
 
 const linkBase =
-  "flex w-auto items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-200 hover:bg-surface-over hover:text-accent tab:w-full";
+  "flex w-auto shrink-0 items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium transition-colors duration-200 hover:bg-surface-over hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent tab:w-full";
 
 const renderLinkIcon = (link: NavbarLink) =>
   link.Icon ? (
@@ -57,8 +57,14 @@ export const Sidebar: FC<SidebarProps> = ({
       </>
     );
     const title = isCollapsed ? link.label : undefined;
+    const collapsedRail = isCollapsed ? "tab:justify-center tab:px-0" : "";
     return link.href !== undefined ? (
-      <a key={key} href={link.href} title={title} className={`${linkBase} text-text-secondary`}>
+      <a
+        key={key}
+        href={link.href}
+        title={title}
+        className={`${linkBase} text-text-secondary ${collapsedRail}`}
+      >
         {content}
       </a>
     ) : (
@@ -67,7 +73,7 @@ export const Sidebar: FC<SidebarProps> = ({
         to={link.to}
         title={title}
         className={({ isActive }) =>
-          `${linkBase} ${isActive ? "bg-surface-over text-accent" : "text-text-secondary"}`
+          `${linkBase} ${collapsedRail} ${isActive ? "bg-surface-over text-accent" : "text-text-secondary"}`
         }
       >
         {content}
@@ -77,12 +83,12 @@ export const Sidebar: FC<SidebarProps> = ({
 
   return (
     <aside
-      className={`sticky top-0 z-40 flex w-full flex-col border-b border-border bg-surface-raised text-text-primary tab:h-screen tab:border-b-0 tab:border-r tab:transition-[width] tab:duration-200 ${
+      className={`sticky top-0 z-40 flex w-full shrink-0 flex-col border-b border-border bg-surface-raised text-text-primary tab:h-screen tab:border-b-0 tab:border-r tab:transition-[width] tab:duration-200 ${
         isCollapsed ? "tab:w-20" : "tab:w-64"
       } ${className}`}
     >
       <div
-        className={`flex w-full shrink-0 flex-row items-center justify-between px-4 py-3 tab:w-auto tab:justify-start tab:border-b tab:border-border tab:py-4 ${
+        className={`flex w-full shrink-0 flex-row items-center justify-between gap-2 px-4 py-3 tab:w-auto tab:justify-start tab:border-b tab:border-border tab:py-4 ${
           isCollapsed ? "tab:justify-center" : ""
         }`}
       >
@@ -104,12 +110,12 @@ export const Sidebar: FC<SidebarProps> = ({
 
       <nav
         aria-label={ariaLabel}
-        className={`min-w-0 flex-1 flex-row items-center gap-4 overflow-x-auto px-3 py-2 tab:min-h-0 tab:flex-col tab:items-stretch tab:gap-5 tab:overflow-x-visible tab:overflow-y-auto tab:py-4 ${
+        className={`min-w-0 flex-1 flex-row items-center gap-2.5 overflow-x-auto px-3 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden tab:min-h-0 tab:flex-col tab:items-stretch tab:gap-5 tab:overflow-x-visible tab:overflow-y-auto tab:py-4 ${
           isCollapsed ? "hidden tab:flex" : "flex"
         }`}
       >
         {sections.map((section, index) => (
-          <div key={section.label ?? `section-${index}`} className="flex flex-row items-center gap-1 tab:flex-col tab:items-stretch">
+          <div key={section.label ?? `section-${index}`} className="flex flex-row items-center gap-1.5 tab:flex-col tab:items-stretch">
             {section.label && !isCollapsed && (
               <p className="hidden px-3 text-xs font-semibold uppercase tracking-wider text-text-tertiary tab:block tab:sticky tab:top-0 tab:bg-surface-raised tab:py-1">
                 {section.label}

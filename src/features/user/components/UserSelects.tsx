@@ -31,26 +31,3 @@ export const RoleSelect: FC<UserSelectProps> = ({
     </>
   );
 };
-
-export const AuthProviderSelect: FC<UserSelectProps> = ({
-  ariaLabel,
-  defaultValue,
-  label,
-  value,
-}) => (
-  <>
-    <Select
-      name="authProvider"
-      aria-label={ariaLabel}
-      defaultValue={defaultValue}
-      value={value}
-      label={label ?? "Auth Provider"}
-      options={[
-        { label: "Local", value: "LOCAL" },
-        { label: "Google", value: "GOOGLE" },
-        { label: "Facebook", value: "FACEBOOK" },
-      ]}
-      description="Auth Provider user's select."
-    />
-  </>
-);

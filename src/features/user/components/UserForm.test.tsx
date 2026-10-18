@@ -36,14 +36,14 @@ function formDataToObject(fd: FormData): Record<string, unknown> {
 }
 
 describe("UserForm create mode", () => {
-  it("renders all create fields: name, email, password, authProvider, roles", () => {
+  it("renders all create fields: name, email, password, roles", () => {
     const capture: SubmitCapture = { preventDefault: vi.fn(), formData: null };
     render(<UserForm onSubmit={createSubmitMock(capture)} isPending={false} />);
 
     expect(screen.getByLabelText("Name")).toBeInTheDocument();
     expect(screen.getByLabelText("Email")).toBeInTheDocument();
     expect(screen.getByLabelText("Password")).toBeInTheDocument();
-    expect(screen.getByLabelText("AuthProvider")).toBeInTheDocument();
+    expect(screen.queryByLabelText("AuthProvider")).not.toBeInTheDocument();
     expect(screen.getByLabelText("Roles")).toBeInTheDocument();
   });
 
@@ -55,7 +55,6 @@ describe("UserForm create mode", () => {
     await user.type(screen.getByLabelText("Name"), "Ada Admin");
     await user.type(screen.getByLabelText("Email"), "ada@gym.test");
     await user.type(screen.getByLabelText("Password"), "secret12");
-    await user.selectOptions(screen.getByLabelText("AuthProvider"), "LOCAL");
     await user.selectOptions(screen.getByLabelText("Roles"), "ADMIN");
 
     await user.click(screen.getByRole("button", { name: "Submit User create form button" }));
@@ -66,7 +65,6 @@ describe("UserForm create mode", () => {
       name: "Ada Admin",
       email: "ada@gym.test",
       password: "secret12",
-      authProvider: "LOCAL",
       roles: "ADMIN",
     });
   });
@@ -77,7 +75,6 @@ describe("UserForm create mode", () => {
     expect(screen.getByLabelText("Name")).not.toBeDisabled();
     expect(screen.getByLabelText("Email")).not.toBeDisabled();
     expect(screen.getByLabelText("Password")).not.toBeDisabled();
-    expect(screen.getByLabelText("AuthProvider")).not.toBeDisabled();
     expect(screen.getByLabelText("Roles")).not.toBeDisabled();
     expect(screen.getByRole("button", { name: "Submit User create form button" })).toBeDisabled();
   });

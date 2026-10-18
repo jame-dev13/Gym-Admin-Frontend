@@ -1,4 +1,4 @@
-import { AlertTriangle, Loader2, RotateCcw, Trash2 } from "lucide-react";
+import { AlertTriangle, RotateCcw, Trash2 } from "lucide-react";
 import { CommandBtn, SubmitBtn } from "@/components/buttons/Buttons";
 import { AppForm } from "@/components/form/AppForm";
 import type React from "react";
@@ -102,8 +102,8 @@ export const UserConfirmDialog = ({
           </CommandBtn>
         )}
         <SubmitBtn
-          disabled={isPending}
-          aria-busy={isPending}
+          isPending={isPending}
+          pendingLabel={copy.pendingLabel}
           aria-label={`${variant} dialog confirm button.`}
           className={
             copy.destructive
@@ -111,10 +111,7 @@ export const UserConfirmDialog = ({
               : "border-transparent bg-accent font-semibold text-surface hover:bg-accent-emphasis"
           }
         >
-          {isPending && (
-            <Loader2 size={18} aria-hidden="true" className="animate-spin" />
-          )}
-          {isPending ? copy.pendingLabel : copy.confirmLabel}
+          {copy.confirmLabel}
         </SubmitBtn>
       </AppForm>
     </div>

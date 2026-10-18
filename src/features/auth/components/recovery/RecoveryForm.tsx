@@ -82,7 +82,7 @@ const RecoveryForm = () => {
             className="w-full"
             Icon={ShieldCheck}
             aria-label="Recover button"
-            disabled={isPending}
+            isPending={isPending}
           >
             Recover
           </SubmitBtn>

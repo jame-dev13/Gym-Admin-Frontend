@@ -14,6 +14,8 @@ export interface ButtonBaseProps {
 
 export type SubmitBtnProps = Omit<ButtonBaseProps, "type"> & {
   type?: "submit";
+  isPending?: boolean;
+  pendingLabel?: string;
 };
 
 export type CommandBtnProps = ButtonBaseProps & {

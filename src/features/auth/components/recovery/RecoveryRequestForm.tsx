@@ -29,7 +29,7 @@ export const RecoveryRequestForm: FC<RecoveryRequestFormProps> = ({
       <SubmitBtn
         Icon={Plane}
         aria-label="Request recovery code button"
-        disabled={isPending}
+        isPending={isPending}
       >
         Send
       </SubmitBtn>

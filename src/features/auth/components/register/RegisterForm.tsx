@@ -59,7 +59,7 @@ const RegisterForm = () => {
           className="w-full"
           Icon={UserPlus}
           aria-label="Register button"
-          disabled={isPending}
+          isPending={isPending}
         >
           Create account
         </SubmitBtn>

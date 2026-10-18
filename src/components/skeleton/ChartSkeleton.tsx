@@ -15,6 +15,8 @@ export interface ChartSkeletonProps {
 const DEFAULT_HEIGHT = 300;
 const DEFAULT_LEGEND_ITEMS = 3;
 
+const BAR_HEIGHTS = [45, 70, 35, 60, 50];
+
 const variantLabels: Record<ChartSkeletonVariant, string> = {
   bar: "Bar chart loading skeleton",
   line: "Line chart loading skeleton",
@@ -23,12 +25,12 @@ const variantLabels: Record<ChartSkeletonVariant, string> = {
 
 const renderBarChart = () => (
   <div className="flex items-end justify-center gap-3 h-full p-4" role="img" aria-hidden="true">
-    {[...Array(5)].map((_, i) => (
+    {BAR_HEIGHTS.map((height, i) => (
       <div
         key={i}
         className="skeleton-pulse skeleton-chart-bar flex-1 max-w-16"
         style={{
-          height: `${20 + Math.random() * 60}%`,
+          height: `${height}%`,
           minHeight: "2rem",
         }}
         aria-hidden="true"
@@ -54,7 +56,7 @@ const renderLineChart = () => (
         ))}
       </div>
     </div>
-    <div className="absolute bottom-4 left-4 right-4 flex justify-between text-text-tertiary text-xs" aria-hidden="true">
+    <div className="absolute bottom-4 left-4 right-4 flex justify-between" aria-hidden="true">
       <div className="skeleton-pulse skeleton-text skeleton-text-xs w-12" />
       <div className="skeleton-pulse skeleton-text skeleton-text-xs w-12" />
       <div className="skeleton-pulse skeleton-text skeleton-text-xs w-12" />

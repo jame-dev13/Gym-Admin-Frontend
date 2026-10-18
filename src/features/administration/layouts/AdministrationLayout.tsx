@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
+import { PageSkeleton } from "@/components/skeleton";
 import { AdministrationFooter } from "@/features/administration/components/AdministrationFooter";
 import { AdministrationNavbar } from "@/features/administration/components/AdministrationNavbar";
 import { AdministrationSidebar } from "@/features/administration/components/AdministrationSidebar";
@@ -23,7 +24,15 @@ const AdministrationLayout = () => {
           <AdministrationSidebar />
           <div className="flex min-w-0 flex-1 flex-col">
             <main className="flex-1 px-4 py-6 tab:px-8">
-              <Suspense fallback={<div>Loading.....</div>}>
+              <Suspense
+                fallback={
+                  <PageSkeleton
+                    showNavbar={false}
+                    showSidebar={false}
+                    showFooter={false}
+                  />
+                }
+              >
                 <Outlet />
               </Suspense>
             </main>

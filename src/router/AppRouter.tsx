@@ -3,6 +3,7 @@ import { administrationPanelRoutes } from "@/features/administration/services/Ad
 import { getAuthRouter } from "@/features/auth/services/AuthRouter";
 import { getLandingRouter } from "@/features/landing-page/services/LandingRouter";
 import { EntityDomainProvider } from "@/context/EntityDomainProvider";
+import { PageSkeleton } from "@/components/skeleton";
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
@@ -21,7 +22,7 @@ const { Administration, AdminOverview, AdministrationPanel } =
 
 export const AppRouter = () => {
   return (
-    <Suspense fallback={<div>Loading.....</div>}>
+    <Suspense fallback={<PageSkeleton />}>
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route

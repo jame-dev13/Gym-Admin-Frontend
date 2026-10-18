@@ -61,7 +61,7 @@ const VerificationForm = () => {
           className="w-full"
           Icon={ShieldCheck}
           aria-label="Verify button"
-          disabled={isPending}
+          isPending={isPending}
         >
           Verify
         </SubmitBtn>

@@ -61,7 +61,7 @@ const LoginForm = () => {
           className="w-full"
           Icon={UserRoundArrowLeft}
           aria-label="Login button"
-          disabled={isPending}
+          isPending={isPending}
         >
           Login
         </SubmitBtn>

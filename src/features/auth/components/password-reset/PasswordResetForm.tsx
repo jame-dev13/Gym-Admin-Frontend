@@ -91,7 +91,7 @@ const PasswordResetForm = () => {
           <SubmitBtn
             className="w-full"
             Icon={Send}
-            disabled={isRequestPending}
+            isPending={isRequestPending}
           >
             Send reset link
           </SubmitBtn>

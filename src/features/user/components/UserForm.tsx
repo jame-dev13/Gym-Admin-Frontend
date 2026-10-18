@@ -57,7 +57,7 @@ export const UserForm = ({ onSubmit, userData, isPending }: UserFormProps) => {
           <SubmitBtn
             Icon={!isEditMode ? UserPlus : Save}
             aria-label={`Submit ${isEditMode ? "User update form button" : "User create form button"}`}
-            disabled={isPending}
+            isPending={isPending}
           >
             {!isEditMode ? "Create user" : "Save changes"}
           </SubmitBtn>

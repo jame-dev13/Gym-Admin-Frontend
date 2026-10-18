@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { useFormStatus } from 'react-dom'
 import { Check, Loader2, Menu, Moon, RefreshCw, Sun, X } from 'lucide-react'
 import type {
   SubmitBtnProps,
@@ -30,44 +29,56 @@ const submitStyles = [
   'disabled:cursor-not-allowed',
 ].join(' ')
 
-const SubmitContent = ({
-  Icon,
-  children,
-}: {
-  Icon?: SubmitBtnProps['Icon']
-  children: React.ReactNode
-}) => {
-  const { pending } = useFormStatus()
-
-  return (
-    <>
-      {pending ? (
-        <Loader2 size={18} className="animate-spin" aria-hidden="true" />
-      ) : (
-        Icon && <Icon size={18} aria-hidden="true" />
-      )}
-      {pending ? <span>Process...</span> : children}
-    </>
-  )
-}
-
 export const SubmitBtn = ({
   Icon,
   onClick,
   'aria-label': ariaLabel,
   children,
   disabled = false,
+  isPending = false,
+  pendingLabel,
   className = '',
 }: SubmitBtnProps) => {
+  const label = isPending ? (pendingLabel ?? children) : children
+
   return (
     <button
       type="submit"
       className={`${submitStyles} ${className}`}
       onClick={onClick}
       aria-label={ariaLabel}
-      disabled={disabled}
+      aria-busy={isPending || undefined}
+      disabled={disabled || isPending}
     >
-      <SubmitContent Icon={Icon}>{children}</SubmitContent>
+      {(Icon || isPending) && (
+        <span
+          aria-hidden="true"
+          className="relative inline-flex size-[18px] items-center justify-center"
+        >
+          {Icon && (
+            <Icon
+              size={18}
+              aria-hidden="true"
+              className={[
+                'absolute',
+                'inset-0',
+                'm-auto',
+                'transition-all',
+                'duration-200',
+                isPending ? 'opacity-0 scale-50' : 'opacity-100 scale-100',
+              ].join(' ')}
+            />
+          )}
+          {isPending && (
+            <Loader2
+              size={18}
+              aria-hidden="true"
+              className="absolute inset-0 m-auto animate-spin"
+            />
+          )}
+        </span>
+      )}
+      {label}
     </button>
   )
 }

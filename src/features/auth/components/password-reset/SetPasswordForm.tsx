@@ -62,7 +62,8 @@ const SetPasswordForm = () => {
           className="w-full"
           Icon={KeyRound}
           aria-label="Set new password button"
-          disabled={isPending || mismatch}
+          isPending={isPending}
+          disabled={mismatch}
         >
           Set new password
         </SubmitBtn>

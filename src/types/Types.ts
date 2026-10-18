@@ -31,7 +31,7 @@ type PageProperty = Readonly<{
   totalPages: number;
 }>;
 
-import type { ReactNode } from "react";
+import type { JSX, ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 
 export type Identifiable = { id: string | number | null };
@@ -46,8 +46,7 @@ export type DataColumn<T> = {
   width?: string;
   emptyValue?: string;
   hideOnCards?: boolean;
-  render?: (value: T[keyof T], row: T) => ReactNode;
-};
+} & ({ render?: (value: T[keyof T], row: T) => ReactNode } | { render?: (value: T[keyof T], row: T) => JSX.Element });
 
 export type RowAction<T> = {
   id: string;

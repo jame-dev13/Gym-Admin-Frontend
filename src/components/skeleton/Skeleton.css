@@ -13,18 +13,6 @@
   border-radius: var(--radius-md, 0.375rem);
 }
 
-.skeleton-pulse-rounded {
-  border-radius: var(--radius-full, 9999px);
-}
-
-.skeleton-pulse-lg {
-  border-radius: var(--radius-lg, 0.5rem);
-}
-
-.skeleton-pulse-xl {
-  border-radius: var(--radius-xl, 0.75rem);
-}
-
 .skeleton-text {
   height: 1rem;
   border-radius: var(--radius-sm, 0.25rem);

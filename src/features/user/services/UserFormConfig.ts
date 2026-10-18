@@ -1,8 +1,5 @@
 import { EmailInput, PasswordInput, TextInput } from "@/components/input/Input";
-import {
-  AuthProviderSelect,
-  RoleSelect,
-} from "@/features/user/components/UserSelects";
+import { RoleSelect } from "@/features/user/components/UserSelects";
 import type { UserRequest, UserUpdateRequest } from "@/features/user/types";
 
 const userFormConfig = [
@@ -29,13 +26,6 @@ const userFormConfig = [
     Field: PasswordInput,
     updatable: false,
     ariaLabel: "Password input field.",
-  },
-  {
-    key: "auth-provider-field",
-    label: "AuthProvider",
-    Field: AuthProviderSelect,
-    updatable: false,
-    ariaLabel: "Auth-Provider selector.",
   },
   {
     key: "roles-field",

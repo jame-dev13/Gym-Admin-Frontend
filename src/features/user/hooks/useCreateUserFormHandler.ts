@@ -1,6 +1,5 @@
 import { useDrawerContext } from "@/context/useDrawerContext";
 import { useCreateUser } from "@/features/user/hooks/useMutateUser";
-import type { UserRequest } from "@/features/user/types";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { useToastFactory } from "@/hooks/useToastFactory";
 
@@ -13,9 +12,7 @@ export const useCreateUserFormHandler = () => {
       name: String(fd?.get("name")),
       email: String(fd?.get("email")),
       password: String(fd?.get("password")),
-      authProvider: String(
-        fd?.get("authProvider"),
-      ) as UserRequest["authProvider"],
+      authProvider: "LOCAL" as const,
       roles: String(fd?.get("roles")).split(","),
     }),
     resultHandlers: {

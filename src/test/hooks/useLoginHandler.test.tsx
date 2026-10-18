@@ -13,6 +13,7 @@ import { API_BASE_URL } from "./test-utils";
 
 const LOGIN_URI = import.meta.env.VITE_LOGIN as string;
 const HOME_ROUTE = "/home";
+const ADMINISTRATION_ROUTE = "/administration";
 
 const { navigateMock } = vi.hoisted(() => ({ navigateMock: vi.fn() }));
 
@@ -26,6 +27,7 @@ type RecordedLogin = { path: string; body: unknown };
 const recordedLogins: RecordedLogin[] = [];
 let loginStatus = 200;
 let loginDelayMs = 0;
+let loginIsUser = true;
 
 const renderLoginHandler = () => {
   const client = getQueryAppClient();
@@ -73,6 +75,7 @@ beforeEach(() => {
   recordedLogins.length = 0;
   loginStatus = 200;
   loginDelayMs = 0;
+  loginIsUser = true;
   server.use(
     http.post(`${API_BASE_URL}${LOGIN_URI}`, async ({ request }) => {
       if (loginDelayMs > 0) {
@@ -88,7 +91,7 @@ beforeEach(() => {
         );
       }
       return HttpResponse.json(
-        { isUser: true, email: "user@gym.com" },
+        { isUser: loginIsUser, email: "user@gym.com" },
         { status: 200 },
       );
     }),
@@ -114,7 +117,7 @@ describe("useHandleLogin suite", () => {
     result.current.handleSubmit(event);
 
     await waitFor(() =>
-      expect(navigateMock).toHaveBeenCalledWith(HOME_ROUTE),
+      expect(navigateMock).toHaveBeenCalledWith(HOME_ROUTE, { replace: true }),
     );
 
     expect(recordedLogins).toHaveLength(1);
@@ -124,6 +127,22 @@ describe("useHandleLogin suite", () => {
     });
     expect(emailInput.value).toBe("");
     expect(passwordInput.value).toBe("");
+  });
+
+  it("Should navigate to administration when the account is not a regular user", async () => {
+    loginIsUser = false;
+    const { result } = renderLoginHandler();
+    const { event } = buildLoginSubmitEvent("admin@gym.com", "secret");
+
+    result.current.handleSubmit(event);
+
+    await waitFor(() =>
+      expect(navigateMock).toHaveBeenCalledWith(ADMINISTRATION_ROUTE, {
+        replace: true,
+      }),
+    );
+
+    expect(navigateMock).not.toHaveBeenCalledWith(HOME_ROUTE, { replace: true });
   });
 
   it("Should show an error toast and preserve the input when login fails", async () => {
@@ -160,7 +179,7 @@ describe("useHandleLogin suite", () => {
     result.current.handleSubmit(event);
 
     await waitFor(() =>
-      expect(navigateMock).toHaveBeenCalledWith(HOME_ROUTE),
+      expect(navigateMock).toHaveBeenCalledWith(HOME_ROUTE, { replace: true }),
     );
 
     expect(recordedLogins).toHaveLength(1);

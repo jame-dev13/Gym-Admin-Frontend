@@ -1,11 +1,11 @@
 import { useLogin } from "./useLogin";
-import { useAppNavigation } from "@/hooks/useAppNavigation";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { useToastFactory } from "@/hooks/useToastFactory";
+import { useNavigate } from "react-router-dom";
 
 const useHandleLogin = () => {
   const { showError } = useToastFactory();
-  const { nav } = useAppNavigation("/home");
+  const navigate = useNavigate()
   const { submit, error, isPending } = useMutationHandler({
     mutationHook: useLogin,
     payloadBuilder: (formData) => ({
@@ -13,7 +13,10 @@ const useHandleLogin = () => {
       password: String(formData?.get("password")),
     }),
     resultHandlers: {
-      onSuccess: nav,
+      onSuccess: (data) => {
+        const isAdministrative = !data?.isUser;
+        void navigate(isAdministrative ? "/administration": "/home", { replace: true  })
+      },
       onError: (err) => {
         showError(`Cannot succeed login operation: ${err?.message}`);
       },

@@ -1,7 +1,7 @@
 import axios, { type AxiosRequestConfig } from "axios";
 
-const REFRESH_PATH = import.meta.env.VITE_REFRESH;
-const LOGOUT_PATH = import.meta.env.LOGOUT;
+const REFRESH_PATH = import.meta.env.VITE_AUTH_REFRESH as string;
+const LOGOUT_PATH = import.meta.env.VITE_AUTH_LOGOUT as string;
 
 const handleInternalRefresh = async () => {
   try {

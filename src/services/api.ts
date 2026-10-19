@@ -54,6 +54,7 @@ api.interceptors.response.use(
     try {
       await interceptorHandler.refresh();
       processQueue(null);
+      return api(originalRequest);
     } catch (refreshError) {
       processQueue(refreshError);
       await interceptorHandler.logout();

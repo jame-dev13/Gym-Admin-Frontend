@@ -1,8 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { BookUser } from "lucide-react";
+import type { ReactNode } from "react";
+import { describe, expect, it, vi } from "vitest";
 import { PopoverHost } from "./PopoverHost";
 import { PopoverLink } from "./PopoverLink";
+import type { PopoverLinkColor } from "./PopoverTypes";
 import { PopoverProvider } from "@/context/PopoverProvider";
 
 type Member = { id: number; name: string; plan: string };
@@ -107,5 +110,153 @@ describe("PopoverLink", () => {
     await user.click(screen.getByRole("button", { name: "Outside" }));
 
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+  });
+});
+
+describe("PopoverLink look and color variants", () => {
+  const renderVariant = (children: ReactNode) =>
+    render(
+      <PopoverProvider>
+        <PopoverLink
+          data={FIRST_MEMBER}
+          label="Member details"
+          render={(member) => <p>Details for {member.name}</p>}
+        >
+          {children}
+        </PopoverLink>
+        <PopoverHost />
+      </PopoverProvider>,
+    );
+
+  it("keeps the link look with the cyan color by default", () => {
+    renderVariant(<span>Ada Lovelace</span>);
+
+    expect(screen.getByRole("button", { name: "Ada Lovelace" })).toHaveClass(
+      "underline",
+      "text-accent",
+    );
+  });
+
+  it("renders the pill look with the selected color", () => {
+    render(
+      <PopoverProvider>
+        <PopoverLink
+          data={FIRST_MEMBER}
+          label="Member details"
+          render={(member) => <p>Details for {member.name}</p>}
+          look="pill"
+          color="blue"
+        >
+          Ada Lovelace
+        </PopoverLink>
+        <PopoverHost />
+      </PopoverProvider>,
+    );
+
+    expect(screen.getByRole("button", { name: "Ada Lovelace" })).toHaveClass(
+      "rounded-full",
+      "bg-popover-blue/10",
+      "text-popover-blue-emphasis",
+    );
+  });
+
+  it.each<[PopoverLinkColor, string]>([
+    ["cyan", "text-accent"],
+    ["blue", "text-popover-blue"],
+    ["red", "text-danger"],
+    ["slate", "text-text-secondary"],
+  ])("applies the %s color to the link look", (color, expectedClass) => {
+    render(
+      <PopoverProvider>
+        <PopoverLink
+          data={FIRST_MEMBER}
+          label="Member details"
+          render={(member) => <p>Details for {member.name}</p>}
+          color={color}
+        >
+          Ada Lovelace
+        </PopoverLink>
+        <PopoverHost />
+      </PopoverProvider>,
+    );
+
+    expect(screen.getByRole("button", { name: "Ada Lovelace" })).toHaveClass(
+      expectedClass,
+    );
+  });
+
+  it("renders a command button with an icon and an optional label", async () => {
+    const user = userEvent.setup();
+    render(
+      <PopoverProvider>
+        <PopoverLink
+          data={FIRST_MEMBER}
+          label="Member details"
+          render={(member) => <p>Details for {member.name}</p>}
+          look="commandBtn"
+          icon={<BookUser />}
+        >
+          Ada Lovelace
+        </PopoverLink>
+        <PopoverHost />
+      </PopoverProvider>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Ada Lovelace" });
+    expect(trigger).toHaveClass("rounded-lg", "bg-surface-raised", "px-5", "py-2.5");
+    expect(trigger.querySelector("svg")).toBeInTheDocument();
+
+    await user.click(trigger);
+
+    expect(
+      screen.getByRole("dialog", { name: "Member details" }),
+    ).toHaveTextContent("Details for Ada Lovelace");
+  });
+
+  it("uses the popover label to name an icon-only command button", async () => {
+    const user = userEvent.setup();
+    render(
+      <PopoverProvider>
+        <PopoverLink
+          data={FIRST_MEMBER}
+          label="Member details"
+          render={(member) => <p>Details for {member.name}</p>}
+          look="commandBtn"
+          icon={<BookUser />}
+        />
+        <PopoverHost />
+      </PopoverProvider>,
+    );
+
+    const trigger = screen.getByRole("button", { name: "Member details" });
+    expect(trigger).toHaveClass("size-11");
+
+    await user.click(trigger);
+
+    expect(
+      screen.getByRole("dialog", { name: "Member details" }),
+    ).toHaveTextContent("Details for Ada Lovelace");
+  });
+
+  it("fails fast when an icon-only command button has no accessible name", () => {
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    expect(() =>
+      render(
+        <PopoverProvider>
+          <PopoverLink
+            data={FIRST_MEMBER}
+            label=""
+            render={(member) => <p>Details for {member.name}</p>}
+            look="commandBtn"
+            icon={<BookUser />}
+          />
+        </PopoverProvider>,
+      ),
+    ).toThrow("requires a non-empty `label`");
+
+    consoleError.mockRestore();
   });
 });

@@ -1,7 +1,7 @@
 import { Badge } from "@/components/badge/Badge";
 import type { TableRendererConfig } from "@/components/table/tableRendererConfig";
 import { AddressInfoLink } from "@/features/customer/components/AddressInfoLink";
-import { useGetCustomerPage } from "@/features/customer/hooks/useFetchCustomer";
+import { useGetCustomerPage } from "@/features/customer/hooks/api/useFetchCustomer";
 import type { CustomerResponse } from "@/features/customer/types";
 import type { Column } from "@/types/Types";
 

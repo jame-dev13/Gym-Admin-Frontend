@@ -24,7 +24,7 @@ const createdUser: UserResponse = {
   name: "Ada Admin",
   email: "ada@gym.test",
   authProvider: "LOCAL",
-  roles: ["ADMIN"],
+  role: ["ADMIN"],
   isCustomer: false,
   customerId: null,
 };

@@ -90,7 +90,7 @@ describe("UserForm update mode", () => {
           name: "Ada Admin",
           email: "ada@gym.test",
           authProvider: "LOCAL",
-          roles: ["ADMIN"],
+          role: ["ADMIN"],
           customerId: null,
           isCustomer: false,
         }}
@@ -114,7 +114,7 @@ describe("UserForm update mode", () => {
           name: "Ada Admin",
           email: "ada@gym.test",
           authProvider: "LOCAL",
-          roles: ["ADMIN", "USER"],
+          role: ["ADMIN", "USER"],
           customerId: null,
           isCustomer: false,
         }}
@@ -137,7 +137,7 @@ describe("UserForm update mode", () => {
           name: "Ada Admin",
           email: "ada@gym.test",
           authProvider: "LOCAL",
-          roles: ["ADMIN", "USER"],
+          role: ["ADMIN", "USER"],
           customerId: null,
           isCustomer: false,
         }}
@@ -164,7 +164,7 @@ describe("UserForm update mode", () => {
           name: "Ada Admin",
           email: "ada@gym.test",
           authProvider: "LOCAL",
-          roles: ["ADMIN"],
+          role: ["ADMIN"],
           customerId: null,
           isCustomer: false,
         }}
@@ -198,7 +198,7 @@ describe("UserForm update mode", () => {
           name: "Ada Admin",
           email: "ada@gym.test",
           authProvider: "LOCAL",
-          roles: ["ADMIN"],
+          role: ["ADMIN"],
           customerId: null,
           isCustomer: false,
         }}
@@ -226,7 +226,7 @@ describe("UserForm update mode", () => {
           name: "Ada",
           email: "ada@gym.test",
           authProvider: "LOCAL",
-          roles: ["ADMIN"],
+          role: ["ADMIN"],
           customerId: null,
           isCustomer: false,
         }}

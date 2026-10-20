@@ -21,7 +21,7 @@ export const UserForm = ({ onSubmit, userData, isPending }: UserFormProps) => {
     return {
       name: userData.name,
       email: userData.email,
-      roles: userData.roles,
+      roles: userData.role,
     };
   }, [userData]);
 

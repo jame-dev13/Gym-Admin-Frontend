@@ -1,6 +1,6 @@
 const queryKeyProvider = {
   administration: ["administration"] as const,
-  subscriber: ["subscriber"] as const,
+  current: ["current"] as const,
 } as const;
 
 export const getQueryKeyProvider = () => queryKeyProvider;

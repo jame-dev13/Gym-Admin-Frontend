@@ -3,12 +3,16 @@ import type { Identifiable } from "@/types/Types";
 
 const { administration, current } = getQueryKeyProvider();
 
+const CUSTOMER_DOMAIN_KEY = ["customers"] as const;
+
+export const getQueryDomainKey = () => CUSTOMER_DOMAIN_KEY;
+
 const customerQueryKeys = {
   current: {
-    all: () => [...current, "customers"] as const,
+    all: () => [...current, ...getQueryDomainKey()] as const,
   },
   administration: {
-    all: () => [...administration, "customers"] as const,
+    all: () => [...administration, ...getQueryDomainKey()] as const,
     detail: ({ id }: Identifiable) =>
       [...customerQueryKeys.administration.all(), "detail", id] as const,
     page: (params?: Record<string, unknown>) =>

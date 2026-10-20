@@ -2,9 +2,14 @@ import { getQueryKeyProvider } from "@/services/query-key-provider";
 import type { Identifiable } from "@/types/Types";
 
 const { administration } = getQueryKeyProvider();
+
+const USER_DOMAIN_KEY = ["user"] as const;
+
+const getQueryDomainKey = () => USER_DOMAIN_KEY;
+
 const userQueryKeyProvider = {
   administration: {
-    all: () => [...administration, "user"],
+    all: () => [...administration, ...getQueryDomainKey()],
     page: (params: Record<string, unknown>) =>
       [
         ...userQueryKeyProvider.administration.all(),
@@ -19,4 +24,4 @@ const userQueryKeyProvider = {
   },
 };
 
-export { userQueryKeyProvider };
+export { getQueryDomainKey, userQueryKeyProvider };

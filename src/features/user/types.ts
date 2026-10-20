@@ -16,7 +16,8 @@ export type UserUpdateRequest = Readonly<{
 
 export type UserResponse = Readonly<
   Identifiable &
-    Pick<UserRequest, "name" | "email" | "authProvider" | "roles"> & {
+    Pick<UserRequest, "name" | "email" | "authProvider"> & {
+      role: string[];
       isCustomer: boolean;
       customerId: Identifiable["id"];
     }

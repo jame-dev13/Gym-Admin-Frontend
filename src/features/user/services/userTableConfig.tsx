@@ -35,14 +35,15 @@ export const userColumns: Column<UserResponse>[] = [
     ),
   },
   {
-    key: "roles",
+    key: "role",
     header: "Roles",
     render: (_, row) => {
-      const roles = row.roles?.join(", ") ?? "---";
+      const role =
+        row.role.length > 1 ? row.role.join(", ") : row.role.join("");
 
       return (
-        <Badge variant="rose" title={roles}>
-          {roles}
+        <Badge variant="rose" title={role}>
+          {role}
         </Badge>
       );
     },

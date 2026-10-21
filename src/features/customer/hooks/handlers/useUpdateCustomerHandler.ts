@@ -1,22 +1,24 @@
 import { useDrawerContext } from "@/context/useDrawerContext";
-import { useSelectionContext } from "@/context/useSelectionContext";
 import { useUpdateCurrentCustomer } from "@/features/customer/hooks/api/useMutateCurrentCustomer";
 import { useUpdateCustomer } from "@/features/customer/hooks/api/useMutateCustomer";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { useToastFactory } from "@/hooks/useToastFactory";
-import { pipeVoid, requireId } from "@/utils/utils";
+import type { Identifiable } from "@/types/Types";
+import { requireId } from "@/utils/utils";
 
-export const useUpdateCustomerHandler = () => {
+export const useUpdateCustomerHandler = (
+  customerId: Identifiable["id"],
+) => {
   const { closeDrawer } = useDrawerContext();
-  const { clearSelection, currentSelection: id } = useSelectionContext();
   const { showSuccess, showError } = useToastFactory();
 
+  const id: Identifiable = { id: customerId };
   void requireId(id);
 
-  const mutate = useUpdateCustomer(id!);
+  const mutate = useUpdateCustomer(id);
 
   return useMutationHandler({
-    id: id!,
+    id,
     mutationHook: () => mutate,
     payloadBuilder: (fd) => ({
       phoneContact: String(fd?.get("phoneContact")),
@@ -33,7 +35,7 @@ export const useUpdateCustomerHandler = () => {
       onSuccess: () => showSuccess("Customer updated with success."),
       onError: (err) =>
         showError(`Cannot update customer info: ${err?.message}`),
-      onSettled: pipeVoid(clearSelection, closeDrawer),
+      onSettled: closeDrawer,
     },
   });
 };

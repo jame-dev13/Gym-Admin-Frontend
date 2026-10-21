@@ -1,4 +1,5 @@
 import { Pencil, Trash2 } from "lucide-react";
+import { lazy } from "react";
 import { TableRowActions } from "@/components/table/TableRowActions";
 import { useSelectionContext } from "@/context/useSelectionContext";
 import { useEntityDomainContext } from "@/context/useEntityDomainContext";
@@ -7,6 +8,12 @@ import { useDrawerContext } from "@/context/useDrawerContext";
 import { useModalContext } from "@/context/useModalContext";
 import type { RowAction } from "@/types/Types";
 import type { UserResponse } from "../types";
+
+const LazyUserUpdateForm = lazy(() =>
+  import("@/features/user/components/UserUpdateForm").then((mod) => ({
+    default: mod.UserUpdateForm,
+  })),
+);
 
 export const UserTableRowActions = ({ row }: { row: UserResponse }) => {
   const { setCurrentSelection } = useSelectionContext();
@@ -26,11 +33,11 @@ export const UserTableRowActions = ({ row }: { row: UserResponse }) => {
       Icon: Pencil,
       disabled: isDrawerOpen,
       onSelect: (r) => {
-        setCurrentSelection({ id: r.id });
-        setAction("edit");
         openDrawer({
           title: "Edit User",
           description: `Editing ${r.name}`,
+          data: r,
+          render: (user) => <LazyUserUpdateForm userId={user.id} />,
         });
       },
     },

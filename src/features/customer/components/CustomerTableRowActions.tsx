@@ -7,7 +7,13 @@ import { useSelectionContext } from "@/context/useSelectionContext";
 import type { CustomerResponse } from "@/features/customer/types";
 import type { RowAction } from "@/types/Types";
 import { Edit, Trash } from "lucide-react";
-import { type FC } from "react";
+import { lazy, type FC } from "react";
+
+const LazyUpdateCustomerForm = lazy(() =>
+  import("@/features/customer/components/UpdateCustomerForm").then((mod) => ({
+    default: mod.UpdateCustomerForm,
+  })),
+);
 
 export const CustomerTableControls: FC<{ row: CustomerResponse }> = ({
   row,
@@ -30,11 +36,13 @@ export const CustomerTableControls: FC<{ row: CustomerResponse }> = ({
       label: "Edit",
       disabled: isDrawerOpen,
       onSelect: (r) => {
-        setId(r);
-        setAction("edit");
         openDrawer({
           title: "Edit customer",
           description: `Editing ${r.customerName} customer info.`,
+          data: r,
+          render: (customer) => (
+            <LazyUpdateCustomerForm customerId={customer.id} />
+          ),
         });
       },
     },

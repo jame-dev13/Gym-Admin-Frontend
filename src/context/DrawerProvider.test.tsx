@@ -2,29 +2,26 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useEffect } from "react";
 import { describe, expect, it } from "vitest";
-import { Drawer } from "@/components/drawer/Drawer";
 import { DrawerProvider } from "./DrawerProvider";
 import { useDrawerContext } from "./useDrawerContext";
 
+type Member = { id: number; name: string };
+
+const MEMBER: Member = { id: 7, name: "Ada Lovelace" };
+
 const StateProbe = () => {
-  const {
-    isOpen,
-    title,
-    description,
-    position,
-    size,
-    openDrawer,
-    closeDrawer,
-    toggleDrawer,
-  } = useDrawerContext();
+  const { isOpen, activeDrawer, openDrawer, closeDrawer } = useDrawerContext();
 
   return (
     <div>
       <p data-testid="drawer-open">{String(isOpen)}</p>
-      <p data-testid="drawer-title">{title}</p>
-      <p data-testid="drawer-description">{description ?? ""}</p>
-      <p data-testid="drawer-position">{position}</p>
-      <p data-testid="drawer-size">{size}</p>
+      <p data-testid="drawer-title">{activeDrawer?.title ?? ""}</p>
+      <p data-testid="drawer-description">{activeDrawer?.description ?? ""}</p>
+      <p data-testid="drawer-position">{activeDrawer?.position ?? ""}</p>
+      <p data-testid="drawer-size">{activeDrawer?.size ?? ""}</p>
+      <div data-testid="drawer-content">
+        {activeDrawer ? activeDrawer.content() : "closed"}
+      </div>
       <button
         type="button"
         onClick={() =>
@@ -33,22 +30,35 @@ const StateProbe = () => {
             description: "Manage preferences",
             position: "left",
             size: "lg",
+            data: MEMBER,
+            render: (member) => <p>Details for {member.name}</p>,
           })
         }
       >
         open settings
       </button>
-      <button type="button" onClick={() => openDrawer({ title: "Members" })}>
+      <button
+        type="button"
+        onClick={() =>
+          openDrawer({
+            title: "Members",
+            data: null,
+            render: () => <p>Members body</p>,
+          })
+        }
+      >
         open members
       </button>
-      <button type="button" onClick={() => openDrawer({ title: "   " })}>
+      <button
+        type="button"
+        onClick={() =>
+          openDrawer({ title: "   ", data: null, render: () => null })
+        }
+      >
         open blank
       </button>
       <button type="button" onClick={closeDrawer}>
         close drawer
-      </button>
-      <button type="button" onClick={toggleDrawer}>
-        toggle drawer
       </button>
     </div>
   );
@@ -62,15 +72,15 @@ const renderHarness = () =>
   );
 
 describe("DrawerProvider", () => {
-  it("is closed with defaults by default", () => {
+  it("is closed with no active drawer by default", () => {
     renderHarness();
 
     expect(screen.getByTestId("drawer-open")).toHaveTextContent("false");
-    expect(screen.getByTestId("drawer-position")).toHaveTextContent("right");
-    expect(screen.getByTestId("drawer-size")).toHaveTextContent("md");
+    expect(screen.getByTestId("drawer-title")).toHaveTextContent("");
+    expect(screen.getByTestId("drawer-content")).toHaveTextContent("closed");
   });
 
-  it("opens with the given title and layout options", async () => {
+  it("opens a drawer and binds its content to the provided data", async () => {
     const user = userEvent.setup();
     renderHarness();
 
@@ -83,9 +93,12 @@ describe("DrawerProvider", () => {
     );
     expect(screen.getByTestId("drawer-position")).toHaveTextContent("left");
     expect(screen.getByTestId("drawer-size")).toHaveTextContent("lg");
+    expect(screen.getByTestId("drawer-content")).toHaveTextContent(
+      "Details for Ada Lovelace",
+    );
   });
 
-  it("replaces the previous config when opened again", async () => {
+  it("replaces the previous drawer and restores defaults", async () => {
     const user = userEvent.setup();
     renderHarness();
 
@@ -94,12 +107,15 @@ describe("DrawerProvider", () => {
 
     expect(screen.getByTestId("drawer-open")).toHaveTextContent("true");
     expect(screen.getByTestId("drawer-title")).toHaveTextContent("Members");
-    // Defaults are restored when the next open omits layout options.
+    expect(screen.getByTestId("drawer-description")).toHaveTextContent("");
     expect(screen.getByTestId("drawer-position")).toHaveTextContent("right");
     expect(screen.getByTestId("drawer-size")).toHaveTextContent("md");
+    expect(screen.getByTestId("drawer-content")).toHaveTextContent(
+      "Members body",
+    );
   });
 
-  it("closes and toggles", async () => {
+  it("closes the open drawer", async () => {
     const user = userEvent.setup();
     renderHarness();
 
@@ -107,20 +123,16 @@ describe("DrawerProvider", () => {
     expect(screen.getByTestId("drawer-open")).toHaveTextContent("true");
 
     await user.click(screen.getByRole("button", { name: "close drawer" }));
-    expect(screen.getByTestId("drawer-open")).toHaveTextContent("false");
 
-    await user.click(screen.getByRole("button", { name: "toggle drawer" }));
-    expect(screen.getByTestId("drawer-open")).toHaveTextContent("true");
-
-    await user.click(screen.getByRole("button", { name: "toggle drawer" }));
     expect(screen.getByTestId("drawer-open")).toHaveTextContent("false");
+    expect(screen.getByTestId("drawer-content")).toHaveTextContent("closed");
   });
 
   it("throws when opened with a blank title", () => {
     const Bad = () => {
       const { openDrawer } = useDrawerContext();
       useEffect(() => {
-        openDrawer({ title: "   " });
+        openDrawer({ title: "   ", data: null, render: () => null });
       }, [openDrawer]);
       return null;
     };
@@ -132,65 +144,6 @@ describe("DrawerProvider", () => {
         </DrawerProvider>,
       ),
     ).toThrow("Drawer title must not be empty");
-  });
-
-  it("drives the presentational Drawer without coupling to it", async () => {
-    const user = userEvent.setup();
-
-    const ConnectedDrawer = () => {
-      const {
-        isOpen,
-        title,
-        position,
-        size,
-        description,
-        showCloseButton,
-        closeOnOverlayClick,
-        openDrawer,
-        closeDrawer,
-      } = useDrawerContext();
-
-      return (
-        <>
-          <button type="button" onClick={() => openDrawer({ title: "Plans" })}>
-            open plans
-          </button>
-          <Drawer
-            open={isOpen}
-            onClose={closeDrawer}
-            title={title}
-            position={position}
-            size={size}
-            description={description}
-            showCloseButton={showCloseButton}
-            closeOnOverlayClick={closeOnOverlayClick}
-          >
-            <p>Drawer body content</p>
-          </Drawer>
-        </>
-      );
-    };
-
-    render(
-      <DrawerProvider>
-        <ConnectedDrawer />
-      </DrawerProvider>,
-    );
-
-    expect(
-      screen.queryByRole("dialog", { name: "Plans" }),
-    ).not.toBeInTheDocument();
-
-    await user.click(screen.getByRole("button", { name: "open plans" }));
-
-    expect(screen.getByRole("dialog", { name: "Plans" })).toBeInTheDocument();
-    expect(screen.getByText("Drawer body content")).toBeInTheDocument();
-
-    await user.click(screen.getByRole("button", { name: "Close dialog" }));
-
-    expect(
-      screen.queryByRole("dialog", { name: "Plans" }),
-    ).not.toBeInTheDocument();
   });
 });
 

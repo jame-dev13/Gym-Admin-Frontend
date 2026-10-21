@@ -3,39 +3,18 @@ import { Drawer } from "./Drawer";
 import { FormSkeleton } from "@/components/skeleton/FormSkeleton";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useDrawerContext } from "@/context/useDrawerContext";
-import { useDrawerRegistry } from "@/hooks/useDrawerRegistry";
-import type { DrawerRegistryConfig } from "@/types/DrawerRegistryTypes";
 
-const LazyFallback = () => <FormSkeleton />;
+export const DrawerHost = () => {
+  const { activeDrawer, closeDrawer } = useDrawerContext();
 
-export function DrawerHost<T extends Record<string, unknown> = Record<string, unknown>>({
-  registry,
-}: { registry: DrawerRegistryConfig }) {
-  const { isOpen, closeDrawer, ...drawerContextOptions } = useDrawerContext();
-  const { entry, key } = useDrawerRegistry<T>(registry);
-
-  if (!isOpen || !entry) {
+  if (!activeDrawer) {
     return null;
   }
 
-  const { component: LazyComponent, drawerOptions } = entry;
-
-  const mergedOptions = {
-    ...drawerContextOptions,
-    ...drawerOptions,
-  };
+  const { content, ...drawerOptions } = activeDrawer;
 
   return (
-    <Drawer
-      open={isOpen}
-      onClose={closeDrawer}
-      title={mergedOptions.title ?? key ?? "Drawer"}
-      position={mergedOptions.position}
-      size={mergedOptions.size}
-      description={mergedOptions.description}
-      showCloseButton={mergedOptions.showCloseButton}
-      closeOnOverlayClick={mergedOptions.closeOnOverlayClick}
-    >
+    <Drawer open onClose={closeDrawer} {...drawerOptions}>
       <ErrorBoundary
         fallback={
           <div
@@ -51,10 +30,8 @@ export function DrawerHost<T extends Record<string, unknown> = Record<string, un
           </div>
         }
       >
-        <Suspense fallback={<LazyFallback />}>
-          <LazyComponent onClose={closeDrawer} />
-        </Suspense>
+        <Suspense fallback={<FormSkeleton />}>{content()}</Suspense>
       </ErrorBoundary>
     </Drawer>
   );
-}
+};

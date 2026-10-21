@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import type { ModalSize } from "@/components/modal/ModalTypes";
-import type { DrawerProps } from "@/components/drawer/DrawerTypes";
 import type { ToastType } from "@/types/Types";
 
 export interface ThemeProviderProps {
@@ -12,10 +11,6 @@ export interface ToastProviderProps {
 }
 
 export interface ModalProviderProps {
-  children: ReactNode;
-}
-
-export interface DrawerProviderProps {
   children: ReactNode;
 }
 
@@ -42,10 +37,4 @@ export interface ToastContextValue {
   hide: () => void;
   pause: () => void;
   resume: () => void;
-}
-
-export interface DrawerContextValue {
-  isOpen: boolean;
-  openDrawer: (props: DrawerProps) => void;
-  closeDrawer: () => void;
 }

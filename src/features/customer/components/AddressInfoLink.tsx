@@ -1,6 +1,6 @@
 import { PopoverLink } from "@/components/popover";
 import type { CustomerResponse } from "@/features/customer/types";
-import { CircleQuestionMark, BookUser } from "lucide-react";
+import { CircleQuestionMark } from "lucide-react";
 import { type FC } from "react";
 
 const ADDRESS_INFO_FALLBACK = {
@@ -40,8 +40,7 @@ export const AddressInfoLink: FC<{ customer: CustomerResponse }> = ({
         </ul>
       )}
     >
-      <BookUser />
-      See Address Details
+      <p>See Address Details</p>
     </PopoverLink>
   );
 };

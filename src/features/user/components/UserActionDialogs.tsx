@@ -8,15 +8,22 @@ import {
   useHardDeleteUser,
   useRecoverUser,
 } from "@/features/user/hooks/useMutateUser";
+import type { Identifiable } from "@/types/Types";
 
 export type UserActionDialogProps = Pick<
   UseConfirmActionUserArgs,
   "hook" | "variant"
->;
+> & {
+  userId: Identifiable["id"];
+};
 
-const UserActionDialog = ({ hook, variant }: UserActionDialogProps) => {
+export type UserActionDialogContentProps = {
+  userId: Identifiable["id"];
+};
+
+const UserActionDialog = ({ hook, variant, userId }: UserActionDialogProps) => {
   const { error, handleOnCancel, isPending, submit } =
-    useConfirmActionUserHandler({ hook, variant });
+    useConfirmActionUserHandler({ hook, variant, userId });
 
   return (
     <UserConfirmDialog
@@ -29,14 +36,20 @@ const UserActionDialog = ({ hook, variant }: UserActionDialogProps) => {
   );
 };
 
-export const UserRecoverDialog = () => (
-  <UserActionDialog hook={useRecoverUser} variant="recover" />
+export const UserRecoverDialog = ({ userId }: UserActionDialogContentProps) => (
+  <UserActionDialog hook={useRecoverUser} variant="recover" userId={userId} />
 );
 
-export const UserDeleteDialog = () => (
-  <UserActionDialog hook={useDeleteUser} variant="delete" />
+export const UserDeleteDialog = ({ userId }: UserActionDialogContentProps) => (
+  <UserActionDialog hook={useDeleteUser} variant="delete" userId={userId} />
 );
 
-export const UserHardDeleteDialog = () => (
-  <UserActionDialog hook={useHardDeleteUser} variant="hard-delete" />
+export const UserHardDeleteDialog = ({
+  userId,
+}: UserActionDialogContentProps) => (
+  <UserActionDialog
+    hook={useHardDeleteUser}
+    variant="hard-delete"
+    userId={userId}
+  />
 );

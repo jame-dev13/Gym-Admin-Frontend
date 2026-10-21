@@ -1,34 +1,44 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
 import { describe, expect, it } from "vitest";
 import { Modal } from "./Modal";
-import { ModalProvider } from "@/context/ModalProvider";
-import { useModalContext } from "@/context/useModalContext";
 
-const Harness = () => {
-  const { openModal } = useModalContext();
+const Harness = ({
+  description,
+  showCloseButton,
+  closeOnOverlayClick,
+}: {
+  description?: string;
+  showCloseButton?: boolean;
+  closeOnOverlayClick?: boolean;
+}) => {
+  const [open, setOpen] = useState(false);
 
   return (
     <>
-      <button type="button" onClick={() => openModal({ title: "Settings" })}>
-        Open settings
+      <button type="button" onClick={() => setOpen(true)}>
+        Open modal
       </button>
-      <Modal title="Settings">
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        title="Settings"
+        description={description}
+        showCloseButton={showCloseButton}
+        closeOnOverlayClick={closeOnOverlayClick}
+      >
         <p>Modal body content</p>
       </Modal>
     </>
   );
 };
 
-const renderHarness = () =>
-  render(
-    <ModalProvider>
-      <Harness />
-    </ModalProvider>,
-  );
+const renderHarness = (props?: Parameters<typeof Harness>[0]) =>
+  render(<Harness {...props} />);
 
 describe("Modal", () => {
-  it("is closed by default", () => {
+  it("renders nothing while closed", () => {
     renderHarness();
 
     expect(
@@ -36,11 +46,11 @@ describe("Modal", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("opens through openModal and exposes title and content", async () => {
+  it("opens and exposes title, description, and content", async () => {
     const user = userEvent.setup();
-    renderHarness();
+    renderHarness({ description: "Manage your preferences" });
 
-    await user.click(screen.getByRole("button", { name: "Open settings" }));
+    await user.click(screen.getByRole("button", { name: "Open modal" }));
 
     const dialog = screen.getByRole("dialog", { name: "Settings" });
     expect(dialog).toBeInTheDocument();
@@ -48,6 +58,7 @@ describe("Modal", () => {
     expect(
       screen.getByRole("heading", { name: "Settings" }),
     ).toBeInTheDocument();
+    expect(screen.getByText("Manage your preferences")).toBeInTheDocument();
     expect(screen.getByText("Modal body content")).toBeInTheDocument();
   });
 
@@ -55,7 +66,7 @@ describe("Modal", () => {
     const user = userEvent.setup();
     renderHarness();
 
-    await user.click(screen.getByRole("button", { name: "Open settings" }));
+    await user.click(screen.getByRole("button", { name: "Open modal" }));
     await user.click(screen.getByRole("button", { name: "Close dialog" }));
 
     expect(
@@ -67,7 +78,7 @@ describe("Modal", () => {
     const user = userEvent.setup();
     renderHarness();
 
-    await user.click(screen.getByRole("button", { name: "Open settings" }));
+    await user.click(screen.getByRole("button", { name: "Open modal" }));
     await user.click(screen.getByTestId("modal-overlay"));
 
     expect(
@@ -75,11 +86,23 @@ describe("Modal", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("keeps the modal open on overlay click when disabled", async () => {
+    const user = userEvent.setup();
+    renderHarness({ closeOnOverlayClick: false });
+
+    await user.click(screen.getByRole("button", { name: "Open modal" }));
+    await user.click(screen.getByTestId("modal-overlay"));
+
+    expect(
+      screen.getByRole("dialog", { name: "Settings" }),
+    ).toBeInTheDocument();
+  });
+
   it("does not close when the dialog panel itself is clicked", async () => {
     const user = userEvent.setup();
     renderHarness();
 
-    await user.click(screen.getByRole("button", { name: "Open settings" }));
+    await user.click(screen.getByRole("button", { name: "Open modal" }));
     await user.click(screen.getByText("Modal body content"));
 
     expect(
@@ -91,7 +114,7 @@ describe("Modal", () => {
     const user = userEvent.setup();
     renderHarness();
 
-    await user.click(screen.getByRole("button", { name: "Open settings" }));
+    await user.click(screen.getByRole("button", { name: "Open modal" }));
     await user.keyboard("{Escape}");
 
     expect(
@@ -103,7 +126,7 @@ describe("Modal", () => {
     const user = userEvent.setup();
     renderHarness();
 
-    const trigger = screen.getByRole("button", { name: "Open settings" });
+    const trigger = screen.getByRole("button", { name: "Open modal" });
     await user.click(trigger);
 
     expect(
@@ -114,17 +137,15 @@ describe("Modal", () => {
 
     expect(trigger).toHaveFocus();
   });
-});
 
-describe("useModalContext", () => {
-  it("throws when used outside of ModalProvider", () => {
-    const Outside = () => {
-      useModalContext();
-      return null;
-    };
+  it("hides the close button on demand", async () => {
+    const user = userEvent.setup();
+    renderHarness({ showCloseButton: false });
 
-    expect(() => render(<Outside />)).toThrow(
-      "useModalContext must be used within a ModalProvider",
-    );
+    await user.click(screen.getByRole("button", { name: "Open modal" }));
+
+    expect(
+      screen.queryByRole("button", { name: "Close dialog" }),
+    ).not.toBeInTheDocument();
   });
 });

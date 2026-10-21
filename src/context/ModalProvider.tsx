@@ -1,65 +1,48 @@
-import { useCallback, useMemo, useState } from "react";
 import type { ReactNode } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { ModalContext } from "./ModalContext";
-import type { OpenModalOptions } from "./ModalContext";
+import type { ActiveModal, OpenModalOptions } from "./ModalContext";
 import type { ModalSize } from "@/components/modal/ModalTypes";
 
 interface ModalProviderProps {
   children: ReactNode;
 }
 
-interface ModalConfig {
-  title: string;
-  description?: string;
-  size: ModalSize;
-  showCloseButton: boolean;
-  closeOnOverlayClick: boolean;
-}
+const DEFAULT_SIZE: ModalSize = "md";
 
-const DEFAULT_CONFIG: ModalConfig = {
-  title: "",
-  description: undefined,
-  size: "md",
-  showCloseButton: true,
-  closeOnOverlayClick: true,
-};
+/**
+ * Binds `data` to its `render` at the call site, so the stored content is
+ * self-contained and the non-generic context never needs an assertion.
+ */
+const toActiveModal = <T,>(options: OpenModalOptions<T>): ActiveModal => ({
+  title: options.title,
+  description: options.description,
+  size: options.size ?? DEFAULT_SIZE,
+  showCloseButton: options.showCloseButton ?? true,
+  closeOnOverlayClick: options.closeOnOverlayClick ?? true,
+  content: () => options.render(options.data),
+});
 
 export const ModalProvider = ({ children }: ModalProviderProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [config, setConfig] = useState<ModalConfig>(DEFAULT_CONFIG);
+  const [activeModal, setActiveModal] = useState<ActiveModal | null>(null);
 
-  const openModal = useCallback((options: OpenModalOptions) => {
+  const openModal = useCallback(<T,>(options: OpenModalOptions<T>) => {
     if (!options.title.trim()) {
       throw new Error("Modal title must not be empty");
     }
-    setConfig({
-      title: options.title,
-      description: options.description,
-      size: options.size ?? DEFAULT_CONFIG.size,
-      showCloseButton:
-        options.showCloseButton ?? DEFAULT_CONFIG.showCloseButton,
-      closeOnOverlayClick:
-        options.closeOnOverlayClick ?? DEFAULT_CONFIG.closeOnOverlayClick,
-    });
-    setIsOpen(true);
+    setActiveModal(toActiveModal(options));
   }, []);
 
-  const closeModal = useCallback(() => {
-    setIsOpen(false);
-  }, []);
+  const closeModal = useCallback(() => setActiveModal(null), []);
 
   const value = useMemo(
     () => ({
-      isOpen,
-      title: config.title,
-      description: config.description,
-      size: config.size,
-      showCloseButton: config.showCloseButton,
-      closeOnOverlayClick: config.closeOnOverlayClick,
+      isOpen: activeModal !== null,
+      activeModal,
       openModal,
       closeModal,
     }),
-    [isOpen, config, openModal, closeModal],
+    [activeModal, openModal, closeModal],
   );
 
   return (

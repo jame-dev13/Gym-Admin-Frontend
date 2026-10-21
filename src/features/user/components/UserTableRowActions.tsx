@@ -1,13 +1,12 @@
 import { Pencil, Trash2 } from "lucide-react";
 import { lazy } from "react";
 import { TableRowActions } from "@/components/table/TableRowActions";
-import { useSelectionContext } from "@/context/useSelectionContext";
 import { useEntityDomainContext } from "@/context/useEntityDomainContext";
-import { useActionContext } from "@/context/useActionContext";
 import { useDrawerContext } from "@/context/useDrawerContext";
 import { useModalContext } from "@/context/useModalContext";
 import type { RowAction } from "@/types/Types";
 import type { UserResponse } from "../types";
+import { getUserConfirmDialogConfig } from "@/features/user/services/user-confirm-dialog-config";
 
 const LazyUserUpdateForm = lazy(() =>
   import("@/features/user/components/UserUpdateForm").then((mod) => ({
@@ -15,10 +14,16 @@ const LazyUserUpdateForm = lazy(() =>
   })),
 );
 
+const LazyUserDeleteDialog = lazy(() =>
+  import("@/features/user/components/UserActionDialogs").then((mod) => ({
+    default: mod.UserDeleteDialog,
+  })),
+);
+
+const DELETE_DIALOG_CONFIG = getUserConfirmDialogConfig().delete;
+
 export const UserTableRowActions = ({ row }: { row: UserResponse }) => {
-  const { setCurrentSelection } = useSelectionContext();
   const { entity } = useEntityDomainContext();
-  const { setAction } = useActionContext();
   const { isOpen: isDrawerOpen, openDrawer } = useDrawerContext();
   const { isOpen: isModalOpen, openModal } = useModalContext();
 
@@ -48,11 +53,11 @@ export const UserTableRowActions = ({ row }: { row: UserResponse }) => {
       destructive: true,
       disabled: isModalOpen,
       onSelect: (r) => {
-        setCurrentSelection({ id: r.id });
-        setAction("delete");
         openModal({
-          title: "Remove User",
-          description: `Are you sure you want to remove ${r.name}?`,
+          title: DELETE_DIALOG_CONFIG.title,
+          description: DELETE_DIALOG_CONFIG.description,
+          data: r,
+          render: (user) => <LazyUserDeleteDialog userId={user.id} />,
         });
       },
     },

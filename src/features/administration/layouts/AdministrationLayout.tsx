@@ -8,9 +8,6 @@ import { AdministrationProvider } from "@/context/AdministrationProvider";
 import { DrawerHost } from "@/components/drawer/DrawerHost";
 import { ModalHost } from "@/components/modal/ModalHost";
 import { PopoverHost } from "@/components/popover/PopoverHost";
-import { getModalRegistry } from "@/features/administration/services/ModalRegistry";
-
-const MODAL_REGISTRY = getModalRegistry();
 
 const AdministrationLayout = () => {
   return (
@@ -38,7 +35,7 @@ const AdministrationLayout = () => {
         </div>
       </div>
       <DrawerHost />
-      <ModalHost registry={MODAL_REGISTRY} />
+      <ModalHost />
       <PopoverHost />
     </AdministrationProvider>
   );

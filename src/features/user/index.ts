@@ -13,6 +13,6 @@ export {
   UserRecoverDialog,
   UserDeleteDialog,
   UserHardDeleteDialog,
+  type UserActionDialogContentProps,
   type UserActionDialogProps,
 } from "@/features/user/components/UserActionDialogs";
-export { userModalRegistry, getUserModalRegistry } from "@/features/user/services/userModalRegistry";

@@ -1,5 +1,4 @@
 import { useModalContext } from "@/context/useModalContext";
-import { useSelectionContext } from "@/context/useSelectionContext";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { useToastFactory } from "@/hooks/useToastFactory";
 import type { UserConfirmVariant } from "@/features/user/types";
@@ -21,6 +20,7 @@ export type UseConfirmActionUserArgs = {
     unknown
   >;
   variant: UserConfirmVariant;
+  userId: Identifiable["id"];
 };
 
 const resolveVariantSentence = (
@@ -29,7 +29,7 @@ const resolveVariantSentence = (
   switch (variant) {
     case "delete":
       return "deleted";
-    case "hard-delete":                 
+    case "hard-delete":
       return "completely erased";
     case "recover":
       return "recovered.";
@@ -39,36 +39,34 @@ const resolveVariantSentence = (
 export const useConfirmActionUserHandler = ({
   hook,
   variant,
+  userId,
 }: UseConfirmActionUserArgs) => {
-  const { currentSelection: id, clearSelection } = useSelectionContext();
   const { closeModal } = useModalContext();
   const { showSuccess, showError, showInfo } = useToastFactory();
   const sentence = resolveVariantSentence(variant);
-  if (!id || !id.id) {
+
+  if (!userId) {
     throw new Error("Id is required.");
   }
 
+  const id: Identifiable = { id: userId };
   const hookRef = hook(id);
 
   const { error, isPending, submit } = useMutationHandler({
-    id: id,
+    id,
     mutationHook: () => hookRef,
     resultHandlers: {
       onSuccess: () => showSuccess(`User ${sentence} with success.`),
       onError: (err) =>
         showError(`Cannot perform ${variant} operation: ${err?.message}`),
-      onSettled: () => {
-        clearSelection();
-        closeModal();
-      },
+      onSettled: closeModal,
     },
   });
 
   const handleOnCancel = useCallback(() => {
-    clearSelection();
     closeModal();
     showInfo("Operation cancelled.");
-  }, [clearSelection, closeModal, showInfo]);
+  }, [closeModal, showInfo]);
 
   return { error, isPending, submit, handleOnCancel: handleOnCancel };
 };

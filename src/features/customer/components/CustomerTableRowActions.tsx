@@ -1,9 +1,7 @@
 import { TableRowActions } from "@/components/table/TableRowActions";
-import { useActionContext } from "@/context/useActionContext";
 import { useDrawerContext } from "@/context/useDrawerContext";
 import { useEntityDomainContext } from "@/context/useEntityDomainContext";
 import { useModalContext } from "@/context/useModalContext";
-import { useSelectionContext } from "@/context/useSelectionContext";
 import type { CustomerResponse } from "@/features/customer/types";
 import type { RowAction } from "@/types/Types";
 import { Edit, Trash } from "lucide-react";
@@ -15,12 +13,16 @@ const LazyUpdateCustomerForm = lazy(() =>
   })),
 );
 
+const LazyDeleteCustomerDialog = lazy(() =>
+  import("@/features/customer/components/DeleteCustomerDialog").then((mod) => ({
+    default: mod.DeleteCustomerDialog,
+  })),
+);
+
 export const CustomerTableControls: FC<{ row: CustomerResponse }> = ({
   row,
 }) => {
-  const { setCurrentSelection: setId } = useSelectionContext();
   const { entity } = useEntityDomainContext();
-  const { setAction } = useActionContext();
   const { openDrawer, isOpen: isDrawerOpen } = useDrawerContext();
   const { openModal, isOpen: isModalOpen } = useModalContext();
 
@@ -53,12 +55,17 @@ export const CustomerTableControls: FC<{ row: CustomerResponse }> = ({
       destructive: true,
       disabled: isModalOpen,
       onSelect: (r) => {
-        setId({ id: r.id });
-        setAction("delete");
         openModal({
           title: "Remove Customer",
           size: "sm",
           description: `Removing ${r.customerName} data from application.`,
+          data: r,
+          render: (customer) => (
+            <LazyDeleteCustomerDialog
+              customerId={customer.id}
+              customerName={customer.customerName}
+            />
+          ),
         });
       },
     },

@@ -3,36 +3,18 @@ import { Modal } from "./Modal";
 import { FormSkeleton } from "@/components/skeleton/FormSkeleton";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useModalContext } from "@/context/useModalContext";
-import { useModalRegistry } from "@/hooks/useModalRegistry";
-import type { ModalRegistryConfig } from "@/types/ModalRegistryTypes";
 
-const LazyFallback = () => <FormSkeleton />;
+export const ModalHost = () => {
+  const { activeModal, closeModal } = useModalContext();
 
-export function ModalHost<T extends Record<string, unknown> = Record<string, unknown>>({
-  registry,
-}: { registry: ModalRegistryConfig }) {
-  const { isOpen, closeModal, ...modalContextOptions } = useModalContext();
-  const { entry, key } = useModalRegistry<T>(registry);
-
-  if (!isOpen || !entry) {
+  if (!activeModal) {
     return null;
   }
 
-  const { component: LazyComponent, modalOptions } = entry;
-
-  const mergedOptions = {
-    ...modalContextOptions,
-    ...modalOptions,
-  };
+  const { content, ...modalOptions } = activeModal;
 
   return (
-    <Modal
-      title={mergedOptions.title ?? key ?? "Modal"}
-      size={mergedOptions.size}
-      description={mergedOptions.description}
-      showCloseButton={mergedOptions.showCloseButton}
-      closeOnOverlayClick={mergedOptions.closeOnOverlayClick}
-    >
+    <Modal open onClose={closeModal} {...modalOptions}>
       <ErrorBoundary
         fallback={
           <div
@@ -48,10 +30,8 @@ export function ModalHost<T extends Record<string, unknown> = Record<string, unk
           </div>
         }
       >
-        <Suspense fallback={<LazyFallback />}>
-          <LazyComponent onClose={closeModal} />
-        </Suspense>
+        <Suspense fallback={<FormSkeleton />}>{content()}</Suspense>
       </ErrorBoundary>
     </Modal>
   );
-}
+};

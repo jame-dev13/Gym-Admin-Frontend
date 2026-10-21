@@ -53,6 +53,22 @@ describe("Sidebar", () => {
     expect(membersLink.getAttribute("aria-current")).toBe("page");
   });
 
+  it("notifies the consumer when a navigation link is activated", async () => {
+    const user = userEvent.setup();
+    const onNavigate = vi.fn();
+    renderSidebar(
+      <Sidebar
+        brand={<span>Gym Admin</span>}
+        sections={sections}
+        onNavigate={onNavigate}
+      />,
+    );
+
+    await user.click(screen.getByRole("link", { name: "Members" }));
+
+    expect(onNavigate).toHaveBeenCalledTimes(1);
+  });
+
   it("collapses to an icon-only rail hiding labels and group captions", async () => {
     const user = userEvent.setup();
     renderSidebar(
@@ -133,7 +149,8 @@ describe("Sidebar", () => {
     );
     const aside = container.querySelector("aside");
     expect(aside?.className).toContain("flex-col");
-    expect(aside?.className).toContain("tab:h-screen");
+    expect(aside?.className).toContain("tab:h-full");
+    expect(aside?.className).toContain("tab:overflow-hidden");
     const nav = screen.getByRole("navigation", { name: "Sidebar" });
     expect(nav.className).toContain("flex-row");
     expect(nav.className).toContain("overflow-x-auto");

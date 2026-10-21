@@ -25,6 +25,7 @@ export const Sidebar: FC<SidebarProps> = ({
   defaultCollapsed = false,
   collapsed,
   onCollapsedChange,
+  onNavigate,
   "aria-label": ariaLabel = "Sidebar",
   className = "",
 }) => {
@@ -52,7 +53,7 @@ export const Sidebar: FC<SidebarProps> = ({
       <>
         {renderLinkIcon(link)}
         {!isCollapsed && (
-          <span className="whitespace-nowrap">{link.label}</span>
+          <span className="whitespace-nowrap tab:truncate">{link.label}</span>
         )}
       </>
     );
@@ -63,6 +64,7 @@ export const Sidebar: FC<SidebarProps> = ({
         key={key}
         href={link.href}
         title={title}
+        onClick={onNavigate}
         className={`${linkBase} text-text-secondary ${collapsedRail}`}
       >
         {content}
@@ -72,6 +74,7 @@ export const Sidebar: FC<SidebarProps> = ({
         key={key}
         to={link.to}
         title={title}
+        onClick={onNavigate}
         className={({ isActive }) =>
           `${linkBase} ${collapsedRail} ${isActive ? "bg-surface-over text-accent" : "text-text-secondary"}`
         }
@@ -83,7 +86,7 @@ export const Sidebar: FC<SidebarProps> = ({
 
   return (
     <aside
-      className={`sticky top-0 z-40 flex w-full shrink-0 flex-col border-b border-border bg-surface-raised text-text-primary tab:h-screen tab:border-b-0 tab:border-r tab:transition-[width] tab:duration-200 ${
+      className={`sticky top-0 z-40 flex w-full shrink-0 flex-col border-b border-border bg-surface-raised text-text-primary tab:h-full tab:min-h-0 tab:overflow-hidden tab:border-b-0 tab:border-r tab:transition-[width] tab:duration-200 ${
         isCollapsed ? "tab:w-20" : "tab:w-64"
       } ${className}`}
     >
@@ -110,14 +113,14 @@ export const Sidebar: FC<SidebarProps> = ({
 
       <nav
         aria-label={ariaLabel}
-        className={`min-w-0 flex-1 flex-row items-center gap-2.5 overflow-x-auto px-3 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden tab:min-h-0 tab:flex-col tab:items-stretch tab:gap-5 tab:overflow-x-visible tab:overflow-y-auto tab:py-4 ${
+        className={`min-w-0 flex-1 flex-row items-center gap-2.5 overflow-x-auto px-3 py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden tab:min-h-0 tab:flex-col tab:items-stretch tab:gap-5 tab:overflow-x-hidden tab:overflow-y-auto tab:overscroll-contain tab:py-4 ${
           isCollapsed ? "hidden tab:flex" : "flex"
         }`}
       >
         {sections.map((section, index) => (
           <div key={section.label ?? `section-${index}`} className="flex flex-row items-center gap-1.5 tab:flex-col tab:items-stretch">
             {section.label && !isCollapsed && (
-              <p className="hidden px-3 text-xs font-semibold uppercase tracking-wider text-text-tertiary tab:block tab:sticky tab:top-0 tab:bg-surface-raised tab:py-1">
+              <p className="hidden px-3 text-xs font-semibold uppercase tracking-wider text-text-tertiary tab:sticky tab:top-0 tab:block tab:truncate tab:bg-surface-raised tab:py-1">
                 {section.label}
               </p>
             )}

@@ -9,6 +9,7 @@ export interface SidebarProps {
   defaultCollapsed?: boolean;
   collapsed?: boolean;
   onCollapsedChange?: (collapsed: boolean) => void;
+  onNavigate?: () => void;
   "aria-label"?: string;
   className?: string;
 }

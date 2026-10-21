@@ -1,6 +1,7 @@
 import { Dumbbell } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Sidebar } from "@/components/sidebar/Sidebar";
+import { useSelectionContext } from "@/context/useSelectionContext";
 import { ADMINISTRATION_SECTIONS } from "@/features/administration/services/AdministrationSections";
 
 const brand = (
@@ -25,11 +26,16 @@ const collapsedBrand = (
   </Link>
 );
 
-export const AdministrationSidebar = () => (
-  <Sidebar
-    aria-label="Sidebar"
-    brand={brand}
-    collapsedBrand={collapsedBrand}
-    sections={ADMINISTRATION_SECTIONS}
-  />
-);
+export const AdministrationSidebar = () => {
+  const { clearSelection } = useSelectionContext();
+
+  return (
+    <Sidebar
+      aria-label="Sidebar"
+      brand={brand}
+      collapsedBrand={collapsedBrand}
+      sections={ADMINISTRATION_SECTIONS}
+      onNavigate={clearSelection}
+    />
+  );
+};

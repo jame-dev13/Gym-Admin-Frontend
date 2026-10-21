@@ -1,19 +1,17 @@
-import axios, { type AxiosRequestConfig } from "axios";
+import { authClient } from "@/services/api/api.instance";
 
 const REFRESH_PATH = import.meta.env.VITE_AUTH_REFRESH as string;
 const LOGOUT_PATH = import.meta.env.VITE_AUTH_LOGOUT as string;
 
 const handleInternalRefresh = async () => {
-  try {
-    await axios.post(REFRESH_PATH);
-  } catch {
-    throw new Error("Cannot perform internal refresh.");
-  }
+  await authClient.post(REFRESH_PATH);
 };
 
 const handleLogout = async () => {
   try {
-    await axios.post(LOGOUT_PATH, {}, { _retry: false } as AxiosRequestConfig);
+    await authClient.post(LOGOUT_PATH);
+  } catch {
+    // Local logout must still happen when the server cannot end the session.
   } finally {
     cleanUp();
     window.location.assign("/");

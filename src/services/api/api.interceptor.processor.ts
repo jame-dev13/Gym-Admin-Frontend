@@ -24,7 +24,7 @@ export const processQueue = (err: unknown | null = null) => {
 export const enqueueRequest = (req: () => Promise<unknown>) => {
   return new Promise((resolve, reject) => {
     failedQueue.push({
-      resolve: () => resolve(req),
+      resolve: () => resolve(req()),
       reject: (err) => reject(err),
     });
   });

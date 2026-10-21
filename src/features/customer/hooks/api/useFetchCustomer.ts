@@ -16,7 +16,7 @@ export const useGetCustomerPage = (params?: Record<string, unknown>) =>
   });
 
 export const useGetCustomer = ({ id }: Identifiable) =>
-  useFetchMapping({
+  useFetchMapping<CustomerResponse>({
     uri: pathBuilder.detail(BASE, id),
     queryKey: [...administration.detail({ id })],
     options: { enabled: !!id },

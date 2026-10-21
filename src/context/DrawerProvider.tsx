@@ -1,76 +1,50 @@
-import { useCallback, useMemo, useState } from "react";
 import type { ReactNode } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { DrawerContext } from "./DrawerContext";
-import type { OpenDrawerOptions } from "./DrawerContext";
+import type { ActiveDrawer, OpenDrawerOptions } from "./DrawerContext";
 import type { DrawerPosition, DrawerSize } from "@/types/Types";
 
 interface DrawerProviderProps {
   children: ReactNode;
 }
 
-interface DrawerConfig {
-  title: string;
-  description?: string;
-  position: DrawerPosition;
-  size: DrawerSize;
-  showCloseButton: boolean;
-  closeOnOverlayClick: boolean;
-}
+const DEFAULT_POSITION: DrawerPosition = "right";
+const DEFAULT_SIZE: DrawerSize = "md";
 
-const DEFAULT_CONFIG: DrawerConfig = {
-  title: "",
-  description: undefined,
-  position: "right",
-  size: "md",
-  showCloseButton: true,
-  closeOnOverlayClick: true,
-};
+/**
+ * Binds `data` to its `render` at the call site, so the stored content is
+ * self-contained and the non-generic context never needs an assertion.
+ */
+const toActiveDrawer = <T,>(options: OpenDrawerOptions<T>): ActiveDrawer => ({
+  title: options.title,
+  description: options.description,
+  position: options.position ?? DEFAULT_POSITION,
+  size: options.size ?? DEFAULT_SIZE,
+  showCloseButton: options.showCloseButton ?? true,
+  closeOnOverlayClick: options.closeOnOverlayClick ?? true,
+  content: () => options.render(options.data),
+});
 
 export const DrawerProvider = ({ children }: DrawerProviderProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [config, setConfig] = useState<DrawerConfig>(DEFAULT_CONFIG);
+  const [activeDrawer, setActiveDrawer] = useState<ActiveDrawer | null>(null);
 
-  const openDrawer = useCallback((options: OpenDrawerOptions) => {
+  const openDrawer = useCallback(<T,>(options: OpenDrawerOptions<T>) => {
     if (!options.title.trim()) {
       throw new Error("Drawer title must not be empty");
     }
-    setConfig({
-      title: options.title,
-      description: options.description,
-      position: options.position ?? DEFAULT_CONFIG.position,
-      size: options.size ?? DEFAULT_CONFIG.size,
-      showCloseButton:
-        options.showCloseButton ?? DEFAULT_CONFIG.showCloseButton,
-      closeOnOverlayClick:
-        options.closeOnOverlayClick ?? DEFAULT_CONFIG.closeOnOverlayClick,
-    });
-    setIsOpen(true);
+    setActiveDrawer(toActiveDrawer(options));
   }, []);
 
-  const closeDrawer = useCallback(() => {
-    setIsOpen(false);
-  }, []);
+  const closeDrawer = useCallback(() => setActiveDrawer(null), []);
 
-  const toggleDrawer = useCallback(() => {
-    setIsOpen((previous) => !previous);
-  }, []);
-
-  // Stable callbacks + memoized value: without them every provider render
-  // would hand consumers a new context identity and re-render them all.
   const value = useMemo(
     () => ({
-      isOpen,
-      title: config.title,
-      description: config.description,
-      position: config.position,
-      size: config.size,
-      showCloseButton: config.showCloseButton,
-      closeOnOverlayClick: config.closeOnOverlayClick,
+      isOpen: activeDrawer !== null,
+      activeDrawer,
       openDrawer,
       closeDrawer,
-      toggleDrawer,
     }),
-    [isOpen, config, openDrawer, closeDrawer, toggleDrawer],
+    [activeDrawer, openDrawer, closeDrawer],
   );
 
   return (

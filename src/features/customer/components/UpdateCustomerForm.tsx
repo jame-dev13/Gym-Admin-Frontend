@@ -1,20 +1,26 @@
 import { FormSkeleton } from "@/components/skeleton";
-import { useSelectionContext } from "@/context/useSelectionContext";
 import { CustomerForm } from "@/features/customer/components/CustomerForm";
 import { useGetCustomer } from "@/features/customer/hooks/api/useFetchCustomer";
 import { useUpdateCustomerHandler } from "@/features/customer/hooks/handlers/useUpdateCustomerHandler";
+import type { Identifiable } from "@/types/Types";
 import { requireId } from "@/utils/utils";
 
-export const UpdateCustomerForm = () => {
-  const { currentSelection: id } = useSelectionContext();
+export type UpdateCustomerFormProps = {
+  customerId: Identifiable["id"];
+};
+
+export const UpdateCustomerForm = ({
+  customerId,
+}: UpdateCustomerFormProps) => {
+  const id: Identifiable = { id: customerId };
 
   void requireId(id);
 
-  const { data, isLoading, error: fetchError } = useGetCustomer(id!);
+  const { data, isLoading, error: fetchError } = useGetCustomer(id);
 
   const customer = data?.data;
 
-  const { submit, isPending } = useUpdateCustomerHandler();
+  const { submit, isPending } = useUpdateCustomerHandler(customerId);
 
   if (isLoading) {
     return <FormSkeleton showLegend fields={3} />;

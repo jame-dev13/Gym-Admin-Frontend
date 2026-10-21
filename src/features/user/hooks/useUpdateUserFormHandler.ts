@@ -1,19 +1,19 @@
 import { useDrawerContext } from "@/context/useDrawerContext";
-import { useSelectionContext } from "@/context/useSelectionContext";
 import { useGetUser } from "@/features/user/hooks/useFetchUser";
 import { useUpdateUser } from "@/features/user/hooks/useMutateUser";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { useToastFactory } from "@/hooks/useToastFactory";
+import type { Identifiable } from "@/types/Types";
 
-export const useUpdateUserFormHandler = () => {
-  const { currentSelection: id, clearSelection } = useSelectionContext();
+export const useUpdateUserFormHandler = (userId: Identifiable["id"]) => {
   const { closeDrawer } = useDrawerContext();
   const { showError, showSuccess } = useToastFactory();
 
-  if (!id || !id.id) {
+  if (!userId) {
     throw new Error("User id is required");
   }
 
+  const id: Identifiable = { id: userId };
   const { data, isLoading, isError, error } = useGetUser(id);
   const hook = useUpdateUser(id);
   const {
@@ -21,7 +21,7 @@ export const useUpdateUserFormHandler = () => {
     isPending,
     error: updateError,
   } = useMutationHandler({
-    id: id ?? "",
+    id,
     mutationHook: () => hook,
     payloadBuilder: (fd) => ({
       name: String(fd?.get("name")),
@@ -33,10 +33,7 @@ export const useUpdateUserFormHandler = () => {
       onError: (err) => {
         showError(`Cannot update user info: ${err?.message}`);
       },
-      onSettled: () => {
-        clearSelection();
-        closeDrawer();
-      },
+      onSettled: closeDrawer,
     },
   });
 

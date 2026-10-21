@@ -8,13 +8,9 @@ import { AdministrationProvider } from "@/context/AdministrationProvider";
 import { DrawerHost } from "@/components/drawer/DrawerHost";
 import { ModalHost } from "@/components/modal/ModalHost";
 import { PopoverHost } from "@/components/popover/PopoverHost";
-import { getDrawerRegistry } from "@/features/administration/services/DrawerRegistry";
 import { getModalRegistry } from "@/features/administration/services/ModalRegistry";
 
-const [DRAWER_REGISTRY, MODAL_REGISTRY] = [
-  getDrawerRegistry(),
-  getModalRegistry(),
-];
+const MODAL_REGISTRY = getModalRegistry();
 
 const AdministrationLayout = () => {
   return (
@@ -41,7 +37,7 @@ const AdministrationLayout = () => {
           </div>
         </div>
       </div>
-      <DrawerHost registry={DRAWER_REGISTRY} />
+      <DrawerHost />
       <ModalHost registry={MODAL_REGISTRY} />
       <PopoverHost />
     </AdministrationProvider>

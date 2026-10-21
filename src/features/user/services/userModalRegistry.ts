@@ -1,6 +1,9 @@
 import { lazy } from "react";
 import type { ModalRegistryConfig } from "@/types/ModalRegistryTypes";
 import type { OpenModalOptions } from "@/context/ModalContext";
+import { getUserConfirmDialogConfig } from "@/features/user/services/user-confirm-dialog-config";
+
+const CONFIRM_DIALOG_CONFIG = getUserConfirmDialogConfig();
 
 const BASE_MODAL_OPTIONS: Partial<OpenModalOptions> = {
   size: "md",
@@ -17,8 +20,8 @@ export const userModalRegistry: ModalRegistryConfig["services:user"] = {
     ),
     modalOptions: {
       ...BASE_MODAL_OPTIONS,
-      title: "Delete user",
-      description: "The user will lose access immediately. You can recover this user later.",
+      title: CONFIRM_DIALOG_CONFIG.delete.title,
+      description: CONFIRM_DIALOG_CONFIG.delete.description,
     },
   },
   recover: {
@@ -29,8 +32,8 @@ export const userModalRegistry: ModalRegistryConfig["services:user"] = {
     ),
     modalOptions: {
       ...BASE_MODAL_OPTIONS,
-      title: "Recover user",
-      description: "The user will regain access to the application depending on his own role.",
+      title: CONFIRM_DIALOG_CONFIG.recover.title,
+      description: CONFIRM_DIALOG_CONFIG.recover.description,
     },
   },
   "hard-delete": {
@@ -41,8 +44,8 @@ export const userModalRegistry: ModalRegistryConfig["services:user"] = {
     ),
     modalOptions: {
       ...BASE_MODAL_OPTIONS,
-      title: "Permanently delete user",
-      description: "The user will be permanently removed. This action cannot be undone.",
+      title: CONFIRM_DIALOG_CONFIG["hard-delete"].title,
+      description: CONFIRM_DIALOG_CONFIG["hard-delete"].description,
     },
   },
 };

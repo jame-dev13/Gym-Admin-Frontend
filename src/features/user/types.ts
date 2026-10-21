@@ -1,5 +1,7 @@
 import type { Identifiable } from "@/types/Types";
 
+export type UserConfirmVariant = "recover" | "delete" | "hard-delete";
+
 export type UserRequest = Readonly<{
   name: string;
   email: string;

@@ -1,58 +1,26 @@
 import { UserConfirmDialog } from "@/features/user/components/UserConfirmDialog";
-import { useConfirmActionUserHandler } from "@/features/user/hooks/useConfirmActionUserHandler";
+import {
+  useConfirmActionUserHandler,
+  type UseConfirmActionUserArgs,
+} from "@/features/user/hooks/useConfirmActionUserHandler";
 import {
   useDeleteUser,
   useHardDeleteUser,
   useRecoverUser,
 } from "@/features/user/hooks/useMutateUser";
 
+export type UserActionDialogProps = Pick<
+  UseConfirmActionUserArgs,
+  "hook" | "variant"
+>;
 
-export const UserRecoverDialog = () => {
-  const { error, handleOnCancel, isPending, submit } = useConfirmActionUserHandler({
-    hook: useRecoverUser,
-    variant: "recover"
-  })
-
-  return (
-    <UserConfirmDialog
-      variant="recover"
-      isPending={isPending}
-      error={error?.message ?? null}
-      onCancel={handleOnCancel}
-      onConfirmSubmit={submit}
-    />
-  );
-};
-
-export const UserDeleteDialog = () => {
-const { error, handleOnCancel, isPending, submit } =
-  useConfirmActionUserHandler({
-    hook: useDeleteUser,
-    variant: "delete",
-  });
-
-  return (
-    <UserConfirmDialog
-      variant="delete"
-      isPending={isPending}
-      error={error?.message ?? null}
-      onCancel={handleOnCancel}
-      onConfirmSubmit={submit}
-    />
-  );
-};
-
-export const UserHardDeleteDialog = () => {
+const UserActionDialog = ({ hook, variant }: UserActionDialogProps) => {
   const { error, handleOnCancel, isPending, submit } =
-    useConfirmActionUserHandler({
-      hook: useHardDeleteUser,
-      variant: "hard-delete",
-    });
+    useConfirmActionUserHandler({ hook, variant });
 
-  
   return (
     <UserConfirmDialog
-      variant="hard-delete"
+      variant={variant}
       isPending={isPending}
       error={error?.message ?? null}
       onCancel={handleOnCancel}
@@ -60,3 +28,15 @@ export const UserHardDeleteDialog = () => {
     />
   );
 };
+
+export const UserRecoverDialog = () => (
+  <UserActionDialog hook={useRecoverUser} variant="recover" />
+);
+
+export const UserDeleteDialog = () => (
+  <UserActionDialog hook={useDeleteUser} variant="delete" />
+);
+
+export const UserHardDeleteDialog = () => (
+  <UserActionDialog hook={useHardDeleteUser} variant="hard-delete" />
+);

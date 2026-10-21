@@ -2,6 +2,7 @@ import { useModalContext } from "@/context/useModalContext";
 import { useSelectionContext } from "@/context/useSelectionContext";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { useToastFactory } from "@/hooks/useToastFactory";
+import type { UserConfirmVariant } from "@/features/user/types";
 import type {
   ApiErrorResponse,
   Identifiable,
@@ -10,7 +11,7 @@ import type {
 import type { UseMutationResult } from "@tanstack/react-query";
 import { useCallback } from "react";
 
-type UseConfirmActionUserArgs = {
+export type UseConfirmActionUserArgs = {
   hook: (
     id: Identifiable,
   ) => UseMutationResult<
@@ -19,7 +20,7 @@ type UseConfirmActionUserArgs = {
     undefined,
     unknown
   >;
-  variant: "recover" | "delete" | "hard-delete";
+  variant: UserConfirmVariant;
 };
 
 const resolveVariantSentence = (

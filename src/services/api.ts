@@ -23,7 +23,7 @@ const interceptorHandler = getInterceptorHandler();
 api.interceptors.response.use(
   (res) => res,
   async (err: AxiosError) => {
-    const originalRequest = err.config as RequestType;
+    const originalRequest = err.config as RequestType | undefined;
     const apiError = extractApiError(err);
     
     if (isTooManyRequest(err)) {
@@ -37,6 +37,7 @@ api.interceptors.response.use(
     }
     
     if (
+      !originalRequest ||
       shouldSkip(originalRequest) ||
       !shouldReject(err) ||
       originalRequest._retry
@@ -44,17 +45,16 @@ api.interceptors.response.use(
       return Promise.reject(apiError);
     }
 
+    originalRequest._retry = true;
+
     if (isRefreshing()) {
       return enqueueRequest(() => api(originalRequest));
     }
 
     setIsRefreshing(true);
-    originalRequest._retry = true;
 
     try {
       await interceptorHandler.refresh();
-      processQueue(null);
-      return api(originalRequest);
     } catch (refreshError) {
       processQueue(refreshError);
       await interceptorHandler.logout();
@@ -62,6 +62,9 @@ api.interceptors.response.use(
     } finally {
       setIsRefreshing(false);
     }
+
+    processQueue(null);
+    return api(originalRequest);
   },
 );
 

@@ -1,6 +1,6 @@
 import type { InternalAxiosRequestConfig } from "axios";
 
-export type RequestType = InternalAxiosRequestConfig & { _retry: boolean };
+export type RequestType = InternalAxiosRequestConfig & { _retry?: boolean };
 
 let refreshing = false;
 

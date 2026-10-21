@@ -16,7 +16,7 @@ export type CustomerUpdateRequest = {
 export type CustomerResponse = Identifiable & {
   customerName: string;
   customerEmail: string;
-  phoneContact: string;
+  contact: string;
   addressInfo?: AddressInfo;
 };
 

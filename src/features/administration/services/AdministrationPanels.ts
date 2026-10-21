@@ -37,13 +37,22 @@ export const administrationPanelRoutes: AdministrationPanelRoute[] = [
     title: "Users",
     description:
       "Create, edit, and deactivate gym staff and administrator accounts. Management tools will be added here.",
-    Element: lazy(() => import("@/features/user/layouts/UserLayout").then(mod => ({ default: mod.UserLayout })))
+    Element: lazy(() =>
+      import("@/features/user/layouts/UserLayout").then((mod) => ({
+        default: mod.UserLayout,
+      })),
+    ),
   },
   {
     path: "services/customers",
     title: "Customers",
     description:
       "Create, edit, and manage customer profiles and memberships. Management tools will be added here.",
+    Element: lazy(() =>
+      import("@/features/customer/layouts/CustomerTableLayout").then((mod) => ({
+        default: mod.CustomerTableLayout,
+      })),
+    ),
   },
   {
     path: "services/subscriptions",

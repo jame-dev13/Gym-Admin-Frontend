@@ -1,6 +1,7 @@
 import { Badge } from "@/components/badge/Badge";
 import type { TableRendererConfig } from "@/components/table/tableRendererConfig";
 import { AddressInfoLink } from "@/features/customer/components/AddressInfoLink";
+import { CustomerTableControls } from "@/features/customer/components/CustomerTableRowActions";
 import { useGetCustomerPage } from "@/features/customer/hooks/api/useFetchCustomer";
 import type { CustomerResponse } from "@/features/customer/types";
 import type { Column } from "@/types/Types";
@@ -11,31 +12,42 @@ const columns: Column<CustomerResponse>[] = [
     header: "Customer",
     render: (_, { id, customerName }) => {
       return (
-        <Badge variant="emerald" className="capitalize" title={customerName}>
-          <span className="text-text-secondary">{id}</span>
-          <span>{customerName}</span>
+        <Badge variant="slate" className="capitalize" title={customerName}>
+          <span className="text-text-secondary mr-2">
+            {"#"}
+            {id}
+          </span>
+          {customerName}
         </Badge>
       );
     },
   },
   {
     key: "customerEmail",
-    header: "Customer's Contact",
-    render: (_, { customerEmail, phoneContact }) => {
+    header: "Customer Email",
+    render: (_, { customerEmail }) => {
       return (
         <Badge
           variant="blue"
-          leading="dot"
-          title={`Customer's Mail: ${customerEmail}, Customer's phone: ${phoneContact ?? "-"}`}
+          leading="initial"
+          title={`Customer's Mail: ${customerEmail}`}
         >
-          <span>
-            <small>Email: </small>
-            <strong>{customerEmail}</strong>
-          </span>
-          <span>
-            <small>Phone: </small>
-            {phoneContact ?? "-"}
-          </span>
+          {customerEmail}
+        </Badge>
+      );
+    },
+  },
+  {
+    key: "contact",
+    header: "Customer phone",
+    render: (_, { contact }) => {
+      return (
+        <Badge
+          variant="amber"
+          leading="dot"
+          title={`Customer's Mail: ${contact}`}
+        >
+          <strong>{contact}</strong>
         </Badge>
       );
     },
@@ -45,17 +57,24 @@ const columns: Column<CustomerResponse>[] = [
     header: "Address Info",
     render: (_, row) => <AddressInfoLink customer={row} />,
   },
+  {
+    key: "Actions",
+    kind: "action",
+    header: "Actions",
+    renderActions: (row) => <CustomerTableControls row={row} />,
+  },
 ];
 
 const customerTableConfig: TableRendererConfig<CustomerResponse> = {
   usePage: useGetCustomerPage,
   columns: columns,
   title: "Customers",
+  description: "Application customers.",
   tableOptions: {
     "aria-label": "Customer's data Table",
     cardTitleKey: "customerName",
     emptyMessage: "Customers not found..",
-    size: "sm",
+    size: "md",
     striped: true,
     stickyHeader: true,
     responsive: "cards",
@@ -63,7 +82,7 @@ const customerTableConfig: TableRendererConfig<CustomerResponse> = {
   loadingMessage: "Loading Customer's data",
   search: {
     enabled: true,
-    placeholder: "....Search in customers.",
+    placeholder: "Search in customers....",
   },
   sort: {
     properties: ["id", "customerEmail"],

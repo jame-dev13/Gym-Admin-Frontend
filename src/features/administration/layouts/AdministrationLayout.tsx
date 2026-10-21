@@ -19,11 +19,11 @@ const [DRAWER_REGISTRY, MODAL_REGISTRY] = [
 const AdministrationLayout = () => {
   return (
     <AdministrationProvider>
-      <div className="flex min-h-screen flex-col bg-surface text-text-primary">
+      <div className="flex min-h-screen flex-col bg-surface text-text-primary tab:h-dvh tab:overflow-hidden">
         <AdministrationNavbar />
-        <div className="flex flex-1 flex-col tab:flex-row">
+        <div className="flex flex-1 flex-col tab:min-h-0 tab:flex-row">
           <AdministrationSidebar />
-          <div className="flex min-w-0 flex-1 flex-col">
+          <div className="flex min-w-0 flex-1 flex-col tab:min-h-0 tab:overflow-y-auto">
             <main className="flex-1 px-4 py-6 tab:px-8">
               <Suspense
                 fallback={

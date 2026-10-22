@@ -68,7 +68,6 @@ export const userTableConfig: TableRendererConfig<UserResponse> = {
   usePage: useGetUserPage,
   columns: userColumns,
   title: "Users",
-  description: "People with access to the administration panel",
   tableOptions: {
     caption: "System users",
     emptyMessage: "No users found",

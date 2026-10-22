@@ -20,6 +20,8 @@ export type SubmitBtnProps = Omit<ButtonBaseProps, "type"> & {
 
 export type CommandBtnProps = ButtonBaseProps & {
   type?: "button" | "reset";
+  iconOnly?: boolean;
+  title?: string;
 };
 
 export interface SocialAuthButtonsProps {
@@ -61,6 +63,7 @@ export interface RefreshBtnProps {
   cooldownMs?: number;
   showCountdown?: boolean;
   label?: string;
+  title?: string;
   children?: ReactNode;
   disabled?: boolean;
   className?: string;

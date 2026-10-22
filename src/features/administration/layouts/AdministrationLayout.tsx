@@ -16,8 +16,8 @@ const AdministrationLayout = () => {
         <AdministrationNavbar />
         <div className="flex flex-1 flex-col tab:min-h-0 tab:flex-row">
           <AdministrationSidebar />
-          <div className="flex min-w-0 flex-1 flex-col tab:min-h-0 tab:overflow-y-auto">
-            <main className="flex-1 px-4 py-6 tab:px-8">
+          <div className="flex min-w-0 flex-1 flex-col tab:min-h-0">
+            <main className="flex-1 px-4 py-6 tab:min-h-0 tab:overflow-y-auto tab:px-8">
               <Suspense
                 fallback={
                   <PageSkeleton

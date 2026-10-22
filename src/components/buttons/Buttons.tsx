@@ -92,8 +92,6 @@ const commandStyles = [
   'text-text-primary',
   'border',
   'border-border',
-  'px-4',
-  'py-2',
   'rounded-lg',
   'hover:bg-surface-over',
   'hover:border-accent',
@@ -103,11 +101,16 @@ const commandStyles = [
   'disabled:cursor-not-allowed',
 ].join(' ')
 
+const commandTextStyles = 'px-4 py-2'
+const commandIconOnlyStyles = 'size-9 shrink-0 p-0'
+
 export const CommandBtn = ({
   type = 'button',
   Icon,
   onClick,
   'aria-label': ariaLabel,
+  title,
+  iconOnly = false,
   children,
   disabled = false,
   className = '',
@@ -115,13 +118,14 @@ export const CommandBtn = ({
   return (
     <button
       type={type}
-      className={`${commandStyles} ${className}`}
+      className={`${commandStyles} ${iconOnly ? commandIconOnlyStyles : commandTextStyles} ${className}`}
       onClick={onClick}
       aria-label={ariaLabel}
+      title={title}
       disabled={disabled}
     >
       {Icon && <Icon size={18} aria-hidden="true" />}
-      {children}
+      {!iconOnly && children}
     </button>
   )
 }
@@ -294,13 +298,12 @@ const refreshStyles = [
   'inline-flex',
   'items-center',
   'justify-center',
-  'gap-2',
+  'size-9',
+  'shrink-0',
   'bg-surface-raised',
   'text-text-primary',
   'border',
   'border-border',
-  'px-4',
-  'py-2',
   'rounded-lg',
   'hover:bg-surface-over',
   'hover:border-accent',
@@ -323,6 +326,7 @@ export const RefreshBtn = ({
   cooldownMs = DEFAULT_REFRESH_COOLDOWN_MS,
   showCountdown = true,
   label,
+  title,
   children,
   disabled = false,
   className = '',
@@ -369,28 +373,33 @@ export const RefreshBtn = ({
     }, 1000)
   }
 
-  const content = isCoolingDown && showCountdown ? (
-    <span aria-live="polite">Retry in {remainingSeconds}s</span>
-  ) : (
-    (children ?? label ?? 'Refresh')
-  )
+  const labelText =
+    label ??
+    (typeof children === 'string' || typeof children === 'number'
+      ? String(children)
+      : 'Refresh')
+  const accessibleLabel = ariaLabel ?? labelText
+  const buttonTitle =
+    title ??
+    (isCoolingDown && showCountdown
+      ? `Available again in ${remainingSeconds}s`
+      : labelText)
 
   return (
     <button
       type="button"
       className={`${refreshStyles} ${className}`}
       onClick={handleClick}
-      aria-label={ariaLabel ?? (typeof content === 'string' ? content : 'Refresh')}
+      aria-label={accessibleLabel}
       aria-disabled={isDisabled}
       disabled={isDisabled}
-      title={isCoolingDown ? `Available again in ${remainingSeconds}s` : undefined}
+      title={buttonTitle}
     >
       <Icon
         size={18}
         aria-hidden="true"
         className={isCoolingDown ? 'animate-spin' : undefined}
       />
-      {content}
     </button>
   )
 }

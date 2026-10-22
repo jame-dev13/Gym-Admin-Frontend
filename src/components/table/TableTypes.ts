@@ -33,7 +33,6 @@ export interface TableRowActionsProps<T> {
 
 export type TableLayoutProps<T extends Identifiable> = {
   title: string;
-  description?: string;
   data: T[];
   columns: Column<T>[];
   searchValue?: string;

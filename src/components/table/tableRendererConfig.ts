@@ -61,7 +61,6 @@ export interface TableRendererConfig<T extends Identifiable> {
   usePage: PageQueryHook<T>;
   columns: Column<T>[];
   title: string;
-  description?: string;
   tableOptions?: TableRendererTableConfig<T>;
   search?: TableRendererSearchConfig;
   sort?: TableRendererSortConfig<T>;

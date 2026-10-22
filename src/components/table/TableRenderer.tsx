@@ -46,7 +46,6 @@ export function TableRenderer<T extends Identifiable>({
     usePage,
     columns,
     title,
-    description,
     tableOptions = {},
     search = { enabled: false },
     sort,
@@ -90,7 +89,6 @@ export function TableRenderer<T extends Identifiable>({
   return (
     <TableLayout
       title={title}
-      description={description}
       data={rows}
       columns={columns}
       searchValue={searchState.value}

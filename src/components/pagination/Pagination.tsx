@@ -15,14 +15,18 @@ const stepStyles = [
   "shrink-0",
   "items-center",
   "justify-center",
-  "rounded-md",
+  "rounded-lg",
+  "border",
+  "border-transparent",
   "text-text-secondary",
-  "transition-colors",
+  "transition-all",
   "duration-200",
-  "hover:bg-surface-over",
-  "hover:text-text-primary",
+  "enabled:hover:border-border-emphasis",
+  "enabled:hover:bg-surface-over",
+  "enabled:hover:text-accent",
+  "enabled:active:scale-95",
   "disabled:cursor-not-allowed",
-  "disabled:opacity-40",
+  "disabled:opacity-35",
   focusRing,
 ].join(" ");
 
@@ -66,6 +70,7 @@ export const Pagination = ({
         onClick={() => goTo(currentPage + (target === "previous" ? -1 : 1))}
         disabled={disabled || atBound}
         aria-label={`Go to ${target} page`}
+        title={target === "previous" ? "Previous page" : "Next page"}
         className={stepStyles}
       >
         <Icon size={16} aria-hidden="true" />
@@ -74,15 +79,28 @@ export const Pagination = ({
   };
 
   return (
-    <nav aria-label={ariaLabel} className={`inline-flex items-center ${className}`}>
-      <div className="inline-flex max-w-full items-center gap-1 rounded-lg border border-border bg-surface-raised p-1">
+    <nav
+      aria-label={ariaLabel}
+      className={`inline-flex max-w-full items-center ${className}`}
+    >
+      <div className="inline-flex max-w-full items-center gap-1 rounded-xl border border-border bg-surface-over/40 p-1 shadow-sm">
         {step("previous")}
         <span
           aria-live="polite"
-          className="min-w-16 shrink-0 px-2 text-center text-sm font-medium whitespace-nowrap tabular-nums text-text-primary"
+          className="mx-0.5 inline-flex min-w-28 shrink-0 items-baseline justify-center gap-1.5 whitespace-nowrap rounded-lg bg-surface-raised/70 px-2.5 py-1.5 tabular-nums"
         >
-          <span aria-hidden="true">
-            {currentPage} / {totalElements}
+          <span
+            aria-hidden="true"
+            className="inline-flex items-baseline gap-1.5"
+          >
+            <span className="text-xs font-medium text-text-tertiary">Page</span>
+            <span className="text-sm font-semibold text-text-primary">
+              {currentPage}
+            </span>
+            <span className="text-xs text-text-tertiary">of</span>
+            <span className="text-sm font-semibold text-text-secondary">
+              {totalElements}
+            </span>
           </span>
           <span className="sr-only">
             Page {currentPage} of {totalElements}

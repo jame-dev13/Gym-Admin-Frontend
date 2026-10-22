@@ -113,6 +113,13 @@
     padding: 2.5rem 1rem;
     text-align: center;
   }
+
+  /* Card mode needs the TableLayout body, not the table wrapper, to own
+   * vertical scrolling. This outweighs Tailwind's overflow utility on the
+   * wrapper. */
+  .table-layout-embed > .table-cards-root {
+    overflow: visible;
+  }
 }
 
 /* When the table is hosted inside TableLayout it shares the layout's single
@@ -120,13 +127,20 @@
  * single-class utilities, so the table renders flush instead of drawing a
  * second nested border/radius.
  *
- * Overflow stays visible on the table wrapper so TableLayout's body remains
- * the only scroll container. That keeps the horizontal scrollbar at the
- * bottom of the visible region instead of the bottom of the full row list. */
+ * On desktop, overflow stays visible on the table wrapper so TableLayout's
+ * body remains the only scroll container. That keeps the horizontal
+ * scrollbar at the bottom of the visible region instead of the bottom of the
+ * full row list. Below the desktop breakpoint, the table keeps its own
+ * horizontal scrolling so mobile content is not clipped by the fused card. */
 .table-layout-embed > div {
-  overflow: visible;
   border: 0;
   border-radius: 0;
   background: transparent;
   box-shadow: none;
+}
+
+@media (min-width: 942px) {
+  .table-layout-embed > div {
+    overflow: visible;
+  }
 }

@@ -63,6 +63,50 @@ describe("TableLayout", () => {
     expect(toolbar).toHaveClass("sticky", "top-0", "left-0", "z-10");
   });
 
+  it("fuses the table body and pagination footer into a single card", () => {
+    renderWithProviders(<TableLayout {...baseProps} />);
+
+    const card = screen.getByTestId("table-layout-card");
+    const body = screen.getByTestId("table-layout-body");
+    const footer = screen.getByTestId("table-layout-footer");
+
+    expect(card).toHaveClass(
+      "rounded-2xl",
+      "border",
+      "border-border",
+      "bg-surface-raised",
+      "shadow-sm",
+      "tab:overflow-hidden",
+      "tab:flex-1",
+    );
+    expect(card).not.toHaveClass("overflow-hidden");
+    expect(card).toContainElement(body);
+    expect(card).toContainElement(footer);
+    expect(screen.getByTestId("table-layout-toolbar")).toHaveClass(
+      "rounded-t-2xl",
+    );
+    expect(footer).toHaveClass("border-t", "rounded-b-2xl");
+    expect(footer).not.toHaveClass("rounded-2xl");
+    expect(
+      screen.getByRole("navigation", { name: "Pagination" }),
+    ).toBeInTheDocument();
+  });
+
+  it("gives the card body its own vertical scroll on mobile", () => {
+    renderWithProviders(<TableLayout {...baseProps} />);
+
+    const body = screen.getByTestId("table-layout-body");
+
+    expect(body).toHaveClass(
+      "max-h-[calc(100dvh-13rem)]",
+      "overflow-auto",
+      "tab:max-h-none",
+      "tab:flex-1",
+      "tab:overscroll-contain",
+    );
+    expect(body).not.toHaveClass("overscroll-contain");
+  });
+
   it("fills the available desktop height instead of capping the scroll region", () => {
     renderWithProviders(<TableLayout {...baseProps} />);
 
@@ -99,6 +143,9 @@ describe("TableLayout", () => {
     expect(screen.getByRole("status")).toBeInTheDocument();
     expect(
       screen.queryByRole("navigation", { name: "Pagination" }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId("table-layout-footer"),
     ).not.toBeInTheDocument();
   });
 

@@ -22,8 +22,12 @@ describe("Pagination", () => {
   it("renders the current position as current over total", () => {
     renderPagination({ currentPage: 1 });
 
-    expect(screen.getByText("1 / 10")).toBeInTheDocument();
+    expect(screen.getByText("1")).toBeInTheDocument();
+    expect(screen.getByText("10")).toBeInTheDocument();
     expect(screen.getByText("Page 1 of 10")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Go to previous page" }),
+    ).toHaveAttribute("title", "Previous page");
   });
 
   it("moves to the previous page", async () => {

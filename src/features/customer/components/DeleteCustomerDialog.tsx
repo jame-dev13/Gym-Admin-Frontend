@@ -19,7 +19,7 @@ export const DeleteCustomerDialog = ({
   return (
     <ConfirmDialog
       title="Remove customer"
-      description={`Removing ${customerName} data from application.`}
+      description={`Proceed to remove customer ${customerName} from the application?`}
       confirmLabel="Remove customer"
       pendingLabel="Removing…"
       tone="destructive"

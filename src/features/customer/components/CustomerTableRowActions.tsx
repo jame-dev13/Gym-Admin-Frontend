@@ -58,7 +58,7 @@ export const CustomerTableControls: FC<{ row: CustomerResponse }> = ({
         openModal({
           title: "Remove Customer",
           size: "sm",
-          description: `Removing ${r.customerName} data from application.`,
+          description: "The customer will lose access and interaction for Customer's based operations in the App.",
           data: r,
           render: (customer) => (
             <LazyDeleteCustomerDialog

@@ -21,14 +21,14 @@ export const useUpdateCustomerHandler = (
     id,
     mutationHook: () => mutate,
     payloadBuilder: (fd) => ({
-      phoneContact: String(fd?.get("phoneContact")),
+      phoneContact: String(fd?.get("phoneContact")).split(" ").join(""),
       addressInfo: {
         city: String(fd?.get("city") ?? ""),
         locality: String(fd?.get("locality") ?? ""),
         colony: String(fd?.get("colony") ?? ""),
         street: String(fd?.get("street") ?? ""),
         homeNumber: String(fd?.get("homeNumber") ?? ""),
-        cp: String(fd?.get("cp") ?? ""),
+        cp: String(fd?.get("cp") ?? "" ),
       },
     }),
     resultHandlers: {
@@ -48,12 +48,12 @@ export const useUpdateCurrentCustomerHandler = () => {
     payloadBuilder: (fd) => ({
       phoneContact: String(fd?.get("phoneContact")),
       addressInfo: {
-        city: String(fd?.get("city") ?? ""),
-        locality: String(fd?.get("locality") ?? ""),
-        colony: String(fd?.get("colony") ?? ""),
-        street: String(fd?.get("street") ?? ""),
-        homeNumber: String(fd?.get("homeNumber") ?? ""),
-        cp: String(fd?.get("cp") ?? ""),
+        city: String(fd?.get("city") ),
+        locality: String(fd?.get("locality") ),
+        colony: String(fd?.get("colony") ),
+        street: String(fd?.get("street") ),
+        homeNumber: String(fd?.get("homeNumber")?.toString()),
+        cp: String(fd?.get("cp")?.toString()),
       },
     }),
     resultHandlers: {

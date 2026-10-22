@@ -21,7 +21,7 @@ export type PageQueryHook<T extends Identifiable> = (
 ) => UseQueryResult<Page<T>, ApiErrorResponse>;
 
 /** String keys of `T` that can be sent as a `sort` field. */
-export type SortableField<T> = Extract<keyof T, string>;
+export type SortableField<T> = Extract<keyof T, string> | string;
 
 /** Backend query-param names. Defaults follow Spring Pageable conventions. */
 export interface TableQueryParamNames {

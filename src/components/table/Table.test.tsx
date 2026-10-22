@@ -121,6 +121,14 @@ describe("Table", () => {
     ).toBeInTheDocument();
   });
 
+  it("keeps the full table width on desktop so columns are not compressed", () => {
+    render(<Table data={data} columns={columns} caption="Members" />);
+
+    expect(screen.getByRole("table", { name: "Members" })).toHaveClass(
+      "tab:min-w-max",
+    );
+  });
+
   it("supports aria-label without a visible caption", () => {
     render(
       <Table data={data} columns={columns} aria-label="Members table" />,

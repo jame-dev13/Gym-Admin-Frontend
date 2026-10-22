@@ -46,6 +46,8 @@ export const UserTableActions = () => {
           Icon={action.Icon}
           onClick={action.onSelect}
           aria-label={action.label}
+          title={action.label}
+          iconOnly
           disabled={action.disabled}
         >
           {action.label}

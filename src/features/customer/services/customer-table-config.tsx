@@ -69,7 +69,6 @@ const customerTableConfig: TableRendererConfig<CustomerResponse> = {
   usePage: useGetCustomerPage,
   columns: columns,
   title: "Customers",
-  description: "Application customers.",
   tableOptions: {
     "aria-label": "Customer's data Table",
     cardTitleKey: "customerName",

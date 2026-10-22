@@ -73,7 +73,7 @@ function TableComponent<T extends Identifiable>({
     >
       <table
         aria-label={ariaLabel}
-        className={`w-full min-w-full border-collapse text-sm ${isCards ? "table-cards" : ""}`}
+        className={`w-full min-w-full border-collapse text-sm tab:min-w-max ${isCards ? "table-cards" : ""}`}
       >
         {caption && <caption className="sr-only">{caption}</caption>}
         <thead>

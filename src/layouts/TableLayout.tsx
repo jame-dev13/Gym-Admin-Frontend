@@ -13,7 +13,6 @@ const DEFAULT_LOADING_MESSAGE = "Loading table data…";
 
 export function TableLayout<T extends Identifiable>({
   title,
-  description,
   data,
   columns,
   searchValue,
@@ -50,18 +49,18 @@ export function TableLayout<T extends Identifiable>({
     <section
       aria-labelledby={titleId}
       aria-busy={isLoading || undefined}
-      className={`flex flex-col gap-4 ${className}`}
+      className={`flex flex-col gap-4 tab:h-full tab:min-h-0 ${className}`}
     >
       <div
         data-testid="table-layout-body"
-        className="max-h-160 overflow-auto overscroll-contain rounded-2xl border border-border bg-surface-raised shadow-sm"
+        className="min-h-0 overflow-auto overscroll-contain rounded-2xl border border-border bg-surface-raised shadow-sm tab:flex-1"
       >
         {/* Sticky inside the scroll container so controls stay reachable
             while the rows scroll underneath. Solid backing keeps the bar
             readable over sliding content. */}
         <div
           data-testid="table-layout-toolbar"
-          className="sticky top-0 z-10 border-b border-border bg-surface-raised/95 backdrop-blur-sm"
+          className="sticky top-0 left-0 z-10 border-b border-border bg-surface-raised/95 backdrop-blur-sm"
         >
           <div className="flex flex-col gap-3 px-4 py-4 sm:px-5 tab:flex-row tab:items-start tab:justify-between">
             <div className="min-w-0">
@@ -71,25 +70,22 @@ export function TableLayout<T extends Identifiable>({
               >
                 {title}
               </h2>
-              {description && (
-                <p className="mt-1 max-w-prose text-sm text-text-secondary">
-                  {description}
-                </p>
-              )}
             </div>
-            {(controls !== undefined || onRefetch !== undefined) && (
+            {(controls || onRefetch) && (
               <div
                 data-testid="table-layout-controls"
                 className="flex shrink-0 flex-col gap-2 tab:flex-row tab:items-center"
               >
                 {controls}
-                {onRefetch !== undefined && (
-                  <RefreshBtn
-                    onClick={() => {
-                      void onRefetch();
-                    }}
-                    disabled={disabled || isRefetching}
-                  />
+                {onRefetch && (
+                  <div>
+                    <RefreshBtn
+                      onClick={() => {
+                        void onRefetch();
+                      }}
+                      disabled={disabled || isRefetching}
+                    />
+                  </div>
                 )}
               </div>
             )}
@@ -119,7 +115,9 @@ export function TableLayout<T extends Identifiable>({
                 <div className="w-full tab:w-72 tab:shrink-0">
                   <SearchInput
                     value={searchValue}
-                    onChange={(event) => onSearchChange?.(event.currentTarget.value)}
+                    onChange={(event) =>
+                      onSearchChange?.(event.currentTarget.value)
+                    }
                     onSearch={(value) => onSearchSubmit?.(value)}
                     placeholder={searchPlaceholder}
                     disabled={disabled}
@@ -131,11 +129,17 @@ export function TableLayout<T extends Identifiable>({
         </div>
         <div className="table-layout-embed">
           {errorMessage ? (
-            <p role="alert" className="px-4 py-12 text-center text-sm text-text-secondary">
+            <p
+              role="alert"
+              className="px-4 py-12 text-center text-sm text-text-secondary"
+            >
               {errorMessage}
             </p>
           ) : isLoading && data.length === 0 ? (
-            <p role="status" className="px-4 py-12 text-center text-sm text-text-secondary">
+            <p
+              role="status"
+              className="px-4 py-12 text-center text-sm text-text-secondary"
+            >
               {loadingMessage}
             </p>
           ) : (
@@ -157,7 +161,7 @@ export function TableLayout<T extends Identifiable>({
         </div>
       </div>
       {hasPages && (
-        <div className="flex justify-center pt-1 tab:justify-end">
+        <div className="flex shrink-0 justify-center tab:justify-end">
           <Pagination
             totalElements={totalPages}
             currentPage={currentPage}

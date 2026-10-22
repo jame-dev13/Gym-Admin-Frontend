@@ -27,7 +27,6 @@ const sortOptions = [
 
 const baseProps = {
   title: "Members",
-  description: "Everyone with an active membership",
   data,
   columns,
   searchPlaceholder: "Search members...",
@@ -44,14 +43,11 @@ beforeEach(() => {
 });
 
 describe("TableLayout", () => {
-  it("renders the visible title, description, table, and pagination", () => {
+  it("renders the visible title, table, and pagination", () => {
     renderWithProviders(<TableLayout {...baseProps} />);
 
     expect(
       screen.getByRole("heading", { name: "Members" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("Everyone with an active membership"),
     ).toBeInTheDocument();
     expect(
       screen.getByRole("table", { name: "Gym members" }),
@@ -64,13 +60,15 @@ describe("TableLayout", () => {
     renderWithProviders(<TableLayout {...baseProps} />);
 
     const toolbar = screen.getByTestId("table-layout-toolbar");
-    expect(toolbar).toHaveClass("sticky", "top-0", "z-10");
+    expect(toolbar).toHaveClass("sticky", "top-0", "left-0", "z-10");
   });
 
-  it("caps the scroll region with a fixed max height", () => {
+  it("fills the available desktop height instead of capping the scroll region", () => {
     renderWithProviders(<TableLayout {...baseProps} />);
 
-    expect(screen.getByTestId("table-layout-body")).toHaveClass("max-h-160");
+    const body = screen.getByTestId("table-layout-body");
+    expect(body).toHaveClass("min-h-0", "tab:flex-1");
+    expect(body).not.toHaveClass("max-h-160");
   });
 
   it("reports search typing and submit to the consumer", async () => {
@@ -190,6 +188,17 @@ describe("TableLayout refresh slot", () => {
     await user.click(screen.getByRole("button", { name: "Refresh" }));
 
     expect(onRefetch).toHaveBeenCalledTimes(1);
+  });
+
+  it("renders the refresh control as an icon-only button with a title", () => {
+    renderWithProviders(
+      <TableLayout {...baseProps} onRefetch={vi.fn()} />,
+    );
+
+    const refresh = screen.getByRole("button", { name: "Refresh" });
+
+    expect(refresh).toHaveAttribute("title", "Refresh");
+    expect(refresh).not.toHaveTextContent("Refresh");
   });
 
   it("disables the refresh button while a refetch is in flight", () => {

@@ -59,6 +59,13 @@ export const administrationPanelRoutes: AdministrationPanelRoute[] = [
     title: "Subscriptions",
     description:
       "Create, edit, and cancel subscription plans and assignments. Management tools will be added here.",
+    Element: lazy(() =>
+      import("@/features/subscription/layouts/SubscriptionLayout").then(
+        (mod) => ({
+          default: mod.SubscriptionLayout,
+        }),
+      ),
+    ),
   },
   {
     path: "services/audit-logs",

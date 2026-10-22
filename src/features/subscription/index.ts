@@ -30,6 +30,11 @@ export {
   DeleteSubscriptionDialog,
   type DeleteSubscriptionDialogProps,
 } from "@/features/subscription/components/DeleteSubscriptionDialog";
+export { PeriodDetailsLink } from "@/features/subscription/components/PeriodDetailsLink";
+export { SubscriptionTableActions } from "@/features/subscription/components/SubscriptionTableActions";
+export { SubscriptionTableRowActions } from "@/features/subscription/components/SubscriptionTableRowActions";
+export { SubscriptionLayout } from "@/features/subscription/layouts/SubscriptionLayout";
+export { getSubscriptionConfig } from "@/features/subscription/services/subscription-table-config";
 export {
   useGetSubscription,
   useGetSubscriptionPage,

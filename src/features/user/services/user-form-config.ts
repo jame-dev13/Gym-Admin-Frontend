@@ -2,7 +2,20 @@ import { EmailInput, PasswordInput, TextInput } from "@/components/input/Input";
 import { RoleSelect } from "@/features/user/components/UserSelects";
 import type { UserRequest, UserUpdateRequest } from "@/features/user/types";
 
-const userFormConfig = [
+type UserFormFieldConfig = {
+  key: string;
+  label: string;
+  name: keyof UserRequest;
+  Field:
+    | typeof TextInput
+    | typeof EmailInput
+    | typeof PasswordInput
+    | typeof RoleSelect;
+  updatable: boolean;
+  ariaLabel: string;
+};
+
+const userFormConfig: readonly UserFormFieldConfig[] = [
   {
     key: "name-field",
     label: "Name",
@@ -30,6 +43,7 @@ const userFormConfig = [
   {
     key: "roles-field",
     label: "Roles",
+    name: "roles",
     Field: RoleSelect,
     updatable: true,
     ariaLabel: "Role selector.",

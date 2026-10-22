@@ -28,7 +28,8 @@ export const UserUpdateForm = ({ userId }: UserUpdateFormProps) => {
     <UserForm
       isPending={isPending || isLoading}
       onSubmit={submit}
-      userData={user}
+      mode="update"
+      data={user}
     />
   );
 };

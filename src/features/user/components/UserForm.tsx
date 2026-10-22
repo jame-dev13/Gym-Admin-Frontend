@@ -1,72 +1,128 @@
-import React, { Fragment, useMemo } from "react";
+import React, { Fragment, type FC } from "react";
 import { UserPlus, Save } from "lucide-react";
 import { AppForm } from "@/components/form/AppForm";
 import { Fieldset } from "@/components/form/Fieldset";
 import { SubmitBtn } from "@/components/buttons/Buttons";
 import type { UserResponse, UserUpdateRequest } from "@/features/user/types";
-import { getUserFormConfig } from "@/features/user/services/UserFormConfig";
+import { getUserFormConfig } from "@/features/user/services/user-form-config";
 
-export type UserFormProps = {
+type FormBase = {
   onSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void;
   isPending: boolean;
-  userData?: UserResponse;
 };
+type CreateForm = FormBase & {
+  mode: "create";
+};
+
+type UpdateForm = FormBase & { mode: "update"; data: UserResponse };
+
+export type UserFormProps = CreateForm | UpdateForm;
 
 const { create: createConfig, update: updateConfig } = getUserFormConfig();
 
-export const UserForm = ({ onSubmit, userData, isPending }: UserFormProps) => {
-  const isEditMode = !!userData;
-  const user = useMemo<UserUpdateRequest | undefined>(() => {
-    if (!userData) return undefined;
-    return {
-      name: userData.name,
-      email: userData.email,
-      roles: userData.role,
-    };
-  }, [userData]);
+export const UserForm = (props: UserFormProps) => {
+  const { isPending, mode, onSubmit } = props;
 
-  const config = isEditMode ? updateConfig : createConfig;
+  if (mode === "create")
+    return (
+      <UserCreateFormTemplate
+        isPending={isPending}
+        mode={mode}
+        onSubmit={onSubmit}
+      />
+    );
+
+  const { data } = props;
+
   return (
-    <AppForm
+    <UserUpdateFormTemplate
+      data={data}
+      isPending={isPending}
+      mode={mode}
       onSubmit={onSubmit}
-      noValidate
-      className="gap-3"
-      key={userData?.id ?? "Creating-key"}
-    >
-      <Fieldset legend={!isEditMode ? "New user" : "Edit user"}>
-        {config.map(({ key, ariaLabel, label, name, Field }) => {
+    />
+  );
+};
+
+const UserCreateFormTemplate: FC<CreateForm> = ({
+  isPending,
+  mode,
+  onSubmit,
+}) => {
+  if (mode !== "create") throw new Error("Create mode is unset.");
+  return (
+    <AppForm onSubmit={onSubmit}>
+      <Fieldset legend="New User">
+        {createConfig.map(({ key, label, name, ariaLabel, Field }) => (
+          <Fragment key={key}>
+            <Field
+              label={label}
+              name={name}
+              aria-label={ariaLabel}
+              className="mb-1"
+            />
+          </Fragment>
+        ))}
+      </Fieldset>
+      <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+        <SubmitBtn
+          Icon={UserPlus}
+          aria-label="User create form submit button"
+          pendingLabel="Creating user...."
+          isPending={isPending}
+        >
+          Create User
+        </SubmitBtn>
+      </div>
+    </AppForm>
+  );
+};
+
+const UserUpdateFormTemplate: FC<UpdateForm> = ({
+  isPending,
+  mode,
+  data,
+  onSubmit,
+}) => {
+  if (mode !== "update") throw new Error("Update mode is unset.");
+
+  const user: UserUpdateRequest = {
+    name: data.name,
+    email: data.email,
+    roles: data.role,
+  };
+
+  return (
+    <AppForm onSubmit={onSubmit}>
+      <Fieldset legend="Edit User" key={data.id}>
+        {updateConfig.map(({ key, label, name, ariaLabel, Field }) => {
+          const value = resolveValue(user[name]);
           return (
             <Fragment key={key}>
               <Field
                 label={label}
                 name={name}
-                defaultValue={
-                  isEditMode
-                    ? resolveValue(
-                        user?.[name as keyof UserUpdateRequest] ?? "",
-                      )
-                    : ""
-                }
+                defaultValue={value}
                 aria-label={ariaLabel}
-                className="mb-2"
+                className="mb-1"
               />
             </Fragment>
           );
         })}
-        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-          <SubmitBtn
-            Icon={!isEditMode ? UserPlus : Save}
-            aria-label={`Submit ${isEditMode ? "User update form button" : "User create form button"}`}
-            isPending={isPending}
-          >
-            {!isEditMode ? "Create user" : "Save changes"}
-          </SubmitBtn>
-        </div>
       </Fieldset>
+      <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+        <SubmitBtn
+          Icon={Save}
+          aria-label="User edit form submit button"
+          pendingLabel="Editing user...."
+          isPending={isPending}
+        >
+          Edit User
+        </SubmitBtn>
+      </div>
     </AppForm>
   );
 };
 
-const resolveValue = (value: string | string[]) => {
-  return typeof value === "string" ? String(value) : value.join(", ");
-};
+const resolveValue = (value: UserUpdateRequest[keyof UserUpdateRequest]) =>
+  Array.isArray(value) ? (value[0] ?? "") : value;

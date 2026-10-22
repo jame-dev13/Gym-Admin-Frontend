@@ -1,6 +1,7 @@
 import { Dumbbell } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ThemeBtn } from "@/components/buttons/Buttons";
+import { LogoutBtn } from "@/components/buttons/LogoutBtn";
 import { Navbar } from "@/components/navbar/Navbar";
 
 export const AdministrationNavbar = () => (
@@ -19,6 +20,11 @@ export const AdministrationNavbar = () => (
       </Link>
     }
     links={[]}
-    actions={<ThemeBtn />}
+    actions={
+      <>
+        <ThemeBtn />
+        <LogoutBtn />
+      </>
+    }
   />
 );

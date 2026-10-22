@@ -77,3 +77,7 @@ export interface BurgerBtnProps {
 export interface ThemeBtnProps {
   className?: string;
 }
+
+export interface LogoutBtnProps {
+  className?: string;
+}

@@ -48,6 +48,14 @@ describe("AdministrationLayout", () => {
     expect(screen.getByRole("contentinfo")).toBeInTheDocument();
   });
 
+  it("renders the logout control in the navbar", () => {
+    renderShell();
+
+    expect(
+      screen.getByRole("button", { name: "Log out" }),
+    ).toBeInTheDocument();
+  });
+
   it("renders the active panel inside main when its sidebar link is selected", () => {
     renderShell();
 

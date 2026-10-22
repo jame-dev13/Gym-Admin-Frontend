@@ -4,5 +4,5 @@ import { useCreateUserFormHandler } from "@/features/user/hooks/useCreateUserFor
 export const UserCreateForm = () => {
   const { isPending, submit } = useCreateUserFormHandler();
 
-  return <UserForm isPending={isPending} onSubmit={submit} />;
+  return <UserForm mode="create" isPending={isPending} onSubmit={submit} />;
 };

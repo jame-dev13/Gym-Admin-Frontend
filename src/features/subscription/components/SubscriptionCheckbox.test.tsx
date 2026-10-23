@@ -31,6 +31,26 @@ describe("SubscriptionCheckbox", () => {
     expect(checkbox).toBeChecked();
   });
 
+  it("supports action-specific messages", () => {
+    render(
+      <SubscriptionCheckbox
+        checked={false}
+        onCheckedChange={vi.fn()}
+        label="I confirm that the customer authorized this action."
+        description="Only continue once the authorization has been verified."
+      />,
+    );
+
+    expect(
+      screen.getByRole("checkbox", {
+        name: "I confirm that the customer authorized this action.",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Only continue once the authorization has been verified."),
+    ).toBeInTheDocument();
+  });
+
   it("respects the disabled and error states", async () => {
     const user = userEvent.setup();
     const onCheckedChange = vi.fn();

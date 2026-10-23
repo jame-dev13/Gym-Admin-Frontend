@@ -40,6 +40,8 @@ export const FinalizeSubscriptionDialog = ({
         checked={isConfirmed}
         onCheckedChange={setIsConfirmed}
         disabled={isPending}
+        label="I confirm that the customer has authorized me to mark this subscription as finalized."
+        description="Only continue once the customer's authorization to finalize has been verified."
       />
     </ConfirmDialog>
   );

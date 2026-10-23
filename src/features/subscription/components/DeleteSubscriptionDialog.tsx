@@ -40,6 +40,8 @@ export const DeleteSubscriptionDialog = ({
         checked={isConfirmed}
         onCheckedChange={setIsConfirmed}
         disabled={isPending}
+        label="I confirm that the customer has authorized me to delete this subscription."
+        description="Only continue once the customer's authorization to delete has been verified."
       />
     </ConfirmDialog>
   );

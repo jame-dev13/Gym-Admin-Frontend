@@ -1,8 +1,8 @@
 import { CheckboxInput } from "@/components/input/CheckboxInput";
 
-const PAYMENT_CONFIRMATION_LABEL =
+const DEFAULT_PAYMENT_CONFIRMATION_LABEL =
   "I confirm that the customer has paid for this change and that I am authorized to proceed.";
-const PAYMENT_CONFIRMATION_DESCRIPTION =
+const DEFAULT_PAYMENT_CONFIRMATION_DESCRIPTION =
   "Only continue once the payment has been verified.";
 
 export type SubscriptionCheckboxProps = {
@@ -10,6 +10,8 @@ export type SubscriptionCheckboxProps = {
   onCheckedChange: (checked: boolean) => void;
   disabled?: boolean;
   error?: string;
+  label?: string;
+  description?: string;
 };
 
 export const SubscriptionCheckbox = ({
@@ -17,10 +19,12 @@ export const SubscriptionCheckbox = ({
   onCheckedChange,
   disabled = false,
   error,
+  label = DEFAULT_PAYMENT_CONFIRMATION_LABEL,
+  description = DEFAULT_PAYMENT_CONFIRMATION_DESCRIPTION,
 }: SubscriptionCheckboxProps) => (
   <CheckboxInput
-    label={PAYMENT_CONFIRMATION_LABEL}
-    description={PAYMENT_CONFIRMATION_DESCRIPTION}
+    label={label}
+    description={description}
     checked={checked}
     disabled={disabled}
     error={error}

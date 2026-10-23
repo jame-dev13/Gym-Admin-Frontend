@@ -24,14 +24,17 @@ function pageOf(content: Member[] = []): Page<Member> {
 
 function createStub(
   error: ApiErrorResponse | null = null,
-  { isRefetching = false }: { isRefetching?: boolean } = {},
+  {
+    isRefetching = false,
+    content = [],
+  }: { isRefetching?: boolean; content?: Member[] } = {},
 ) {
   const seen: Array<Record<string, unknown>> = [];
   const refetch = vi.fn(async () => ({}));
   const hook = ((params?: Record<string, unknown>) => {
     seen.push({ ...(params ?? {}) });
     return {
-      data: pageOf(),
+      data: pageOf(content),
       error,
       isPending: false,
       isFetching: false,
@@ -66,6 +69,39 @@ describe("useTableRenderer", () => {
     );
 
     expect(seen[0]).not.toHaveProperty("sort");
+  });
+
+  it("sends the initial sort when initialSortActive is enabled", () => {
+    const { hook, seen } = createStub();
+    renderHook(() =>
+      useTableRenderer<Member>({
+        queryFn: hook,
+        sortProperties: ["name", "plan"],
+        initialSortBy: "plan",
+        initialDirection: "desc",
+        initialSortActive: true,
+      }),
+    );
+
+    expect(seen[0]).toMatchObject({
+      page: 0,
+      size: 10,
+      sort: "plan,desc",
+    });
+  });
+
+  it("exposes the total element count from the page info", () => {
+    const { hook } = createStub(null, {
+      content: [
+        { id: 1, name: "Ada", plan: "MONTHLY" },
+        { id: 2, name: "Grace", plan: "ANNUAL" },
+      ],
+    });
+    const { result } = renderHook(() =>
+      useTableRenderer<Member>({ queryFn: hook }),
+    );
+
+    expect(result.current.pagination.totalElements).toBe(2);
   });
 
   it("keeps typing out of the request and commits search on submit", () => {

@@ -1,4 +1,4 @@
-import { useDownloadAttachment } from "@/hooks/useDownload";
+import { useDownloadAttachment } from "@/hooks/useDownloadAttachment";
 import { API_BASE_URL, renderClientHook } from "@/test/hooks/test-utils";
 import { server } from "@/test/mocks/server";
 import { waitFor } from "@testing-library/react";
@@ -9,7 +9,9 @@ const SUCCESS_URI = "backups/download";
 const NO_HEADER_URI = "backups/download-no-header";
 const FAIL_URI = "backups/download-fail";
 const SLOW_URI = "backups/download-slow";
+const OTHER_URI = "backups/download-other";
 const DISPOSITION = 'attachment; file="test_file.pdf"';
+const OTHER_DISPOSITION = 'attachment; file="other_file.pdf"';
 const errorBody = { message: "Download failed", status: 500 };
 
 const recordedPaths: string[] = [];
@@ -47,6 +49,10 @@ beforeEach(() => {
       await delay(100);
       return pdfResponse(DISPOSITION);
     }),
+    http.get(`${API_BASE_URL}/${OTHER_URI}`, ({ request }) => {
+      record(request);
+      return pdfResponse(OTHER_DISPOSITION);
+    }),
   );
 });
 
@@ -55,6 +61,30 @@ describe("useDownloadAttachment", () => {
     const { result } = renderDownload(SUCCESS_URI);
     await result.current.download();
     await waitFor(() => expect(result.current.content).toBe(DISPOSITION));
+  });
+
+  it("exposes the downloaded blob", async () => {
+    const { result } = renderDownload(SUCCESS_URI);
+    await result.current.download();
+    await waitFor(() => expect(result.current.blob).toBeInstanceOf(Blob));
+    expect(result.current.blob?.size).toBeGreaterThan(0);
+  });
+
+  it("does not reuse cached data when the uri changes", async () => {
+    const { result, rerender } = renderClientHook(
+      ({ uri }: { uri: string }) =>
+        useDownloadAttachment({ uri, queryKey: ["downloads"] }),
+      { initialProps: { uri: SUCCESS_URI } },
+    );
+
+    await result.current.download();
+    await waitFor(() => expect(result.current.content).toBe(DISPOSITION));
+
+    rerender({ uri: OTHER_URI });
+    expect(result.current.content).toBeUndefined();
+
+    await result.current.download();
+    await waitFor(() => expect(result.current.content).toBe(OTHER_DISPOSITION));
   });
 
   it("keeps content undefined when the header is missing", async () => {

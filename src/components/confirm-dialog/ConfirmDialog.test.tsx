@@ -102,4 +102,27 @@ describe("ConfirmDialog", () => {
     expect(onCancel).toHaveBeenCalledTimes(1);
     expect(onSubmit).not.toHaveBeenCalled();
   });
+
+  it("renders additional content and can keep the confirm action disabled", () => {
+    render(
+      <ConfirmDialog
+        title="Finalize subscription"
+        description="The subscription will be finalized."
+        confirmLabel="Finalize subscription"
+        pendingLabel="Finalizing…"
+        confirmAriaLabel="finalize subscription confirm button."
+        confirmDisabled
+        onConfirmSubmit={vi.fn()}
+      >
+        <p>Payment confirmation</p>
+      </ConfirmDialog>,
+    );
+
+    expect(screen.getByText("Payment confirmation")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {
+        name: "finalize subscription confirm button.",
+      }),
+    ).toBeDisabled();
+  });
 });

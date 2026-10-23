@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { FormSkeleton } from "@/components/skeleton";
+import { SubscriptionCheckbox } from "@/features/subscription/components/SubscriptionCheckbox";
 import { SubscriptionForm } from "@/features/subscription/components/SubscriptionForm";
 import { useGetSubscription } from "@/features/subscription/hooks/useFetchSubscription";
 import { useEditSubscriptionHandler } from "@/features/subscription/hooks/handlers/useEditSubscriptionHandler";
@@ -12,6 +14,7 @@ export type EditSubscriptionFormProps = {
 export const EditSubscriptionForm = ({
   subscriptionId,
 }: EditSubscriptionFormProps) => {
+  const [isConfirmed, setIsConfirmed] = useState(false);
   const id: Identifiable = { id: subscriptionId };
   void requireId(id);
 
@@ -37,6 +40,14 @@ export const EditSubscriptionForm = ({
       mode="update"
       data={subscription}
       isPending={isPending}
+      submitDisabled={!isConfirmed}
+      confirmation={
+        <SubscriptionCheckbox
+          checked={isConfirmed}
+          onCheckedChange={setIsConfirmed}
+          disabled={isPending}
+        />
+      }
       onSubmit={submit}
     />
   );

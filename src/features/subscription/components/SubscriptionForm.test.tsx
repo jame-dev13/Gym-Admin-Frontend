@@ -85,6 +85,32 @@ describe("SubscriptionForm create mode", () => {
     expect(submit).toBeDisabled();
     expect(submit).toHaveAttribute("aria-busy", "true");
   });
+
+  it("renders a confirmation and gates submission until it is enabled", () => {
+    const { rerender } = render(
+      <SubscriptionForm
+        mode="create"
+        onSubmit={vi.fn()}
+        isPending={false}
+        submitDisabled
+        confirmation={<p>Payment confirmation</p>}
+      />,
+    );
+
+    expect(screen.getByText("Payment confirmation")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: CREATE_SUBMIT })).toBeDisabled();
+
+    rerender(
+      <SubscriptionForm
+        mode="create"
+        onSubmit={vi.fn()}
+        isPending={false}
+        confirmation={<p>Payment confirmation</p>}
+      />,
+    );
+
+    expect(screen.getByRole("button", { name: CREATE_SUBMIT })).toBeEnabled();
+  });
 });
 
 describe("SubscriptionForm update mode", () => {

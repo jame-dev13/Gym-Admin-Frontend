@@ -30,6 +30,10 @@ export {
   DeleteSubscriptionDialog,
   type DeleteSubscriptionDialogProps,
 } from "@/features/subscription/components/DeleteSubscriptionDialog";
+export {
+  SubscriptionCheckbox,
+  type SubscriptionCheckboxProps,
+} from "@/features/subscription/components/SubscriptionCheckbox";
 export { PeriodDetailsLink } from "@/features/subscription/components/PeriodDetailsLink";
 export { SubscriptionTableActions } from "@/features/subscription/components/SubscriptionTableActions";
 export { SubscriptionTableRowActions } from "@/features/subscription/components/SubscriptionTableRowActions";

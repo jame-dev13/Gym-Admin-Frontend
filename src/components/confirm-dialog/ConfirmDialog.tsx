@@ -26,11 +26,13 @@ export const ConfirmDialog = ({
   tone = "default",
   Icon,
   isPending = false,
+  confirmDisabled = false,
   error,
   onConfirmSubmit,
   onCancel,
   confirmAriaLabel,
   cancelLabel = "Cancel",
+  children,
 }: ConfirmDialogProps) => {
   const styles = TONE_STYLES[tone];
 
@@ -57,24 +59,24 @@ export const ConfirmDialog = ({
         </p>
       )}
 
-      <AppForm
-        noValidate={false}
-        onSubmit={onConfirmSubmit}
-        className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
-      >
-        {onCancel && (
-          <CommandBtn type="button" onClick={onCancel} disabled={isPending}>
-            {cancelLabel}
-          </CommandBtn>
-        )}
-        <SubmitBtn
-          isPending={isPending}
-          pendingLabel={pendingLabel}
-          aria-label={confirmAriaLabel}
-          className={styles.confirm}
-        >
-          {confirmLabel}
-        </SubmitBtn>
+      <AppForm noValidate={false} onSubmit={onConfirmSubmit}>
+        {children}
+        <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+          {onCancel && (
+            <CommandBtn type="button" onClick={onCancel} disabled={isPending}>
+              {cancelLabel}
+            </CommandBtn>
+          )}
+          <SubmitBtn
+            isPending={isPending}
+            disabled={confirmDisabled}
+            pendingLabel={pendingLabel}
+            aria-label={confirmAriaLabel}
+            className={styles.confirm}
+          >
+            {confirmLabel}
+          </SubmitBtn>
+        </div>
       </AppForm>
     </div>
   );

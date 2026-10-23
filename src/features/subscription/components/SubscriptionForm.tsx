@@ -12,6 +12,8 @@ import type React from "react";
 type FormBase = {
   onSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void;
   isPending: boolean;
+  submitDisabled?: boolean;
+  confirmation?: React.ReactNode;
 };
 
 type CreateForm = FormBase & {
@@ -28,7 +30,13 @@ export type SubscriptionFormProps = CreateForm | UpdateForm;
 const SUBSCRIPTION_FORM_CONFIG = getSubscriptionFormConfig();
 
 export const SubscriptionForm = (props: SubscriptionFormProps) => {
-  const { isPending, mode, onSubmit } = props;
+  const {
+    isPending,
+    mode,
+    onSubmit,
+    confirmation,
+    submitDisabled = false,
+  } = props;
   const isUpdate = mode === "update";
 
   const defaults: SubscriptionAdminRequest | undefined = isUpdate
@@ -57,6 +65,7 @@ export const SubscriptionForm = (props: SubscriptionFormProps) => {
           ),
         )}
       </Fieldset>
+      {confirmation}
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
         <SubmitBtn
           Icon={isUpdate ? Save : CalendarPlus}
@@ -69,6 +78,7 @@ export const SubscriptionForm = (props: SubscriptionFormProps) => {
             isUpdate ? "Saving subscription...." : "Creating subscription...."
           }
           isPending={isPending}
+          disabled={submitDisabled}
         >
           {isUpdate ? "Edit Subscription" : "Create Subscription"}
         </SubmitBtn>

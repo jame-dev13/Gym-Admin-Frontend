@@ -16,7 +16,7 @@ import type {
  * (`page` 0-based, `size`, `search`, `sort: "<field>,<asc|desc>"`)
  * and returns the matching `Page<T>`.
  */
-export type PageQueryHook<T extends Identifiable> = (
+export type PageQueryHook<T> = (
   params?: Record<string, unknown>,
 ) => UseQueryResult<Page<T>, ApiErrorResponse>;
 

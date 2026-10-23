@@ -5,7 +5,6 @@ import type {
 } from "@/components/table/tableRendererConfig";
 import type {
   ApiErrorResponse,
-  Identifiable,
   SortDirection,
   SortOption,
 } from "@/types/Types";
@@ -20,7 +19,7 @@ const DEFAULT_PARAM_NAMES: Required<TableQueryParamNames> = {
   sort: "sort",
 };
 
-export type UseTableRendererArgs<T extends Identifiable> = {
+export type UseTableRendererArgs<T> = {
   queryFn: PageQueryHook<T>;
   pageSize?: number;
   initialSearch?: string;
@@ -28,6 +27,8 @@ export type UseTableRendererArgs<T extends Identifiable> = {
   labels?: Partial<Record<SortableField<T>, string>>;
   initialSortBy?: SortableField<T>;
   initialDirection?: SortDirection;
+  /** Sends the initial sort on the first request instead of waiting for input. */
+  initialSortActive?: boolean;
   queryParamNames?: TableQueryParamNames;
   extraParams?: Record<string, unknown>;
 };
@@ -50,10 +51,11 @@ export interface TablePagination {
   /** 1-based page, ready for `Pagination`/`TableLayout`. */
   currentPage: number;
   totalPages: number;
+  totalElements: number;
   onPageChange: (page: number) => void;
 }
 
-export interface UseTableRendererResult<T extends Identifiable> {
+export interface UseTableRendererResult<T> {
   rows: T[];
   error: ApiErrorResponse | null;
   isPending: boolean;
@@ -102,7 +104,7 @@ function buildParams({
   return { ...params, ...extraParams };
 }
 
-export const useTableRenderer = <T extends Identifiable>({
+export const useTableRenderer = <T>({
   queryFn,
   pageSize = DEFAULT_PAGE_SIZE,
   initialSearch = "",
@@ -110,17 +112,22 @@ export const useTableRenderer = <T extends Identifiable>({
   labels,
   initialSortBy,
   initialDirection = "asc",
+  initialSortActive = false,
   queryParamNames,
   extraParams,
 }: UseTableRendererArgs<T>): UseTableRendererResult<T> => {
+  const defaultSortBy = initialSortBy ?? sortProperties?.[0];
+
   const [page, setPage] = useState(0);
-  const [sortBy, setSortBy] = useState<string>();
+  const [sortBy, setSortBy] = useState<string | undefined>(
+    initialSortActive ? defaultSortBy : undefined,
+  );
   const [direction, setDirection] = useState<SortDirection>(initialDirection);
-  const [isSortActivated, setIsSortActivated] = useState(false);
+  const [isSortActivated, setIsSortActivated] = useState(
+    initialSortActive && defaultSortBy !== undefined,
+  );
   const [searchValue, setSearchValue] = useState(initialSearch);
   const [committedSearch, setCommittedSearch] = useState(initialSearch);
-
-  const defaultSortBy = initialSortBy ?? sortProperties?.[0];
 
   const sortOptions = useMemo<ReadonlyArray<SortOption<string>>>(
     () =>
@@ -224,6 +231,7 @@ export const useTableRenderer = <T extends Identifiable>({
     pagination: {
       currentPage: page + 1,
       totalPages: pageInfo?.totalPages ?? 0,
+      totalElements: pageInfo?.totalElements ?? 0,
       onPageChange: handlePageChange,
     },
   };

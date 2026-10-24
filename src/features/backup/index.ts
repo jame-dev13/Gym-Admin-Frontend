@@ -3,6 +3,15 @@ export {
   DownloadBackupButton,
   type DownloadBackupButtonProps,
 } from "@/features/backup/components/DownloadBackupButton";
+export { MakeBackupDialog } from "@/features/backup/components/MakeBackupDialog";
+export {
+  RestoreBackupDialog,
+  type RestoreBackupDialogProps,
+} from "@/features/backup/components/RestoreBackupDialog";
+export {
+  DeleteBackupDialog,
+  type DeleteBackupDialogProps,
+} from "@/features/backup/components/DeleteBackupDialog";
 export {
   getBackupQueryKeys,
   getQueryDomainKey,

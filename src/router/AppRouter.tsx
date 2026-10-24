@@ -1,6 +1,5 @@
 import { getAdministrationRouter } from "@/features/administration/services/AdministrationRouter";
 import { administrationPanelRoutes } from "@/features/administration/services/AdministrationPanels";
-import { getAuditRouter } from "@/features/audit/services/AuditRouter";
 import { getAuthRouter } from "@/features/auth/services/AuthRouter";
 import { getLandingRouter } from "@/features/landing-page/services/LandingRouter";
 import { EntityDomainProvider } from "@/context/EntityDomainProvider";
@@ -18,7 +17,6 @@ const {
   Recovery,
 } = getAuthRouter();
 const { Landing } = getLandingRouter();
-const { AuditLogPreview } = getAuditRouter();
 const { Administration, AdminOverview, AdministrationPanel } =
   getAdministrationRouter();
 
@@ -27,12 +25,6 @@ export const AppRouter = () => {
     <Suspense fallback={<PageSkeleton />}>
       <Routes>
         <Route path="/" element={<Landing />} />
-        {/* Temporary audit-log preview; remove before committing. */}
-        <Route
-          path="/preview/audit-logs"
-          element={<AuditLogPreview />}
-          caseSensitive
-        />
         <Route
           path="/administration"
           element={

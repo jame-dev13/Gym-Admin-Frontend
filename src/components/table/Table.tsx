@@ -68,8 +68,12 @@ function TableComponent<T extends Identifiable>({
   const isCards = responsive === "cards";
 
   return (
+    // `relative` makes this wrapper the containing block for absolutely
+    // positioned cell content such as `sr-only` labels. Without it those
+    // labels resolve against the document and escape the layout's scroll
+    // container, inflating the page height with invisible overflow.
     <div
-      className={`overflow-x-auto rounded-2xl border border-border bg-surface-raised ${isCards ? "table-cards-root" : ""} ${className}`}
+      className={`relative overflow-x-auto rounded-2xl border border-border bg-surface-raised ${isCards ? "table-cards-root" : ""} ${className}`}
     >
       <table
         aria-label={ariaLabel}

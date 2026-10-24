@@ -98,7 +98,7 @@ describe("TableLayout", () => {
     const body = screen.getByTestId("table-layout-body");
 
     expect(body).toHaveClass(
-      "max-h-[calc(100dvh-13rem)]",
+      "max-h-[calc(100dvh-5rem)]",
       "overflow-auto",
       "tab:max-h-none",
       "tab:flex-1",

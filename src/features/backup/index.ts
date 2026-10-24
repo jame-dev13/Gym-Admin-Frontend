@@ -12,6 +12,9 @@ export {
   DeleteBackupDialog,
   type DeleteBackupDialogProps,
 } from "@/features/backup/components/DeleteBackupDialog";
+export { BackupTableRowActions } from "@/features/backup/components/BackupTableRowActions";
+export { BackupLayout } from "@/features/backup/layouts/BackupLayout";
+export { getBackupTableConfig } from "@/features/backup/services/backup-table-config";
 export {
   getBackupQueryKeys,
   getQueryDomainKey,

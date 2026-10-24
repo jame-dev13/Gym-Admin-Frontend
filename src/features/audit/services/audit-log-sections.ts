@@ -2,6 +2,7 @@ import type { BadgeVariant } from "@/components/badge/BadgeTypes";
 import {
   AUDIT_EMPTY_VALUE,
   extractChanges,
+  formatAuditFieldLabel,
   formatAuditValue,
   formatIdentifier,
   mapAuditLogMetadata,
@@ -21,13 +22,26 @@ export type AuditLogSectionTone =
 export type AuditLogSectionId =
   | "action"
   | "entity"
-  | "before"
-  | "after"
+  | "changes"
   | "authentication"
   | "verification"
   | "error"
   | "details"
   | "metadata";
+
+export type AuditLogChangeKind =
+  | "added"
+  | "removed"
+  | "changed"
+  | "unchanged";
+
+export type AuditLogFieldChange = Readonly<{
+  field: string;
+  label: string;
+  before: string;
+  after: string;
+  kind: AuditLogChangeKind;
+}>;
 
 type AuditLogSectionStyle = Readonly<{
   badgeVariant: BadgeVariant;
@@ -41,6 +55,7 @@ export type AuditLogSection = Readonly<{
   badgeVariant: BadgeVariant;
   accentClassName: string;
   data: NormalizedRecord;
+  changes?: readonly AuditLogFieldChange[];
 }>;
 
 export const AUDIT_SECTION_STYLES = {
@@ -75,12 +90,14 @@ const createSection = (
   label: string,
   tone: AuditLogSectionTone,
   data: NormalizedRecord,
+  changes?: readonly AuditLogFieldChange[],
 ): AuditLogSection => ({
   id,
   label,
   tone,
   ...AUDIT_SECTION_STYLES[tone],
   data,
+  ...(changes ? { changes } : {}),
 });
 
 const formatResult = (success: unknown): string => {
@@ -105,14 +122,63 @@ const formatEntityId = (entityId: unknown): string => {
   return `#${value}`;
 };
 
+const CHANGE_ORDER: Record<AuditLogChangeKind, number> = {
+  changed: 0,
+  added: 1,
+  removed: 2,
+  unchanged: 3,
+};
+
+const resolveChangeKind = (
+  before: string | undefined,
+  after: string | undefined,
+): AuditLogChangeKind => {
+  if (before === undefined) return "added";
+  if (after === undefined) return "removed";
+  return before === after ? "unchanged" : "changed";
+};
+
+export const buildAuditLogChanges = (
+  before: NormalizedRecord,
+  after: NormalizedRecord,
+): readonly AuditLogFieldChange[] => {
+  const fields = Array.from(
+    new Set([...Object.keys(before), ...Object.keys(after)]),
+  );
+
+  return fields
+    .map((field) => {
+      const beforeValue = before[field];
+      const afterValue = after[field];
+
+      return {
+        field,
+        label: formatAuditFieldLabel(field),
+        before: beforeValue ?? AUDIT_EMPTY_VALUE,
+        after: afterValue ?? AUDIT_EMPTY_VALUE,
+        kind: resolveChangeKind(beforeValue, afterValue),
+      };
+    })
+    .sort(
+      (a, b) =>
+        CHANGE_ORDER[a.kind] - CHANGE_ORDER[b.kind] ||
+        a.label.localeCompare(b.label),
+    );
+};
+
 const resolvePayloadSections = (
   payload: ExtractedChanges,
 ): readonly AuditLogSection[] => {
   switch (payload.type) {
     case "CRUD":
       return [
-        createSection("before", "Before", "danger", payload.before),
-        createSection("after", "After", "success", payload.after),
+        createSection(
+          "changes",
+          "Changes",
+          "purple",
+          {},
+          buildAuditLogChanges(payload.before, payload.after),
+        ),
       ];
     case "ERROR":
       return [createSection("error", "Error", "danger", payload.error)];

@@ -2,7 +2,7 @@ import type { Identifiable } from "@/types/Types";
 
 export type AuditLogResponse = Readonly<AuditLog>;
 
-type AuditLog = {
+type AuditLog = Identifiable & {
   entity: AuditLogEntity;
   action: string;
   actor: AuditLogActor;

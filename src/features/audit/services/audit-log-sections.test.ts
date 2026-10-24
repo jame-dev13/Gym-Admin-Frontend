@@ -19,17 +19,17 @@ const buildAuditLog = (
   success: true,
   createdAt: "2026-10-23T12:00:00.000Z",
   ...overrides,
+  id: overrides.id ?? 1,
 });
 
 describe("buildAuditLogSections", () => {
-  it("builds CRUD sections with their presentation metadata", () => {
+  it("builds CRUD sections with a field-level change list", () => {
     const sections = buildAuditLogSections(buildAuditLog());
 
     expect(sections.map(({ id }) => id)).toEqual([
       "action",
       "entity",
-      "before",
-      "after",
+      "changes",
       "metadata",
     ]);
 
@@ -46,22 +46,120 @@ describe("buildAuditLogSections", () => {
       data: { type: "customer", id: "#24" },
     });
     expect(sections[2]).toMatchObject({
-      label: "Before",
-      tone: "danger",
-      data: { name: "Old" },
+      label: "Changes",
+      tone: "purple",
+      badgeVariant: "purple",
+      changes: [
+        {
+          field: "name",
+          label: "Name",
+          before: "Old",
+          after: "New",
+          kind: "changed",
+        },
+      ],
     });
-    expect(sections[3]).toMatchObject({
-      label: "After",
-      tone: "success",
-      data: { name: "New" },
-    });
-    expect(sections[4].data).toEqual({
+    expect(sections[3].data).toEqual({
       performedBy: "ana",
       actorId: "7",
       performedAt: "2026-10-23T12:00:00.000Z",
       ipAddress: "192.168.1.10",
       userAgent: "Vitest",
     });
+  });
+
+  it("classifies added, removed, changed, and unchanged fields", () => {
+    const sections = buildAuditLogSections(
+      buildAuditLog({
+        payload: {
+          type: "CRUD",
+          before: {
+            name: "Old",
+            email: "ana@gym.io",
+            role: "USER",
+            deleted: "yes",
+          },
+          after: {
+            name: "New",
+            email: "ana@gym.io",
+            role: "ADMIN",
+            created: "today",
+          },
+        },
+      }),
+    );
+    const changes = sections.find(({ id }) => id === "changes")?.changes;
+
+    expect(changes).toEqual([
+      {
+        field: "name",
+        label: "Name",
+        before: "Old",
+        after: "New",
+        kind: "changed",
+      },
+      {
+        field: "role",
+        label: "Role",
+        before: "USER",
+        after: "ADMIN",
+        kind: "changed",
+      },
+      {
+        field: "created",
+        label: "Created",
+        before: AUDIT_EMPTY_VALUE,
+        after: "today",
+        kind: "added",
+      },
+      {
+        field: "deleted",
+        label: "Deleted",
+        before: "yes",
+        after: AUDIT_EMPTY_VALUE,
+        kind: "removed",
+      },
+      {
+        field: "email",
+        label: "Email",
+        before: "ana@gym.io",
+        after: "ana@gym.io",
+        kind: "unchanged",
+      },
+    ]);
+  });
+
+  it("normalizes nested CRUD values before diffing", () => {
+    const sections = buildAuditLogSections(
+      buildAuditLog({
+        payload: {
+          type: "CRUD",
+          before: { profile: { city: "Madrid" } },
+          after: { profile: { city: "Barcelona" } },
+        },
+      }),
+    );
+    const changes = sections.find(({ id }) => id === "changes")?.changes;
+
+    expect(changes).toEqual([
+      {
+        field: "profile",
+        label: "Profile",
+        before: "city: Madrid",
+        after: "city: Barcelona",
+        kind: "changed",
+      },
+    ]);
+  });
+
+  it("returns an empty change list when CRUD payload maps are missing", () => {
+    const sections = buildAuditLogSections(
+      buildAuditLog({
+        payload: { type: "CRUD" } as unknown as AuditLogResponse["payload"],
+      }),
+    );
+
+    expect(sections.find(({ id }) => id === "changes")?.changes).toEqual([]);
   });
 
   it("marks failed actions as danger", () => {

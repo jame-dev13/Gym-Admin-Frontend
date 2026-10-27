@@ -72,6 +72,13 @@ export const administrationPanelRoutes: AdministrationPanelRoute[] = [
     title: "Audit Logs",
     description:
       "Inspect a chronological record of administrative actions. The audit trail will be added here.",
+    Element: lazy(() =>
+      import("@/features/audit/layouts/AuditLogLayout").then(
+        (mod) => ({
+          default: mod.AuditLogLayout,
+        }),
+      ),
+    ),
   },
   {
     path: "services/dumps",

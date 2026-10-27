@@ -27,6 +27,7 @@ const buildAuditLog = (
   success: true,
   createdAt: "2026-10-23T12:00:00.000Z",
   ...overrides,
+  id: overrides.id ?? 1,
 });
 
 describe("formatAuditValue", () => {

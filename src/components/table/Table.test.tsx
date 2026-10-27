@@ -129,6 +129,14 @@ describe("Table", () => {
     );
   });
 
+  it("contains absolutely positioned cell content within the table wrapper", () => {
+    render(<Table data={data} columns={columns} caption="Members" />);
+
+    expect(screen.getByRole("table", { name: "Members" }).parentElement).toHaveClass(
+      "relative",
+    );
+  });
+
   it("supports aria-label without a visible caption", () => {
     render(
       <Table data={data} columns={columns} aria-label="Members table" />,

@@ -78,6 +78,11 @@ export const administrationPanelRoutes: AdministrationPanelRoute[] = [
     title: "Dumps",
     description:
       "Generate and download full data exports. Export tools will be added here.",
+    Element: lazy(() =>
+      import("@/features/backup/layouts/BackupLayout").then((mod) => ({
+        default: mod.BackupLayout,
+      })),
+    ),
   },
   {
     path: "recycle/users",

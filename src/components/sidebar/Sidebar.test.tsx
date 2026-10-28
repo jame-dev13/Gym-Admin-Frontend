@@ -198,6 +198,22 @@ describe("Sidebar", () => {
     const desktopToggle = within(footer as HTMLElement).getByRole("button", {
       name: "Collapse sidebar",
     });
+    expect(desktopToggle.className).toContain("hidden");
+    expect(desktopToggle.className).toContain("tab:inline-flex");
     expect(desktopToggle).toHaveTextContent("Collapse sidebar");
+  });
+
+  it("keeps the footer content visible in the bar layout", () => {
+    const { container } = renderSidebar(
+      <Sidebar
+        brand={<span>Gym Admin</span>}
+        sections={sections}
+        footer={<span>Coach Ana</span>}
+      />,
+    );
+    const footer = container.querySelector("aside > div:last-child");
+    expect(footer?.className).toContain("flex");
+    expect(footer?.className).toContain("tab:flex-col");
+    expect(screen.getByText("Coach Ana")).toBeInTheDocument();
   });
 });

@@ -1,5 +1,6 @@
 import { Dumbbell } from "lucide-react";
 import { Link } from "react-router-dom";
+import { LogoutBtn } from "@/components/buttons/LogoutBtn";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { useSelectionContext } from "@/context/useSelectionContext";
 import { ADMINISTRATION_SECTIONS } from "@/features/administration/services/AdministrationSections";
@@ -35,6 +36,7 @@ export const AdministrationSidebar = () => {
       brand={brand}
       collapsedBrand={collapsedBrand}
       sections={ADMINISTRATION_SECTIONS}
+      footer={<LogoutBtn className="w-full" />}
       onNavigate={clearSelection}
     />
   );

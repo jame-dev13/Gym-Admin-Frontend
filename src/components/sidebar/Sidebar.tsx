@@ -129,14 +129,20 @@ export const Sidebar: FC<SidebarProps> = ({
         ))}
       </nav>
 
-      <div className="hidden shrink-0 flex-col gap-2 px-3 py-4 tab:flex">
-        {footer && !isCollapsed && <div className="px-1">{footer}</div>}
+      <div
+        className={`${footer ? "flex" : "hidden tab:flex"} shrink-0 items-center justify-between gap-2 px-3 py-2 tab:flex-col tab:items-stretch tab:gap-2 tab:py-4`}
+      >
+        {footer && (
+          <div className={`min-w-0 ${isCollapsed ? "tab:hidden" : "px-1"}`}>
+            {footer}
+          </div>
+        )}
         <button
           type="button"
           onClick={toggleCollapsed}
           aria-expanded={!isCollapsed}
           aria-label={toggleLabel}
-          className={`${linkBase} text-text-secondary ${isCollapsed ? "justify-center px-0" : ""}`}
+          className={`${linkBase} hidden text-text-secondary tab:inline-flex ${isCollapsed ? "tab:justify-center tab:px-0" : ""}`}
         >
           {isCollapsed ? (
             <ChevronsRight size={20} aria-hidden="true" className="shrink-0" />

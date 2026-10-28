@@ -1,3 +1,7 @@
+import {
+  TableField,
+  TableFieldGroup,
+} from "@/components/table/TableField";
 import type { TableRendererConfig } from "@/components/table/tableRendererConfig";
 import { AuditLogDetailsButton } from "@/features/audit/components/AuditLogDetailsButton";
 import { useGetPageAuditLog } from "@/features/audit/hooks/useFetchAuditLog";
@@ -11,22 +15,14 @@ const columns: Column<AuditLogResponse>[] = [
     key: "entity",
     header: "Entity",
     render: (_, { entity, actor }) => (
-      <section className="grid min-w-0 grid-rows-2 gap-x-4 gap-y-1.5 text-sm text-text-secondary">
-        <div className="flex min-w-0 items-center gap-1.5">
-          <Box size={15} aria-hidden="true" className="shrink-0" />
-          <span className="sr-only">Entity</span>
-          <span className="min-w-0 truncate" title={entity.type}>
-            {entity.type}
-          </span>
-        </div>
-        <div className="flex min-w-0 items-center gap-1.5">
-          <UserCheck size={15} aria-hidden="true" className="shrink-0" />
-          <span className="sr-only">Actor</span>
-          <span className="min-w-0 truncate" title={actor.username}>
-            {actor.username}
-          </span>
-        </div>
-      </section>
+      <TableFieldGroup>
+        <TableField icon={Box} label="Entity" title={entity.type}>
+          {entity.type}
+        </TableField>
+        <TableField icon={UserCheck} label="Actor" title={actor.username}>
+          {actor.username}
+        </TableField>
+      </TableFieldGroup>
     ),
   },
   {
@@ -34,22 +30,14 @@ const columns: Column<AuditLogResponse>[] = [
     key: "success",
     header: "Status",
     render: (_, { success, createdAt }) => (
-      <section className="grid min-w-0 grid-rows-2 gap-x-4 gap-y-1.5 text-sm text-text-secondary">
-        <div className="flex min-w-0 items-center gap-1.5">
-          <Asterisk size={15} aria-hidden="true" className="shrink-0" />
-          <span className="sr-only">Entity</span>
-          <span className="min-w-0 truncate">
-            {success ? "SUCCEED" : "ERROR"}
-          </span>
-        </div>
-        <div className="flex min-w-0 items-center gap-1.5">
-          <Timer size={15} aria-hidden="true" className="shrink-0" />
-          <span className="sr-only">Actor</span>
-          <span className="min-w-0 truncate" title={createdAt}>
-            {createdAt}
-          </span>
-        </div>
-      </section>
+      <TableFieldGroup>
+        <TableField icon={Asterisk} label="Status">
+          {success ? "SUCCEED" : "ERROR"}
+        </TableField>
+        <TableField icon={Timer} label="Created at" title={createdAt}>
+          {createdAt}
+        </TableField>
+      </TableFieldGroup>
     ),
   },
   {
@@ -57,15 +45,11 @@ const columns: Column<AuditLogResponse>[] = [
     key: "action",
     header: "Action",
     render: (_, { action }) => (
-      <section className="grid min-w-0 grid-rows-2 gap-x-4 gap-y-1.5 text-sm text-text-secondary">
-        <div className="flex min-w-0 items-center gap-1.5">
-          <Activity size={15} aria-hidden="true" className="shrink-0" />
-          <span className="sr-only">Entity</span>
-          <span className="min-w-0 truncate" title={action}>
-            {action}
-          </span>
-        </div>
-      </section>
+      <TableFieldGroup>
+        <TableField icon={Activity} label="Action" title={action}>
+          {action}
+        </TableField>
+      </TableFieldGroup>
     ),
   },
   {

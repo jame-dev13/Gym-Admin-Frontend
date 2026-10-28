@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ReactElement } from "react";
 import { Route, Routes } from "react-router-dom";
@@ -37,10 +37,10 @@ const SelectionProbe = () => {
 };
 
 describe("AdministrationLayout", () => {
-  it("renders the navbar, sidebar, main content, and footer landmarks", () => {
+  it("renders the sidebar, main content, and footer landmarks without a navbar", () => {
     renderShell();
 
-    expect(screen.getByRole("banner")).toBeInTheDocument();
+    expect(screen.queryByRole("banner")).not.toBeInTheDocument();
     expect(
       screen.getByRole("navigation", { name: "Sidebar" }),
     ).toBeInTheDocument();
@@ -48,11 +48,12 @@ describe("AdministrationLayout", () => {
     expect(screen.getByRole("contentinfo")).toBeInTheDocument();
   });
 
-  it("renders the logout control in the navbar", () => {
+  it("renders the logout control in the sidebar", () => {
     renderShell();
 
+    const sidebar = screen.getByRole("complementary");
     expect(
-      screen.getByRole("button", { name: "Log out" }),
+      within(sidebar).getByRole("button", { name: "Log out" }),
     ).toBeInTheDocument();
   });
 

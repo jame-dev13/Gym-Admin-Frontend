@@ -1,5 +1,9 @@
-import { Badge } from "@/components/badge/Badge";
 import type { BadgeVariant } from "@/components/badge/BadgeTypes";
+import {
+  TableField,
+  TableFieldGroup,
+  type TableFieldIndicator,
+} from "@/components/table/TableField";
 import type { TableRendererConfig } from "@/components/table/tableRendererConfig";
 import { PeriodDetailsLink } from "@/features/subscription/components/PeriodDetailsLink";
 import { SubscriptionTableActions } from "@/features/subscription/components/SubscriptionTableActions";
@@ -10,6 +14,19 @@ import type {
   SubscriptionStatus,
 } from "@/features/subscription/types";
 import type { Column } from "@/types/Types";
+import type { LucideIcon } from "lucide-react";
+import {
+  CalendarClock,
+  CheckCircle2,
+  CircleDollarSign,
+  CircleX,
+  Dumbbell,
+  Flag,
+  Mail,
+  RefreshCw,
+  RotateCcw,
+  TriangleAlert,
+} from "lucide-react";
 
 const priceFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -31,58 +48,93 @@ const STATUS_VARIANT: Record<SubscriptionStatus, BadgeVariant> = {
   RENEWED: "blue",
 };
 
+const STATUS_ICON: Record<SubscriptionStatus, LucideIcon> = {
+  FINALIZED: Flag,
+  NOT_PAID: CircleX,
+  PAID: CheckCircle2,
+  DROPPED: TriangleAlert,
+  ON_RENEWAL: RefreshCw,
+  RENEWED: RotateCcw,
+};
+
+const STATUS_INDICATOR: Record<SubscriptionStatus, TableFieldIndicator> = {
+  FINALIZED: "neutral",
+  NOT_PAID: "danger",
+  PAID: "success",
+  DROPPED: "warning",
+  ON_RENEWAL: "purple",
+  RENEWED: "info",
+};
+
 const columns: Column<SubscriptionResponse>[] = [
   {
+    kind: "data",
     key: "customerEmail",
     header: "Customer Email",
     render: (_, { customerEmail }) => (
-      <Badge
-        variant="blue"
-        leading="initial"
-        title={`Customer's Mail: ${customerEmail}`}
-      >
-        {customerEmail}
-      </Badge>
+      <TableFieldGroup>
+        <TableField
+          icon={Mail}
+          label="Customer email"
+          title={`Customer's mail: ${customerEmail}`}
+        >
+          {customerEmail}
+        </TableField>
+      </TableFieldGroup>
     ),
   },
   {
+    kind: "data",
     key: "membership",
     header: "Membership",
     render: (_, { membership, price }) => (
-      <div className="flex flex-wrap items-center gap-1.5">
-        <Badge
-          variant="purple"
-          className="capitalize"
+      <TableFieldGroup>
+        <TableField
+          icon={Dumbbell}
+          label="Membership"
           title={`Membership: ${membership}`}
         >
-          {membership.toLowerCase()}
-        </Badge>
-        <Badge
-          variant="emerald"
-          mono
+          <span className="capitalize">{membership.toLowerCase()}</span>
+        </TableField>
+        <TableField
+          icon={CircleDollarSign}
+          label="Membership price"
           title={`Membership price: ${formatPrice(price)}`}
         >
           {formatPrice(price)}
-        </Badge>
-      </div>
+        </TableField>
+      </TableFieldGroup>
     ),
   },
   {
+    kind: "data",
     key: "periods",
     header: "Period Details",
-    render: (_, row) => <PeriodDetailsLink subscription={row} />,
+    render: (_, row) => (
+      <TableFieldGroup>
+        <TableField icon={CalendarClock} label="Period details">
+          <PeriodDetailsLink subscription={row} />
+        </TableField>
+      </TableFieldGroup>
+    ),
   },
   {
+    kind: "data",
     key: "status",
     header: "Status",
     render: (_, { status }) => (
-      <Badge
-        variant={STATUS_VARIANT[status]}
-        className="capitalize"
-        title={`Status: ${status}`}
-      >
-        {formatStatus(status)}
-      </Badge>
+      <TableFieldGroup>
+        <TableField
+          icon={STATUS_ICON[status]}
+          label="Status"
+          title={`Status: ${status}`}
+          badge={STATUS_VARIANT[status]}
+          leading="none"
+          indicator={STATUS_INDICATOR[status]}
+        >
+          <span className="capitalize">{formatStatus(status)}</span>
+        </TableField>
+      </TableFieldGroup>
     ),
   },
   {

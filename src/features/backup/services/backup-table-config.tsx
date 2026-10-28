@@ -1,10 +1,27 @@
-import { Badge } from "@/components/badge/Badge";
 import type { BadgeVariant } from "@/components/badge/BadgeTypes";
+import {
+  TableField,
+  TableFieldGroup,
+  type TableFieldIndicator,
+} from "@/components/table/TableField";
 import type { TableRendererConfig } from "@/components/table/tableRendererConfig";
 import { BackupTableRowActions } from "@/features/backup/components/BackupTableRowActions";
+import { MakeBackupLink } from "@/features/backup/components/MakeBackupLink";
 import { useGetPageBackup } from "@/features/backup/hooks/useFetchBackup";
 import type { BackupResponse } from "@/features/backup/types";
 import type { Column } from "@/types/Types";
+import type { LucideIcon } from "lucide-react";
+import {
+  CircleCheck,
+  CircleX,
+  Database,
+  FileText,
+  History,
+  LoaderCircle,
+  Timer,
+  TriangleAlert,
+  UserCheck,
+} from "lucide-react";
 
 type BackupStatus = BackupResponse["backupStatus"];
 
@@ -49,53 +66,88 @@ const STATUS_VARIANT: Record<BackupStatus, BadgeVariant> = {
   RESTORED_FAIL: "purple",
 };
 
+const STATUS_ICON: Record<BackupStatus, LucideIcon> = {
+  SUCCESS: CircleCheck,
+  FAILURE: CircleX,
+  PROGRESS: LoaderCircle,
+  RESTORED: History,
+  RESTORED_FAIL: TriangleAlert,
+};
+
+const STATUS_INDICATOR: Record<BackupStatus, TableFieldIndicator> = {
+  SUCCESS: "success",
+  FAILURE: "danger",
+  PROGRESS: "warning",
+  RESTORED: "info",
+  RESTORED_FAIL: "purple",
+};
+
 const columns: Column<BackupResponse>[] = [
   {
+    kind: "data",
     key: "fileName",
-    header: "File name",
-    render: (_, { fileName }) => (
-      <Badge variant="blue" mono title={`Backup file: ${fileName}`}>
-        {fileName}
-      </Badge>
+    header: "File",
+    render: (_, { fileName, size }) => (
+      <TableFieldGroup>
+        <TableField
+          icon={FileText}
+          label="File name"
+          title={`Backup file: ${fileName}`}
+          badge="blue"
+          mono
+        >
+          {fileName}
+        </TableField>
+        <TableField
+          icon={Database}
+          label="Size"
+          title={`Backup size: ${size} bytes`}
+          badge="emerald"
+          mono
+        >
+          {formatFileSize(size)}
+        </TableField>
+      </TableFieldGroup>
     ),
   },
   {
-    key: "size",
-    header: "Size",
-    render: (_, { size }) => (
-      <Badge variant="emerald" mono title={`Backup size: ${size} bytes`}>
-        {formatFileSize(size)}
-      </Badge>
-    ),
-  },
-  {
+    kind: "data",
     key: "backupStatus",
     header: "Status",
-    render: (_, { backupStatus }) => (
-      <Badge
-        variant={STATUS_VARIANT[backupStatus]}
-        title={`Backup status: ${backupStatus}`}
-      >
-        {STATUS_LABEL[backupStatus]}
-      </Badge>
+    render: (_, { backupStatus, createdAt }) => (
+      <TableFieldGroup>
+        <TableField
+          icon={STATUS_ICON[backupStatus]}
+          label="Status"
+          title={`Backup status: ${backupStatus}`}
+          badge={STATUS_VARIANT[backupStatus]}
+          leading="none"
+          indicator={STATUS_INDICATOR[backupStatus]}
+        >
+          {STATUS_LABEL[backupStatus]}
+        </TableField>
+        <TableField icon={Timer} label="Created at" title={createdAt}>
+          <time dateTime={createdAt}>{formatDate(createdAt)}</time>
+        </TableField>
+      </TableFieldGroup>
     ),
   },
   {
+    kind: "data",
     key: "createdBy",
     header: "Created by",
     render: (_, { createdBy }) => (
-      <Badge variant="indigo" leading="initial" title={`Created by: ${createdBy}`}>
-        {createdBy}
-      </Badge>
-    ),
-  },
-  {
-    key: "createdAt",
-    header: "Created at",
-    render: (_, { createdAt }) => (
-      <time dateTime={createdAt} className="text-sm text-text-secondary">
-        {formatDate(createdAt)}
-      </time>
+      <TableFieldGroup>
+        <TableField
+          icon={UserCheck}
+          label="Created by"
+          title={`Created by: ${createdBy}`}
+          badge="indigo"
+          leading="initial"
+        >
+          {createdBy}
+        </TableField>
+      </TableFieldGroup>
     ),
   },
   {
@@ -118,6 +170,7 @@ const backupTableConfig: TableRendererConfig<BackupResponse> = {
     striped: true,
     responsive: "cards",
   },
+  controls: <MakeBackupLink />,
   loadingMessage: "Loading backup's data",
   search: {
     enabled: true,

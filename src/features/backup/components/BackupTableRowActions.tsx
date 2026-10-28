@@ -1,17 +1,11 @@
-import { DatabaseBackup, Download, History, Trash2 } from "lucide-react";
-import { lazy } from "react";
+import { Download, History, Trash2 } from "lucide-react";
+import { lazy, useMemo } from "react";
 import { TableRowActions } from "@/components/table/TableRowActions";
 import { useDownloadBackupHandler } from "@/features/backup/hooks/handlers/useDownloadBackupHandler";
 import type { BackupResponse } from "@/features/backup/types";
 import { useEntityDomainContext } from "@/context/useEntityDomainContext";
 import { useModalContext } from "@/context/useModalContext";
 import type { RowAction } from "@/types/Types";
-
-const LazyMakeBackupDialog = lazy(() =>
-  import("@/features/backup/components/MakeBackupDialog").then((mod) => ({
-    default: mod.MakeBackupDialog,
-  })),
-);
 
 const LazyRestoreBackupDialog = lazy(() =>
   import("@/features/backup/components/RestoreBackupDialog").then((mod) => ({
@@ -36,27 +30,20 @@ export const BackupTableRowActions = ({ row }: { row: BackupResponse }) => {
     );
   }
 
+  const disabled = useMemo(
+    () =>
+      isModalOpen ||
+      row.backupStatus === "FAILURE" ||
+      row.backupStatus === "PROGRESS",
+    [isModalOpen, row],
+  );
+
   const actions: RowAction<BackupResponse>[] = [
-    {
-      id: "make-backup",
-      label: "Make backup",
-      Icon: DatabaseBackup,
-      disabled: isModalOpen,
-      onSelect: (backup) => {
-        openModal({
-          title: "Create backup",
-          description: "Create a new backup snapshot of the current data.",
-          size: "sm",
-          data: backup,
-          render: () => <LazyMakeBackupDialog />,
-        });
-      },
-    },
     {
       id: "restore-backup",
       label: "Restore backup",
       Icon: History,
-      disabled: isModalOpen,
+      disabled,
       onSelect: (backup) => {
         openModal({
           title: "Restore backup",
@@ -76,7 +63,7 @@ export const BackupTableRowActions = ({ row }: { row: BackupResponse }) => {
       id: "download-backup",
       label: "Download backup",
       Icon: Download,
-      disabled: isDownloading,
+      disabled: disabled || isDownloading,
       onSelect: () => {
         void handleDownload();
       },
@@ -86,7 +73,7 @@ export const BackupTableRowActions = ({ row }: { row: BackupResponse }) => {
       label: "Delete backup",
       Icon: Trash2,
       destructive: true,
-      disabled: isModalOpen,
+      disabled: isModalOpen || isDownloading,
       onSelect: (backup) => {
         openModal({
           title: "Delete backup",

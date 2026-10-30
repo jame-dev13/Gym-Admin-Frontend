@@ -177,7 +177,7 @@ const CreateForm: FC<FormCreate> = (props) => {
               <Field
                 key={key}
                 name={name}
-                value={defValue.userId.id as string | number}
+                value={defValue.userId as string | number}
                 contentEditable="false"
                 readOnly
                 type="hidden"

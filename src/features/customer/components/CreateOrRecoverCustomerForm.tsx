@@ -23,7 +23,7 @@ export const CreateOrRecoverCustomerForm: FC<CreateOrRecoverCustomerForm> = ({
       mode="create"
       isPending={isPending}
       onSubmit={submit}
-      data={{ userId: rowData.row }}
+      data={{ userId: rowData.row.id }}
     />
   );
 };

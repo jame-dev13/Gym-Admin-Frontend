@@ -1,7 +1,7 @@
 import type { Identifiable } from "@/types/Types";
 
 export type CustomerCreateRequest = {
-  userId: Identifiable;
+  userId: Identifiable["id"];
 };
 
 export type CustomerCurrentRequest = {

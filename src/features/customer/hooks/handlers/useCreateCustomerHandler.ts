@@ -20,7 +20,7 @@ export const useCreateCustomerHandler = () => {
   const { showError, showSuccess } = useToastFactory();
   const { error, isPending, submit } = useMutationHandler({
     mutationHook: useCreateCustomer,
-    payloadBuilder: (fd) => ({ userId: { id: Number(fd?.get("userId")) } }),
+    payloadBuilder: (fd) => ({ userId: Number(fd?.get("userId")) }),
     resultHandlers: {
       onSuccess: () => {
         showSuccess("Customer successfully created.");

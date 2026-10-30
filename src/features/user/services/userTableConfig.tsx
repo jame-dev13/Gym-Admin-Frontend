@@ -1,7 +1,4 @@
-import {
-  TableField,
-  TableFieldGroup,
-} from "@/components/table/TableField";
+import { TableField, TableFieldGroup } from "@/components/table/TableField";
 import type { TableRendererConfig } from "@/components/table/tableRendererConfig";
 import { useGetUserPage } from "@/features/user/hooks/useFetchUser";
 import type { UserResponse } from "@/features/user/types";
@@ -16,6 +13,7 @@ import {
   UserX,
 } from "lucide-react";
 import { UserTableRowActions } from "../components/UserTableRowActions";
+import { CreateCustomerLink } from "@/features/user/components/CreateCustomerLink";
 
 export const userColumns: Column<UserResponse>[] = [
   {
@@ -91,13 +89,15 @@ export const userColumns: Column<UserResponse>[] = [
     align: "center",
     render: (_, row) => (
       <TableFieldGroup>
-        <TableField
-          icon={row.isCustomer ? UserCheck : UserX}
-          label="Customer"
-          indicator={row.isCustomer ? "success" : "neutral"}
-        >
-          {row.isCustomer ? "Yes" : "No"}
-        </TableField>
+        {row.role.includes("USER") ? (
+          <TableField
+            icon={row.isCustomer ? UserCheck : UserX}
+            label="Customer"
+            indicator={row.isCustomer ? "success" : "neutral"}
+          >
+            {row.isCustomer ? "Yes" : <CreateCustomerLink user={row} />}
+          </TableField>
+        ) : null}
       </TableFieldGroup>
     ),
   },
@@ -119,7 +119,7 @@ export const userTableConfig: TableRendererConfig<UserResponse> = {
     caption: "System users",
     emptyMessage: "No users found",
     striped: true,
-    size: "md",
+    size: "sm",
     responsive: "cards",
     cardTitleKey: "name",
   },

@@ -21,10 +21,15 @@ export const administrationPanelRoutes: AdministrationPanelRoute[] = [
       "Monitor customer growth and activity. Detailed metrics will be added here.",
   },
   {
-    path: "overview/ratings",
-    title: "Ratings",
+    path: "overview/rankings",
+    title: "Rankings",
     description:
-      "Review average ratings and recent member feedback. Detailed metrics will be added here.",
+      "Compare membership plans and subscription periods by the number of subscriptions they generated.",
+    Element: lazy(() =>
+      import("@/features/ranking/layouts/RankingLayout").then((mod) => ({
+        default: mod.RankingLayout,
+      })),
+    ),
   },
   {
     path: "overview/billing",

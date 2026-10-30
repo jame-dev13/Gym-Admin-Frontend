@@ -68,3 +68,5 @@ export type AvatarMenuItem = {
   destructive?: boolean;
   disabled?: boolean;
 };
+
+export type Content<T> = { content: ReadonlyArray<T> }

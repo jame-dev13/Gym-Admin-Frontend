@@ -30,7 +30,7 @@ export const ADMINISTRATION_SECTIONS: SidebarSection[] = [
         Icon: Users,
       },
       {
-        to: "/administration/overview/ratings",
+        to: "/administration/overview/rankings",
         label: "Ratings",
         Icon: Star,
       },

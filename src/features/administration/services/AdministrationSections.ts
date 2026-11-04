@@ -35,7 +35,7 @@ export const ADMINISTRATION_SECTIONS: SidebarSection[] = [
         Icon: Star,
       },
       {
-        to: "/administration/overview/billing",
+        to: "/administration/overview/billings",
         label: "Billing",
         Icon: ReceiptText,
       },

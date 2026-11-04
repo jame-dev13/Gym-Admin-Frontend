@@ -32,10 +32,17 @@ export const administrationPanelRoutes: AdministrationPanelRoute[] = [
     ),
   },
   {
-    path: "overview/billing",
+    path: "overview/billings",
     title: "Billing",
     description:
-      "Follow revenue, invoices, and pending payments. Detailed metrics will be added here.",
+      "Review annual payment performance, monthly investment evolution, and transaction history.",
+    Element: lazy(() =>
+      import("@/features/payment/layouts/PaymentAdministrationLayout").then(
+        (mod) => ({
+          default: mod.PaymentAdministrationLayout,
+        }),
+      ),
+    ),
   },
   {
     path: "services/users",

@@ -4,6 +4,7 @@ export type {
   SubscriptionAdminRequest,
   SubscriptionResponse,
   SubscriptionStatus,
+  SubscriptionAboutToEndResponse
 } from "@/features/subscription/types";
 export {
   getQueryDomainKey,
@@ -37,11 +38,15 @@ export {
 export { PeriodDetailsLink } from "@/features/subscription/components/PeriodDetailsLink";
 export { SubscriptionTableActions } from "@/features/subscription/components/SubscriptionTableActions";
 export { SubscriptionTableRowActions } from "@/features/subscription/components/SubscriptionTableRowActions";
+export { SubsAboutToEndTable as default } from "@/features/subscription/components/SubsAboutToEndTable";
 export { SubscriptionLayout } from "@/features/subscription/layouts/SubscriptionLayout";
 export { getSubscriptionConfig } from "@/features/subscription/services/subscription-table-config";
+export { getSubsAboutToEndTableConfig } from "@/features/subscription/services/subscription-about-to-end-table-config";
+
 export {
   useGetSubscription,
   useGetSubscriptionPage,
+  useGetSubscriptionAboutToEndPage
 } from "@/features/subscription/hooks/useFetchSubscription";
 export {
   useCreateSubscription,

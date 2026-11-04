@@ -1,5 +1,5 @@
 import { getSubscriptionQueryKeys } from "@/features/subscription/services/subscription-query-keys";
-import type { SubscriptionResponse } from "@/features/subscription/types";
+import type { SubscriptionAboutToEndResponse, SubscriptionResponse } from "@/features/subscription/types";
 import { useFetchMapping, usePageFetchMapping } from "@/hooks/useClientFetcher";
 import { pathBuilder } from "@/services/path-builder";
 import type { Identifiable } from "@/types/Types";
@@ -20,4 +20,13 @@ export const useGetSubscription = ({ id }: Identifiable) =>
     uri: pathBuilder.detail(BASE, id),
     queryKey: [...administration.detail({ id })],
     options: { enabled: !!id },
+  });
+
+export const useGetSubscriptionAboutToEndPage = (
+  params?: Record<string, unknown>,
+) =>
+  usePageFetchMapping<SubscriptionAboutToEndResponse>({
+    uri: `${BASE}/about-to-end`,
+    queryKey: [...administration.page(params), "about-to-end"],
+    params,
   });

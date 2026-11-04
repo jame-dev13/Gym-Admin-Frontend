@@ -11,11 +11,11 @@ import { PopoverHost } from "@/components/popover/PopoverHost";
 const AdministrationLayout = () => {
   return (
     <AdministrationProvider>
-      <div className="flex min-h-screen flex-col bg-surface text-text-primary tab:h-dvh tab:overflow-hidden">
-        <div className="flex flex-1 flex-col tab:min-h-0 tab:flex-row">
+      <div className="flex h-dvh flex-col overflow-hidden bg-surface text-text-primary">
+        <div className="flex min-h-0 flex-1 flex-col tab:flex-row">
           <AdministrationSidebar />
-          <div className="flex min-w-0 flex-1 flex-col tab:min-h-0">
-            <main className="flex-1 px-4 py-6 tab:min-h-0 tab:overflow-y-auto tab:px-8">
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col">
+            <main className="min-h-0 flex-1 overflow-y-auto px-4 py-6 tab:px-8">
               <Suspense
                 fallback={
                   <PageSkeleton

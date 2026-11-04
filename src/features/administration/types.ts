@@ -1,2 +1,6 @@
-// Administration domain types will be declared here as resource sections land.
-export {};
+export type OverviewInsightsResponse = Readonly<{
+  activeMembers: number;
+  monthlyRevenue: number;
+  expiringSubscriptions: number;
+  newSignups: number;
+}>;

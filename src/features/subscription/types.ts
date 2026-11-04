@@ -27,3 +27,11 @@ export type SubscriptionResponse = Identifiable & {
   periods: Period[];
   status: SubscriptionStatus;
 };
+
+export type SubscriptionAboutToEndResponse = Readonly<Identifiable & {
+  member: string;
+  membership: Membership;
+  price: number;
+  endsOn: string;
+  status: SubscriptionStatus;
+}>;

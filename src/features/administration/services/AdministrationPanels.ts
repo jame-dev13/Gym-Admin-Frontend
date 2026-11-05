@@ -32,6 +32,17 @@ export const administrationPanelRoutes: AdministrationPanelRoute[] = [
     ),
   },
   {
+    path: "overview/evolution",
+    title: "Evolution",
+    description:
+      "Follow customer, subscriber, and billing evolution month by month across the selected year.",
+    Element: lazy(() =>
+      import("@/features/evolution/layouts/EvolutionLayout").then((mod) => ({
+        default: mod.EvolutionLayout,
+      })),
+    ),
+  },
+  {
     path: "overview/billings",
     title: "Billing",
     description:

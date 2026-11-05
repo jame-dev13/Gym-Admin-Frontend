@@ -32,17 +32,21 @@ export const administrationPanelRoutes: AdministrationPanelRoute[] = [
     ),
   },
   {
-    path: "overview/billings",
+    path: "overview/evolution",
+    title: "Evolution",
+    description:
+      "Follow customer, subscriber, and billing evolution month by month across the selected year.",
+    Element: lazy(() =>
+      import("@/features/evolution/layouts/EvolutionLayout").then((mod) => ({
+        default: mod.EvolutionLayout,
+      })),
+    ),
+  },
+  {
+    path: "overview/billing",
     title: "Billing",
     description:
-      "Review annual payment performance, monthly investment evolution, and transaction history.",
-    Element: lazy(() =>
-      import("@/features/payment/layouts/PaymentAdministrationLayout").then(
-        (mod) => ({
-          default: mod.PaymentAdministrationLayout,
-        }),
-      ),
-    ),
+      "Follow revenue, invoices, and pending payments. Detailed metrics will be added here.",
   },
   {
     path: "services/users",

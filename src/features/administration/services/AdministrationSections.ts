@@ -9,6 +9,7 @@ import {
   ReceiptText,
   ScrollText,
   Star,
+  TrendingUp,
   UserRound,
   Users,
 } from "lucide-react";
@@ -35,7 +36,12 @@ export const ADMINISTRATION_SECTIONS: SidebarSection[] = [
         Icon: Star,
       },
       {
-        to: "/administration/overview/billings",
+        to: "/administration/overview/evolution",
+        label: "Evolution",
+        Icon: TrendingUp,
+      },
+      {
+        to: "/administration/overview/billing",
         label: "Billing",
         Icon: ReceiptText,
       },

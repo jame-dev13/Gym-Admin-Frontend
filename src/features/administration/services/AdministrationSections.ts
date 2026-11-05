@@ -41,7 +41,7 @@ export const ADMINISTRATION_SECTIONS: SidebarSection[] = [
         Icon: TrendingUp,
       },
       {
-        to: "/administration/overview/billing",
+        to: "/administration/overview/billings",
         label: "Billing",
         Icon: ReceiptText,
       },

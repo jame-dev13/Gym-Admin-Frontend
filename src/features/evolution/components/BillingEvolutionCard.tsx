@@ -6,7 +6,6 @@ import { useGetBillingEvolution } from "@/features/evolution/hooks/useFetchEvolu
 import {
   formatEvolutionMoney,
   resolveEvolutionError,
-  toBillingChartData,
 } from "@/features/evolution/services/evolution-chart-data";
 import type { ChartSeries } from "@/types/Types";
 
@@ -16,42 +15,20 @@ const BILLING_SERIES: ChartSeries[] = [
   { dataKey: "total", name: "Billed revenue", color: "#10b981" },
 ];
 
-const EMPTY_BILLING_POINTS: ReadonlyArray<{
-  month: string;
-  total: number;
-}> = [];
-
 export const BillingEvolutionCard = ({ year }: EvolutionCardProps) => {
-  const billing = useGetBillingEvolution(year);
-  const billingEvolution = billing.data?.data;
-  const billingPoints = billingEvolution?.content ?? EMPTY_BILLING_POINTS;
+  const { data, error, isPending, isRefetching, refetch } =
+    useGetBillingEvolution(year);
 
+  const evolution = data?.data.content;
   const chartData = useMemo(
-    () => toBillingChartData(billingEvolution),
-    [billingEvolution],
+    () => Array.from(evolution?.monthlyEvolution ?? []),
+    [evolution],
   );
-
-  const totalRevenue = useMemo(
-    () => billingPoints.reduce((total, point) => total + point.total, 0),
-    [billingPoints],
-  );
-  const monthlyAverage =
-    billingPoints.length > 0 ? totalRevenue / billingPoints.length : 0;
-  const bestMonth = useMemo(
-    () =>
-      billingPoints.reduce<(typeof billingPoints)[number] | null>(
-        (best, point) =>
-          !best || point.total > best.total ? point : best,
-        null,
-      ),
-    [billingPoints],
-  );
+  const insights = evolution?.billingInsights;
 
   const hasData = chartData.length > 0;
   const errorMessage =
-    !hasData && !billing.isPending
-      ? resolveEvolutionError(billing.error, ERROR_MESSAGE)
-      : null;
+    !hasData && !isPending ? resolveEvolutionError(error, ERROR_MESSAGE) : null;
 
   return (
     <EvolutionChartCard
@@ -64,29 +41,27 @@ export const BillingEvolutionCard = ({ year }: EvolutionCardProps) => {
       stats={[
         {
           label: "Total revenue",
-          value: formatEvolutionMoney(totalRevenue),
+          value: formatEvolutionMoney(insights?.totalRevenue ?? 0),
           tone: "accent",
         },
         {
           label: "Monthly average",
-          value: formatEvolutionMoney(monthlyAverage),
+          value: formatEvolutionMoney(insights?.monthlyAverage ?? 0),
           tone: "neutral",
         },
         {
           label: "Best month",
-          value: bestMonth
-            ? `${bestMonth.month} · ${formatEvolutionMoney(bestMonth.total)}`
-            : "—",
+          value: insights?.bestMonth?.trim() || "—",
           tone: "success",
         },
       ]}
-      isLoading={billing.isPending}
-      isRefetching={billing.isRefetching}
+      isLoading={isPending}
+      isRefetching={isRefetching}
       errorMessage={errorMessage}
       emptyMessage="No billing records available for this year."
       tooltipVariant="money"
-      onRefetch={() => {
-        void billing.refetch();
+      onRefetch={async () => {
+        void (await refetch());
       }}
     />
   );

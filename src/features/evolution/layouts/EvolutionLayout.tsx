@@ -1,15 +1,29 @@
 import { Activity, TrendingUp } from "lucide-react";
-import { useMemo, useState } from "react";
+import { lazy, Suspense, useMemo, useState } from "react";
 import { Select } from "@/components/input/Select";
 import { Navbar } from "@/components/navbar/Navbar";
-import { BillingEvolutionCard } from "@/features/evolution/components/BillingEvolutionCard";
-import { CustomerEvolutionCard } from "@/features/evolution/components/CustomerEvolutionCard";
-import { SubscriberEvolutionCard } from "@/features/evolution/components/SubscriberEvolutionCard";
 import { getEvolutionYearOptions } from "@/features/evolution/services/evolution-chart-data";
 import {
   EVOLUTION_SECTION_IDS,
   getEvolutionNavbarConfig,
 } from "@/features/evolution/services/evolution-navbar-config";
+import { FormSkeleton } from "@/components/skeleton";
+
+const BillingEvolutionCard = lazy(() =>
+  import("@/features/evolution/components/BillingEvolutionCard").then(
+    (mod) => ({ default: mod.BillingEvolutionCard }),
+  ),
+);
+const CustomerEvolutionCard = lazy(() =>
+  import("@/features/evolution/components/CustomerEvolutionCard").then(
+    (mod) => ({ default: mod.CustomerEvolutionCard }),
+  ),
+);
+const SubscriberEvolutionCard = lazy(() =>
+  import("@/features/evolution/components/SubscriberEvolutionCard").then(
+    (mod) => ({ default: mod.SubscriberEvolutionCard }),
+  ),
+);
 
 export const EvolutionLayout = () => {
   const currentYear = new Date().getFullYear();
@@ -87,7 +101,9 @@ export const EvolutionLayout = () => {
           </p>
         </div>
 
-        <CustomerEvolutionCard year={selectedYear} />
+        <Suspense fallback={<FormSkeleton showSubmit={false} />}>
+          <CustomerEvolutionCard year={selectedYear} />
+        </Suspense>
       </section>
 
       <section
@@ -106,8 +122,9 @@ export const EvolutionLayout = () => {
             Monthly subscriber joins and downs for the selected year.
           </p>
         </div>
-
-        <SubscriberEvolutionCard year={selectedYear} />
+        <Suspense fallback={<FormSkeleton showSubmit={false} />}>
+          <SubscriberEvolutionCard year={selectedYear} />
+        </Suspense>
       </section>
 
       <section
@@ -130,7 +147,9 @@ export const EvolutionLayout = () => {
           </div>
         </div>
 
-        <BillingEvolutionCard year={selectedYear} />
+        <Suspense fallback={<FormSkeleton showSubmit={false} />}>
+          <BillingEvolutionCard year={selectedYear} />
+        </Suspense>
       </section>
     </section>
   );

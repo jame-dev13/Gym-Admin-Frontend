@@ -2,17 +2,10 @@ import { Users } from "lucide-react";
 import { useMemo } from "react";
 import { EvolutionChartCard } from "@/features/evolution/components/EvolutionChartCard";
 import type { EvolutionCardProps } from "@/features/evolution/components/EvolutionChartTypes";
+import { useGetCustomerEvolution } from "@/features/evolution/hooks/useFetchEvolution";
 import {
-  useGetCustomerDowningEvo,
-  useGetCustomerJoiningEvo,
-} from "@/features/evolution/hooks/useFetchEvolution";
-import {
-  EMPTY_EVOLUTION,
   formatEvolutionCount,
-  formatSignedEvolutionCount,
-  mergeEvolutionSeries,
   resolveEvolutionError,
-  sumEvolutionValues,
 } from "@/features/evolution/services/evolution-chart-data";
 import type { ChartSeries } from "@/types/Types";
 
@@ -24,38 +17,23 @@ const CUSTOMER_SERIES: ChartSeries[] = [
 ];
 
 export const CustomerEvolutionCard = ({ year }: EvolutionCardProps) => {
-  const joins = useGetCustomerJoiningEvo(year);
-  const downs = useGetCustomerDowningEvo(year);
+  const { data, error, isPending, isRefetching, refetch } =
+    useGetCustomerEvolution(year);
 
-  const joiningPoints = joins.data?.data.content ?? EMPTY_EVOLUTION;
-  const downingPoints = downs.data?.data.content ?? EMPTY_EVOLUTION;
-
+  const evolution = data?.data.content;
   const chartData = useMemo(
-    () =>
-      mergeEvolutionSeries(
-        { points: joiningPoints, dataKey: "joins" },
-        { points: downingPoints, dataKey: "downs" },
-      ),
-    [joiningPoints, downingPoints],
+    () => Array.from(evolution?.monthlyEvolution ?? []),
+    [evolution],
   );
+  const insights = evolution?.evoInsights;
 
-  const joiningTotal = useMemo(
-    () => sumEvolutionValues(joiningPoints),
-    [joiningPoints],
-  );
-  const downingTotal = useMemo(
-    () => sumEvolutionValues(downingPoints),
-    [downingPoints],
-  );
-  const netGrowth = joiningTotal - downingTotal;
+  const joiningTotal = insights?.joiningTotal ?? 0;
+  const downingTotal = insights?.downingTotal ?? 0;
+  const netMovement = insights?.netMovement ?? 0;
 
-  const isLoading = joins.isPending || downs.isPending;
-  const isRefetching = joins.isRefetching || downs.isRefetching;
   const hasData = chartData.length > 0;
   const errorMessage =
-    !hasData && !isLoading
-      ? resolveEvolutionError(joins.error ?? downs.error, ERROR_MESSAGE)
-      : null;
+    !hasData && !isPending ? resolveEvolutionError(error, ERROR_MESSAGE) : null;
 
   return (
     <EvolutionChartCard
@@ -77,19 +55,22 @@ export const CustomerEvolutionCard = ({ year }: EvolutionCardProps) => {
           tone: "danger",
         },
         {
-          label: "Net growth",
-          value: formatSignedEvolutionCount(netGrowth),
+          label: "Net movement",
+          value: formatEvolutionCount(netMovement),
           tone:
-            netGrowth > 0 ? "success" : netGrowth < 0 ? "danger" : "neutral",
+            joiningTotal === downingTotal
+              ? "neutral"
+              : joiningTotal > downingTotal
+                ? "success"
+                : "danger",
         },
       ]}
-      isLoading={isLoading}
+      isLoading={isPending}
       isRefetching={isRefetching}
       errorMessage={errorMessage}
       emptyMessage="No customer movement recorded for this year."
-      onRefetch={() => {
-        void joins.refetch();
-        void downs.refetch();
+      onRefetch={async () => {
+        void (await refetch());
       }}
     />
   );

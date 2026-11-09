@@ -38,34 +38,14 @@ const evolutionQueryKeys = {
     customers: {
       all: () =>
         [...administrationRoot, ...getCustomerEvolutionQueryKey()] as const,
-      joins: (year: number) =>
-        [
-          ...evolutionQueryKeys.administration.customers.all(),
-          "joins",
-          year,
-        ] as const,
-      downs: (year: number) =>
-        [
-          ...evolutionQueryKeys.administration.customers.all(),
-          "downs",
-          year,
-        ] as const,
+      year: (year: number) =>
+        [...evolutionQueryKeys.administration.customers.all(), year] as const,
     },
     subscribers: {
       all: () =>
         [...administrationRoot, ...getSubscriberEvolutionQueryKey()] as const,
-      joins: (year: number) =>
-        [
-          ...evolutionQueryKeys.administration.subscribers.all(),
-          "joins",
-          year,
-        ] as const,
-      downs: (year: number) =>
-        [
-          ...evolutionQueryKeys.administration.subscribers.all(),
-          "downs",
-          year,
-        ] as const,
+      year: (year: number) =>
+        [...evolutionQueryKeys.administration.subscribers.all(), year] as const,
     },
     billing: {
       all: () =>

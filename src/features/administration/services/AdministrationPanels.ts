@@ -12,7 +12,14 @@ export const administrationPanelRoutes: AdministrationPanelRoute[] = [
     path: "overview/subscriptions",
     title: "Subscriptions",
     description:
-      "Track plan distribution, renewals, and churn at a glance. Detailed metrics will be added here.",
+      "Track plan distribution, membership volume, and net worth at a glance.",
+    Element: lazy(() =>
+      import("@/features/subscription/layouts/SubscriptionMetricsLayout").then(
+        (mod) => ({
+          default: mod.SubscriptionMetricsLayout,
+        }),
+      ),
+    ),
   },
   {
     path: "overview/customers",

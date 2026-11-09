@@ -22,12 +22,6 @@ export const administrationPanelRoutes: AdministrationPanelRoute[] = [
     ),
   },
   {
-    path: "overview/customers",
-    title: "Customers",
-    description:
-      "Monitor customer growth and activity. Detailed metrics will be added here.",
-  },
-  {
     path: "overview/rankings",
     title: "Rankings",
     description:

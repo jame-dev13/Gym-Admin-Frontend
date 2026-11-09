@@ -26,13 +26,8 @@ export const ADMINISTRATION_SECTIONS: SidebarSection[] = [
         Icon: CreditCard,
       },
       {
-        to: "/administration/overview/customers",
-        label: "Customers",
-        Icon: Users,
-      },
-      {
         to: "/administration/overview/rankings",
-        label: "Ratings",
+        label: "Rankings",
         Icon: Star,
       },
       {

@@ -35,3 +35,25 @@ export type SubscriptionAboutToEndResponse = Readonly<Identifiable & {
   endsOn: string;
   status: SubscriptionStatus;
 }>;
+
+export type SubscriptionAnnualResumeModel = Readonly<{
+  content: Readonly<{
+    membershipResume: Readonly<{
+      membershipCount: number;
+      countDistribution: Readonly<{
+        biweeklyCount: number;
+        monthlyCount: number;
+        quarterlyCount: number;
+        annualCount: number;
+      }>;
+      netWorthDistribution: Readonly<{
+        netWorth: number;
+        biweeklyWorth: number;
+        monthlyWorth: number;
+        quarterlyWorth: number;
+        annualWorth: number;
+      }>;
+    }>;
+    topMembership: string;
+  }>;
+}>;

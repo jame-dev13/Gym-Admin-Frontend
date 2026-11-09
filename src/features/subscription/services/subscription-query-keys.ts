@@ -18,6 +18,10 @@ const subscriptionQueryKeys = {
         "page",
         { ...params },
       ] as const,
+    metrics: () =>
+      [...subscriptionQueryKeys.administration.all(), "metrics"] as const,
+    annualResume: () =>
+      [...subscriptionQueryKeys.administration.metrics(), "resume"] as const,
   },
 };
 

@@ -23,4 +23,20 @@ describe("subscription query domain key", () => {
       { page: 0 },
     ]);
   });
+
+  it("exposes the subscription metrics below the subscription domain", () => {
+    const { administration } = getSubscriptionQueryKeys();
+
+    expect(administration.metrics()).toEqual([
+      "administration",
+      "subscriptions",
+      "metrics",
+    ]);
+    expect(administration.annualResume()).toEqual([
+      "administration",
+      "subscriptions",
+      "metrics",
+      "resume",
+    ]);
+  });
 });

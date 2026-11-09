@@ -28,7 +28,7 @@ describe("evolution query keys", () => {
     expect(getBillingEvolutionQueryKey()).toEqual(["payments", "evolutions"]);
   });
 
-  it("exposes year and direction keys below the administration root", () => {
+  it("exposes year keys below the administration root", () => {
     const { administration } = getEvolutionQueryKeys();
 
     expect(administration.customers.all()).toEqual([
@@ -36,25 +36,16 @@ describe("evolution query keys", () => {
       "customers",
       "evolutions",
     ]);
-    expect(administration.customers.joins(2026)).toEqual([
+    expect(administration.customers.year(2026)).toEqual([
       "administration",
       "customers",
       "evolutions",
-      "joins",
       2026,
     ]);
-    expect(administration.customers.downs(2026)).toEqual([
-      "administration",
-      "customers",
-      "evolutions",
-      "downs",
-      2026,
-    ]);
-    expect(administration.subscribers.joins(2026)).toEqual([
+    expect(administration.subscribers.year(2026)).toEqual([
       "administration",
       "subscriptions",
       "evolutions",
-      "joins",
       2026,
     ]);
     expect(administration.billing.year(2026)).toEqual([
@@ -69,8 +60,8 @@ describe("evolution query keys", () => {
   it("invalidates customer and subscriber evolution from their source domains", async () => {
     const client = new QueryClient();
     const { administration } = getEvolutionQueryKeys();
-    const customerEvolution = administration.customers.joins(2026);
-    const subscriberEvolution = administration.subscribers.downs(2026);
+    const customerEvolution = administration.customers.year(2026);
+    const subscriberEvolution = administration.subscribers.year(2026);
 
     client.setQueryData(customerEvolution, { content: [] });
     client.setQueryData(subscriberEvolution, { content: [] });

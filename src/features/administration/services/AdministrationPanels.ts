@@ -131,7 +131,12 @@ export const administrationPanelRoutes: AdministrationPanelRoute[] = [
     path: "support/guide",
     title: "Guide",
     description:
-      "Step-by-step instructions for everyday administration tasks. The guide will be added here.",
+      "Step-by-step instructions for everyday administration tasks, including record lifecycles, recovery paths, and backups.",
+    Element: lazy(() =>
+      import("@/features/administration/layouts/GuideLayout").then((mod) => ({
+        default: mod.GuideLayout,
+      })),
+    ),
   },
   {
     path: "support/comments",

@@ -1,4 +1,5 @@
 export { default as AdministrationLayout } from "./layouts/AdministrationLayout";
+export { GuideLayout } from "./layouts/GuideLayout";
 export { default as AdminOverview } from "./components/AdminOverview";
 export { default as AdministrationPanel } from "./components/AdministrationPanel";
 export { AdministrationNavbar } from "./components/AdministrationNavbar";

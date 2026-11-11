@@ -24,3 +24,5 @@ export type UserResponse = Readonly<
       customerId: Identifiable["id"];
     }
 >;
+
+export type RecycleUser = Readonly<Identifiable & Pick<UserResponse, "name" | "email">>;

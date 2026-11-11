@@ -1,7 +1,10 @@
 import { TableField, TableFieldGroup } from "@/components/table/TableField";
 import type { TableRendererConfig } from "@/components/table/tableRendererConfig";
-import { useGetUserPage } from "@/features/user/hooks/useFetchUser";
-import type { UserResponse } from "@/features/user/types";
+import {
+  useGetRecycleUserPage,
+  useGetUserPage,
+} from "@/features/user/hooks/useFetchUser";
+import type { RecycleUser, UserResponse } from "@/features/user/types";
 import type { Column, ActionColumn } from "@/types/Types";
 import {
   Hash,
@@ -14,6 +17,7 @@ import {
 } from "lucide-react";
 import { UserTableRowActions } from "../components/UserTableRowActions";
 import { CreateCustomerLink } from "@/features/user/components/CreateCustomerLink";
+import { UserRecycleRowActions } from "../components/UserRecycleRowActions";
 
 export const userColumns: Column<UserResponse>[] = [
   {
@@ -133,3 +137,69 @@ export const userTableConfig: TableRendererConfig<UserResponse> = {
     initialDirection: "asc",
   },
 };
+
+const recycleUserColumns: Column<RecycleUser>[] = [
+  {
+    header: "User",
+    key: "id",
+    width: "400px",
+    kind: "data",
+    render: (_, row) => (
+      <TableFieldGroup>
+        <TableField icon={UserRound} label="User name" title={row.name}>
+          <span className="capitalize">{row.name}</span>
+        </TableField>
+        <TableField icon={Hash} label="User ID" title={`#${row.id}`}>
+          {`#${row.id}`}
+        </TableField>
+      </TableFieldGroup>
+    ),
+  },
+  {
+    header: "Email",
+    key: "email",
+    kind: "data",
+    render: (_, row) => (
+      <TableFieldGroup>
+        <TableField icon={Mail} label="User email" title={row.email}>
+          {row.email}
+        </TableField>
+      </TableFieldGroup>
+    ),
+  },
+  {
+    kind: "action",
+    header: "Actions",
+    key: "action",
+    renderActions: (user) => <UserRecycleRowActions row={user} />,
+  },
+];
+
+const userRecycleTableConfig: TableRendererConfig<RecycleUser> = {
+  usePage: useGetRecycleUserPage,
+  columns: recycleUserColumns,
+  title: "Recycle users",
+  pageSize: 5,
+  tableOptions: {
+    "aria-label": "Recycle table users",
+    caption: "Recycle users",
+    emptyMessage: "No recycle users found",
+    striped: true,
+    size: "sm",
+    responsive: "cards",
+    cardTitleKey: "name",
+  },
+  search: {
+    enabled: true,
+    placeholder: "Search recycle users…",
+  },
+  sort: {
+    properties: ["id", "name", "email"],
+    initialSortBy: "id",
+    initialDirection: "asc",
+  },
+  loadingMessage: "Loading recycle users...",
+};
+
+export const getUserRecycleTableConfig = (): TableRendererConfig<RecycleUser> =>
+  userRecycleTableConfig;

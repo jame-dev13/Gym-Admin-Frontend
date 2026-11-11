@@ -1,5 +1,5 @@
 import { userQueryKeyProvider } from "@/features/user/services/UserQueryKeyProvider";
-import type { UserResponse } from "@/features/user/types";
+import type { RecycleUser, UserResponse } from "@/features/user/types";
 import { useFetchMapping, usePageFetchMapping } from "@/hooks/useClientFetcher";
 import { pathBuilder } from "@/services/path-builder";
 import type { Identifiable } from "@/types/Types";
@@ -10,7 +10,7 @@ const { administration } = userQueryKeyProvider;
 export const useGetUserPage = (params?: Record<string, unknown>) =>
   usePageFetchMapping<UserResponse>({
     uri: BASE,
-    queryKey: [...administration.all(), "page"],
+    queryKey: [...administration.page(params ?? {})],
     params,
   });
 
@@ -19,4 +19,11 @@ export const useGetUser = (id: Identifiable) =>
     uri: pathBuilder.detail(BASE, id.id),
     queryKey: [...administration.detail(id)],
     options: { enabled: !!id.id },
+  });
+
+export const useGetRecycleUserPage = (params?: Record<string, unknown>) =>
+  usePageFetchMapping<RecycleUser>({
+    uri: `${BASE}/inactive`,
+    queryKey: [...administration.page(params ?? {}), "recycle"],
+    params,
   });

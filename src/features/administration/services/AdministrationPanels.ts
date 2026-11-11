@@ -120,6 +120,7 @@ export const administrationPanelRoutes: AdministrationPanelRoute[] = [
     title: "Users",
     description:
       "Restore recently deleted user accounts or remove them permanently. Recovery tools will be added here.",
+      Element: lazy(() => import("@/features/user/layouts/UserRecycleLayout"))
   },
   {
     path: "recycle/backups",

@@ -4,8 +4,10 @@ import { getAuthRouter } from "@/features/auth/services/AuthRouter";
 import { getLandingRouter } from "@/features/landing-page/services/LandingRouter";
 import { EntityDomainProvider } from "@/context/EntityDomainProvider";
 import { PageSkeleton } from "@/components/skeleton";
-import { Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
+
+const NotFoundPage = lazy(() => import("@/pages/404Page"));
 
 const {
   AuthLayout,
@@ -66,6 +68,7 @@ export const AppRouter = () => {
           <Route path="set-password" element={<SetPassword />} caseSensitive />
           <Route path="recover" element={<Recovery />} caseSensitive />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   );

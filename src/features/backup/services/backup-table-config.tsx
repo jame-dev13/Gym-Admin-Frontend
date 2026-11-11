@@ -5,9 +5,13 @@ import {
   type TableFieldIndicator,
 } from "@/components/table/TableField";
 import type { TableRendererConfig } from "@/components/table/tableRendererConfig";
+import { BackupRecycleRowActions } from "@/features/backup/components/BackupRecycleRowActions";
 import { BackupTableRowActions } from "@/features/backup/components/BackupTableRowActions";
 import { MakeBackupLink } from "@/features/backup/components/MakeBackupLink";
-import { useGetPageBackup } from "@/features/backup/hooks/useFetchBackup";
+import {
+  useGetPageBackup,
+  useGetPageBackupInactive,
+} from "@/features/backup/hooks/useFetchBackup";
 import type { BackupResponse } from "@/features/backup/types";
 import type { Column } from "@/types/Types";
 import type { LucideIcon } from "lucide-react";
@@ -191,3 +195,43 @@ const backupTableConfig: TableRendererConfig<BackupResponse> = {
 };
 
 export const getBackupTableConfig = () => backupTableConfig;
+
+const backupRecycleTableConfig: TableRendererConfig<BackupResponse> = {
+  usePage: useGetPageBackupInactive,
+  columns: Object.seal(
+    columns.map((col) => ({
+      ...col,
+      renderActions: (row: BackupResponse) => (
+        <BackupRecycleRowActions backup={row} />
+      ),
+    })),
+  ),
+  title: "Recycle Backups",
+  tableOptions: {
+    "aria-label": "Backup's recycle data Table",
+    cardTitleKey: "fileName",
+    emptyMessage: "Backups not found..",
+    size: "sm",
+    striped: true,
+    responsive: "cards",
+  },
+  loadingMessage: "Loading backup's data...",
+  search: {
+    enabled: true,
+    placeholder: "Search in backups....",
+  },
+  sort: {
+    properties: ["id", "fileName", "size", "backupStatus", "createdAt"],
+    initialSortBy: "createdAt",
+    labels: {
+      id: "Id",
+      fileName: "File name",
+      size: "Size",
+      backupStatus: "Status",
+      createdAt: "Created at",
+    },
+    initialDirection: "desc",
+  },
+};
+
+export const getBackupRecycleTableConfig = () => backupRecycleTableConfig;

@@ -97,11 +97,9 @@ export const administrationPanelRoutes: AdministrationPanelRoute[] = [
     description:
       "Inspect a chronological record of administrative actions. The audit trail will be added here.",
     Element: lazy(() =>
-      import("@/features/audit/layouts/AuditLogLayout").then(
-        (mod) => ({
-          default: mod.AuditLogLayout,
-        }),
-      ),
+      import("@/features/audit/layouts/AuditLogLayout").then((mod) => ({
+        default: mod.AuditLogLayout,
+      })),
     ),
   },
   {
@@ -120,13 +118,14 @@ export const administrationPanelRoutes: AdministrationPanelRoute[] = [
     title: "Users",
     description:
       "Restore recently deleted user accounts or remove them permanently. Recovery tools will be added here.",
-      Element: lazy(() => import("@/features/user/layouts/UserRecycleLayout"))
+    Element: lazy(() => import("@/features/user/layouts/UserRecycleLayout")),
   },
   {
     path: "recycle/backups",
     title: "Backups",
     description:
       "Browse stored backups and restore the system from a snapshot. Restore tools will be added here.",
+    Element: lazy(() => import("@/features/backup/layouts/BackupRecycleLayout")),
   },
   {
     path: "support/guide",

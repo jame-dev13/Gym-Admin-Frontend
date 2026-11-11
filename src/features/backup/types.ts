@@ -12,3 +12,8 @@ export type BackupResponse = Identifiable & {
   createdBy: string;
   createdAt: string;
 };
+
+export type BackupDialogProps = {
+  backupId: Identifiable["id"];
+  fileName?: string;
+};

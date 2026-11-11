@@ -31,3 +31,17 @@ export const useDeleteBackup = ({ id }: Identifiable) =>
     method: "delete",
     ...backupMutationBase,
   });
+
+export const useHardDeleteBackup = ({ id }: Identifiable) =>
+  useMutationMapping<undefined, void>({
+    uri: pathBuilder.action(BASE, id, "hard"),
+    method: "delete",
+    ...backupMutationBase,
+  });
+
+export const useRecoverBackup = ({ id }: Identifiable) =>
+  useMutationMapping<undefined, void>({
+    uri: pathBuilder.action(BASE, id, "recover"),
+    method: "patch",
+    ...backupMutationBase,
+  });

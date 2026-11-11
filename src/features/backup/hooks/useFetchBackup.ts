@@ -16,6 +16,13 @@ export const useGetPageBackup = (params?: Record<string, unknown>) =>
     params,
   });
 
+  export const useGetPageBackupInactive = (params?: Record<string, unknown>) =>
+  usePageFetchMapping<BackupResponse>({
+    uri: `${BASE}/inactive`,
+    queryKey: [...administration.page(params), "inactive"],
+    params,
+  });
+
 export const useGetBackup = ({ id }: Identifiable) =>
   useFetchMapping<BackupResponse>({
     uri: pathBuilder.detail(BASE, id),

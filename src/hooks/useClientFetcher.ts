@@ -29,12 +29,15 @@ export function useFetchMapping<T>(paramArgs: FetchMappingParams<T>) {
   );
 }
 
-export function usePageFetchMapping<T>({
+export function usePageFetchMapping<T, R = T>({
   uri,
   params,
   queryKey,
-}: Omit<FetchMappingParams<T>, "options">) {
-  return useQuery<Page<T>, ApiErrorResponse>(
+  select,
+}: Omit<FetchMappingParams<T>, "options"> & {
+  select?: (data: Page<T>) => Page<R>;
+}) {
+  return useQuery<Page<T>, ApiErrorResponse, Page<R>>(
     {
       queryKey: [...queryKey, { ...params }],
       queryFn: async () => {
@@ -43,6 +46,7 @@ export function usePageFetchMapping<T>({
         });
         return { ...data };
       },
+      select,
       placeholderData: keepPreviousData,
       staleTime: 1000 * 60 * 5,
     },

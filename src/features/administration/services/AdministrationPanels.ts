@@ -142,7 +142,12 @@ export const administrationPanelRoutes: AdministrationPanelRoute[] = [
     path: "support/comments",
     title: "Comments",
     description:
-      "Read and moderate member comments and feedback. Moderation tools will be added here.",
+      "Read and moderate member comments and feedback, including ratings and comment metadata.",
+    Element: lazy(() =>
+      import("@/features/comments/layouts/CommentLayout").then((mod) => ({
+        default: mod.CommentLayout,
+      })),
+    ),
   },
   {
     path: "support/help-center",

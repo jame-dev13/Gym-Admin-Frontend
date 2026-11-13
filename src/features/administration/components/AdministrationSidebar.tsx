@@ -4,6 +4,8 @@ import { LogoutBtn } from "@/components/buttons/LogoutBtn";
 import { Sidebar } from "@/components/sidebar/Sidebar";
 import { useSelectionContext } from "@/context/useSelectionContext";
 import { ADMINISTRATION_SECTIONS } from "@/features/administration/services/AdministrationSections";
+import { lazy, Suspense } from "react";
+import { ButtonCurrentInfoSkeleton } from "@/features/current/components/ButtonCurrentInfoSkeleton";
 
 const brand = (
   <Link
@@ -27,6 +29,10 @@ const collapsedBrand = (
   </Link>
 );
 
+const LazyBtnCurrentInfo = lazy(
+  () => import("@/features/current/components/ButtonCurrentInfo"),
+);
+
 export const AdministrationSidebar = () => {
   const { clearSelection } = useSelectionContext();
 
@@ -36,7 +42,14 @@ export const AdministrationSidebar = () => {
       brand={brand}
       collapsedBrand={collapsedBrand}
       sections={ADMINISTRATION_SECTIONS}
-      footer={<LogoutBtn className="w-full" />}
+      footer={
+        <article className={`tab:grid gap-2 max-tab:flex`}>
+          <Suspense fallback={<ButtonCurrentInfoSkeleton />}>
+            <LazyBtnCurrentInfo />
+          </Suspense>
+          <LogoutBtn className="w-full" />
+        </article>
+      }
       onNavigate={clearSelection}
     />
   );

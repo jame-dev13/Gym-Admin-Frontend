@@ -9,6 +9,17 @@ export type AdministrationPanelRoute = {
 
 export const administrationPanelRoutes: AdministrationPanelRoute[] = [
   {
+    path: "current",
+    title: "Current User",
+    description:
+      "Review the information tied to your account and update your personal details.",
+    Element: lazy(() =>
+      import("@/features/current/layouts/CurrentLayout").then((mod) => ({
+        default: mod.CurrentLayout,
+      })),
+    ),
+  },
+  {
     path: "overview/subscriptions",
     title: "Subscriptions",
     description:

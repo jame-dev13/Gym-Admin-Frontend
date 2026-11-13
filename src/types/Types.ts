@@ -20,8 +20,8 @@ export type MutationResponse<T> = {
 };
 
 export type Page<T> = Readonly<{
-  content: T[],
-  page: PageProperty
+  content: T[];
+  page: PageProperty;
 }>;
 
 type PageProperty = Readonly<{
@@ -46,7 +46,10 @@ export type DataColumn<T> = {
   width?: string;
   emptyValue?: string;
   hideOnCards?: boolean;
-} & ({ render?: (value: T[keyof T], row: T) => ReactNode } | { render?: (value: T[keyof T], row: T) => JSX.Element });
+} & (
+  | { render?: (value: T[keyof T], row: T) => ReactNode }
+  | { render?: (value: T[keyof T], row: T) => JSX.Element }
+);
 
 export type RowAction<T> = {
   id: string;
@@ -108,6 +111,12 @@ export interface ToastFactory {
   showInfo: ToastShowFn;
   showDefault: ToastShowFn;
 }
+
+export type SessionResponse = Readonly<{
+  email: string;
+  roles: string[];
+  isCustomer: boolean;
+}>;
 
 export type {
   DropdownOption,

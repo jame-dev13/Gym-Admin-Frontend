@@ -37,23 +37,25 @@ export const AppRouter = () => {
           caseSensitive
         >
           <Route index element={<AdminOverview />} />
-          {administrationPanelRoutes.map(({ path, title, description, Element }) => (
-            <Route
-              key={path}
-              path={path}
-              element={
-                Element ? (
-                  <Element />
-                ) : (
-                  <AdministrationPanel
-                    title={title}
-                    description={description}
-                  />
-                )
-              }
-              caseSensitive
-            />
-          ))}
+          {administrationPanelRoutes.map(
+            ({ path, title, description, Element }) => (
+              <Route
+                key={path}
+                path={path}
+                element={
+                  Element ? (
+                    <Element />
+                  ) : (
+                    <AdministrationPanel
+                      title={title}
+                      description={description}
+                    />
+                  )
+                }
+                caseSensitive
+              />
+            ),
+          )}
         </Route>
         <Route path="/auth" caseSensitive>
           <Route index element={<AuthLayout />} />
@@ -69,6 +71,36 @@ export const AppRouter = () => {
           <Route path="recover" element={<Recovery />} caseSensitive />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
+        <Route
+          path="/current"
+          element={
+            <>
+              <button
+                className={
+                  "flex gap-x-3 w-fit items-center rounded border border-border-emphasis px-3 py-2 bg-surface-secondary-raised cursor-pointer"
+                }
+              >
+                <span className={"flex items-center size-7 rounded-full bg-indigo-700 p-2"}>A</span>
+                <div
+                  className={"grid max-w-32 overflow-x-hidden"}
+                >
+                  <p
+                    className={"text-start truncate text-text-primary text-sm"}
+                    title="Angel Maciel"
+                  >
+                    Jose Angel Maciel Estrada
+                  </p>
+                  <p
+                    className={"text-start truncate text-text-secondary text-sm"}
+                    title="angel@mail.com"
+                  >
+                    angel@mail.com
+                  </p>
+                </div>
+              </button>
+            </>
+          }
+        />
       </Routes>
     </Suspense>
   );

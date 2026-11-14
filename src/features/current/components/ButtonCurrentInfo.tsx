@@ -44,7 +44,7 @@ const ButtonCurrentInfo = () => {
       className={
         "flex gap-x-3 w-full items-center rounded border border-border-emphasis px-3 py-2 hover:bg-surface-secondary-over cursor-pointer"
       }
-      onClick={() => nav("/administration/current")}
+      onClick={() => nav("/administration/settings")}
     >
       <span
         className={"flex items-center size-7 rounded-full bg-indigo-700 p-2"}

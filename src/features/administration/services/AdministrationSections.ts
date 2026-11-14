@@ -8,6 +8,7 @@ import {
   MessageSquareText,
   ReceiptText,
   ScrollText,
+  Settings,
   Star,
   TrendingUp,
   UserRound,
@@ -104,6 +105,16 @@ export const ADMINISTRATION_SECTIONS: SidebarSection[] = [
         to: "/administration/support/help-center",
         label: "Help Center",
         Icon: LifeBuoy,
+      },
+    ],
+  },
+  {
+    label: "Account",
+    links: [
+      {
+        to: "/administration/settings",
+        label: "Settings",
+        Icon: Settings,
       },
     ],
   },

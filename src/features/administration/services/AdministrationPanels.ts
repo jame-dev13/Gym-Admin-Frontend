@@ -9,14 +9,16 @@ export type AdministrationPanelRoute = {
 
 export const administrationPanelRoutes: AdministrationPanelRoute[] = [
   {
-    path: "current",
-    title: "Current User",
+    path: "settings",
+    title: "Settings",
     description:
-      "Review the information tied to your account and update your personal details.",
+      "Manage your account details and control gym-wide notifications from one place.",
     Element: lazy(() =>
-      import("@/features/current/layouts/CurrentLayout").then((mod) => ({
-        default: mod.CurrentLayout,
-      })),
+      import("@/features/administration/layouts/AdminSettingsLayout").then(
+        (mod) => ({
+          default: mod.AdminSettingsLayout,
+        }),
+      ),
     ),
   },
   {

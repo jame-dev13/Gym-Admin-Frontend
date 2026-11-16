@@ -21,6 +21,7 @@ export const Navbar: FC<NavbarProps> = ({
   brand,
   actions,
   position = "sticky",
+  activeHref,
   defaultOpen = false,
   open,
   onOpenChange,
@@ -66,53 +67,69 @@ export const Navbar: FC<NavbarProps> = ({
   const renderLinkIcon = (link: NavbarLink) =>
     link.Icon ? <link.Icon size={18} aria-hidden="true" /> : null;
 
-  const renderDesktopLink = (link: NavbarLink) =>
-    link.href !== undefined ? (
-      <a
-        key={link.href}
-        href={link.href}
-        className={`${desktopLinkBase} text-text-secondary`}
-      >
-        {renderLinkIcon(link)}
-        {link.label}
-      </a>
-    ) : (
-      <NavLink
-        key={link.to}
-        to={link.to}
-        className={({ isActive }) =>
-          `${desktopLinkBase} ${isActive ? "text-accent" : "text-text-secondary"}`
-        }
-      >
-        {renderLinkIcon(link)}
-        {link.label}
-      </NavLink>
-    );
+  const renderDesktopLink = (link: NavbarLink) => {
+    if (link.href === undefined) {
+      return (
+        <NavLink
+          key={link.to}
+          to={link.to}
+          className={({ isActive }) =>
+            `${desktopLinkBase} ${isActive ? "text-accent" : "text-text-secondary"}`
+          }
+        >
+          {renderLinkIcon(link)}
+          {link.label}
+        </NavLink>
+      );
+    }
 
-  const renderMobileLink = (link: NavbarLink) =>
-    link.href !== undefined ? (
+    const isActiveAnchor = link.href === activeHref;
+
+    return (
+      <a
+        key={link.href}
+        href={link.href}
+        aria-current={isActiveAnchor ? "location" : undefined}
+        className={`${desktopLinkBase} ${isActiveAnchor ? "text-accent" : "text-text-secondary"}`}
+      >
+        {renderLinkIcon(link)}
+        {link.label}
+      </a>
+    );
+  };
+
+  const renderMobileLink = (link: NavbarLink) => {
+    if (link.href === undefined) {
+      return (
+        <NavLink
+          key={link.to}
+          to={link.to}
+          onClick={() => setMenuOpen(false)}
+          className={({ isActive }) =>
+            `${mobileLinkBase} ${isActive ? "text-accent" : ""}`
+          }
+        >
+          {renderLinkIcon(link)}
+          <span>{link.label}</span>
+        </NavLink>
+      );
+    }
+
+    const isActiveAnchor = link.href === activeHref;
+
+    return (
       <a
         key={link.href}
         href={link.href}
         onClick={() => setMenuOpen(false)}
-        className={mobileLinkBase}
+        aria-current={isActiveAnchor ? "location" : undefined}
+        className={`${mobileLinkBase} ${isActiveAnchor ? "text-accent" : ""}`}
       >
         {renderLinkIcon(link)}
         <span>{link.label}</span>
       </a>
-    ) : (
-      <NavLink
-        key={link.to}
-        to={link.to}
-        onClick={() => setMenuOpen(false)}
-        className={({ isActive }) =>
-          `${mobileLinkBase} ${isActive ? "text-accent" : ""}`
-        }
-      >
-        {renderLinkIcon(link)}
-        <span>{link.label}</span>
-      </NavLink>
     );
+  };
 
   return (
     <header

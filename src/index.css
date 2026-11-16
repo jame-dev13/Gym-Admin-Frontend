@@ -104,6 +104,13 @@
   background-color: var(--color-surface);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  #root,
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 html {
   overflow-x: hidden;
   scrollbar-color: var(--color-border) var(--color-surface);

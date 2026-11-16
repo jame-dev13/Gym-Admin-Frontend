@@ -6,6 +6,8 @@ export interface NavbarProps {
   brand?: ReactNode;
   actions?: ReactNode;
   position?: NavbarPosition;
+  /** Highlights the anchor link matching this href, for in-page navigation. */
+  activeHref?: string;
   defaultOpen?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;

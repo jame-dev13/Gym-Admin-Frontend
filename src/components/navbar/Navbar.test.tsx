@@ -169,6 +169,26 @@ describe("Navbar", () => {
     expect(anchor.tagName).toBe("A");
   });
 
+  it("marks the matching anchor link as the current location", () => {
+    renderNavbar(
+      <Navbar
+        brand={<span>Brand</span>}
+        links={[
+          { href: "#membresias", label: "Membresías" },
+          { href: "#beneficios", label: "Beneficios" },
+        ]}
+        activeHref="#membresias"
+      />,
+    );
+
+    expect(
+      screen.getAllByRole("link", { name: "Membresías" })[0],
+    ).toHaveAttribute("aria-current", "location");
+    expect(
+      screen.getAllByRole("link", { name: "Beneficios" })[0],
+    ).not.toHaveAttribute("aria-current");
+  });
+
   it("supports mixed router and anchor links", () => {
     renderNavbar(
       <Navbar

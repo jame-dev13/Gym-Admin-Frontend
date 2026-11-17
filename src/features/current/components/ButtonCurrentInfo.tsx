@@ -1,7 +1,13 @@
 import { useFetchCurrentOverviewInfo } from "@/features/current/hooks/useFetchCurrent";
 import { useNavigate } from "react-router-dom";
 
-const ButtonCurrentInfo = () => {
+type ButtonCurrentInfoProps = {
+  to?: string;
+};
+
+const ButtonCurrentInfo = ({
+  to = "/administration/settings",
+}: ButtonCurrentInfoProps = {}) => {
   const { data, error, isLoading } = useFetchCurrentOverviewInfo(true);
   const nav = useNavigate();
 
@@ -44,7 +50,7 @@ const ButtonCurrentInfo = () => {
       className={
         "flex gap-x-3 w-full items-center rounded border border-border-emphasis px-3 py-2 hover:bg-surface-secondary-over cursor-pointer"
       }
-      onClick={() => nav("/administration/settings")}
+      onClick={() => nav(to)}
     >
       <span
         className={"flex items-center size-7 rounded-full bg-indigo-700 p-2"}

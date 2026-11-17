@@ -7,9 +7,11 @@ import { useToastFactory } from "@/hooks/useToastFactory";
 import type { ApiErrorResponse } from "@/types/Types";
 import { HttpStatusCode } from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CODE = "VALIDATION_OPERATION";
 const CONFLICT = HttpStatusCode.Conflict;
+const ON_CURRENT_SUCCESS_PATH = "/home";
 
 const isAlreadyExistsError = (err?: ApiErrorResponse) =>
   err?.code === CODE && err.status === CONFLICT;
@@ -47,12 +49,14 @@ export const useCreateCustomerHandler = () => {
 export const useCreateCurrentCustomerHandler = () => {
   const { closeModal } = useModalContext();
   const { showError, showSuccess } = useToastFactory();
-  return  useMutationHandler({
+  const navigate = useNavigate();
+  return useMutationHandler({
     mutationHook: useCreateCurrentCustomer,
     resultHandlers: {
       onSuccess: () => {
-        showSuccess("Customer successfully created.");
         closeModal();
+        void navigate(ON_CURRENT_SUCCESS_PATH, { replace: true });
+        showSuccess("Welcome to your personal dashboard!");
       },
       onError: (err) => showError(`Cannot create customer: ${err?.message}`),
     },

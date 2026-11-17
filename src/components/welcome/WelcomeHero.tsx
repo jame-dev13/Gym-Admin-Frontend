@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { WELCOME_HERO_TRUST_POINTS } from "@/components/welcome/WelcomeContent";
 import { WELCOME_SECTION_IDS } from "@/components/welcome/WelcomeSectionIds";
-import type { WelcomeMembershipActionProps } from "@/components/welcome/WelcomeTypes";
+import { useWelcomeMembershipDialog } from "@/components/welcome/useWelcomeMembershipDialog";
 
 const PRIMARY_CTA = [
   "inline-flex",
@@ -146,73 +146,75 @@ const DashboardPreview = () => (
   </div>
 );
 
-export const WelcomeHero = ({
-  onRequestMembership,
-}: WelcomeMembershipActionProps) => (
-  <section
-    id={WELCOME_SECTION_IDS.overview}
-    aria-labelledby="welcome-hero-title"
-    className="relative scroll-mt-24 overflow-hidden"
-  >
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute -top-40 left-1/2 h-96 w-[42rem] max-w-full -translate-x-1/2 rounded-full bg-accent/15 blur-3xl"
-    />
-    <div
-      aria-hidden="true"
-      className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] [background-size:4rem_4rem] opacity-20 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]"
-    />
+export const WelcomeHero = () => {
+  const openMembershipDialog = useWelcomeMembershipDialog();
 
-    <div className="relative mx-auto grid w-full max-w-6xl items-center gap-12 px-4 py-16 sm:px-6 sm:py-24 tab:grid-cols-[1.05fr_0.95fr]">
-      <div className="flex max-w-xl flex-col gap-6 motion-safe:animate-fade-in-up">
-        <p className="inline-flex w-fit items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-bold tracking-[0.16em] text-accent uppercase">
-          <Sparkles size={14} aria-hidden="true" />
-          Membership, made clear
-        </p>
+  return (
+    <section
+      id={WELCOME_SECTION_IDS.overview}
+      aria-labelledby="welcome-hero-title"
+      className="relative scroll-mt-24 overflow-hidden"
+    >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-40 left-1/2 h-96 w-[42rem] max-w-full -translate-x-1/2 rounded-full bg-accent/15 blur-3xl"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] [background-size:4rem_4rem] opacity-20 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]"
+      />
 
-        <h1
-          id="welcome-hero-title"
-          className="text-4xl font-extrabold tracking-tight text-balance text-text-primary sm:text-5xl tab:text-6xl"
-        >
-          Everything your{" "}
-          <span className="text-accent">membership</span> needs, in one place.
-        </h1>
+      <div className="relative mx-auto grid w-full max-w-6xl items-center gap-12 px-4 py-16 sm:px-6 sm:py-24 tab:grid-cols-[1.05fr_0.95fr]">
+        <div className="flex max-w-xl flex-col gap-6 motion-safe:animate-fade-in-up">
+          <p className="inline-flex w-fit items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1.5 text-xs font-bold tracking-[0.16em] text-accent uppercase">
+            <Sparkles size={14} aria-hidden="true" />
+            Membership, made clear
+          </p>
 
-        <p className="text-lg leading-relaxed text-text-secondary">
-          You already have the account. Activate your membership to unlock your
-          profile, subscription, payments, activity log, and a community that
-          keeps you moving.
-        </p>
-
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <button
-            type="button"
-            onClick={onRequestMembership}
-            className={PRIMARY_CTA}
+          <h1
+            id="welcome-hero-title"
+            className="text-4xl font-extrabold tracking-tight text-balance text-text-primary sm:text-5xl tab:text-6xl"
           >
-            Become a member
-            <ArrowRight size={18} aria-hidden="true" />
-          </button>
-          <a href={`#${WELCOME_SECTION_IDS.benefits}`} className={SECONDARY_CTA}>
-            See what is included
-          </a>
+            Everything your{" "}
+            <span className="text-accent">membership</span> needs, in one place.
+          </h1>
+
+          <p className="text-lg leading-relaxed text-text-secondary">
+            You already have the account. Activate your membership to unlock your
+            profile, subscription, payments, activity log, and a community that
+            keeps you moving.
+          </p>
+
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={openMembershipDialog}
+              className={PRIMARY_CTA}
+            >
+              Become a member
+              <ArrowRight size={18} aria-hidden="true" />
+            </button>
+            <a href={`#${WELCOME_SECTION_IDS.benefits}`} className={SECONDARY_CTA}>
+              See what is included
+            </a>
+          </div>
+
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-text-secondary">
+            {WELCOME_HERO_TRUST_POINTS.map((point) => (
+              <li key={point} className="inline-flex items-center gap-1.5">
+                <Check
+                  size={16}
+                  aria-hidden="true"
+                  className="shrink-0 text-success"
+                />
+                {point}
+              </li>
+            ))}
+          </ul>
         </div>
 
-        <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-text-secondary">
-          {WELCOME_HERO_TRUST_POINTS.map((point) => (
-            <li key={point} className="inline-flex items-center gap-1.5">
-              <Check
-                size={16}
-                aria-hidden="true"
-                className="shrink-0 text-success"
-              />
-              {point}
-            </li>
-          ))}
-        </ul>
+        <DashboardPreview />
       </div>
-
-      <DashboardPreview />
-    </div>
-  </section>
-);
+    </section>
+  );
+};

@@ -36,15 +36,6 @@ export type WelcomeFaqItem = {
   answer: string;
 };
 
-export type WelcomeMembershipActionProps = {
-  onRequestMembership: () => void;
-};
-
-export type WelcomeMembershipDialogProps = {
-  open: boolean;
-  onClose: () => void;
-};
-
 export type WelcomeSectionHeaderProps = {
   id: string;
   eyebrow: string;

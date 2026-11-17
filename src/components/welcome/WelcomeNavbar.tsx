@@ -5,8 +5,8 @@ import { ThemeBtn } from "@/components/buttons/Buttons";
 import { Navbar } from "@/components/navbar/Navbar";
 import { WELCOME_NAV_LINKS } from "@/components/welcome/WelcomeContent";
 import { WELCOME_NAV_SECTION_IDS } from "@/components/welcome/WelcomeSectionIds";
-import type { WelcomeMembershipActionProps } from "@/components/welcome/WelcomeTypes";
 import { useActiveWelcomeSection } from "@/components/welcome/useActiveWelcomeSection";
+import { useWelcomeMembershipDialog } from "@/components/welcome/useWelcomeMembershipDialog";
 
 const CTA_STYLES = [
   "inline-flex",
@@ -33,15 +33,14 @@ const CTA_STYLES = [
   "tab:flex-none",
 ].join(" ");
 
-export const WelcomeNavbar = ({
-  onRequestMembership,
-}: WelcomeMembershipActionProps) => {
+export const WelcomeNavbar = () => {
   const activeHref = useActiveWelcomeSection(WELCOME_NAV_SECTION_IDS);
   const [menuOpen, setMenuOpen] = useState(false);
+  const openMembershipDialog = useWelcomeMembershipDialog();
 
   const handleRequestMembership = () => {
     setMenuOpen(false);
-    onRequestMembership();
+    openMembershipDialog();
   };
 
   return (
@@ -53,7 +52,7 @@ export const WelcomeNavbar = ({
       onOpenChange={setMenuOpen}
       brand={
         <Link
-          to="/home"
+          to="/welcome"
           className="inline-flex min-w-0 items-center gap-2.5 text-text-primary transition-colors hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
         >
           <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-accent/10 text-accent ring-1 ring-accent/20">

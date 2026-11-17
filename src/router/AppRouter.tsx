@@ -28,7 +28,7 @@ export const AppRouter = () => {
     <Suspense fallback={<PageSkeleton />}>
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/home" element={<WelcomePage />} caseSensitive />
+        <Route path="/home" element={<div>Home page</div>} caseSensitive />
         <Route path="/welcome" element={<WelcomePage />} caseSensitive />
         <Route
           path="/administration"

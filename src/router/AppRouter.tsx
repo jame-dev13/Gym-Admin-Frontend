@@ -74,6 +74,7 @@ export const AppRouter = () => {
           <Route path="recover" element={<Recovery />} caseSensitive />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
+        <Route path="/404" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   );

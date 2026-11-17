@@ -1,11 +1,12 @@
+type LoginUserType = "ADMINISTRATIVE" | "USER" | "CUSTOMER";
+
 type LoginRequest = Readonly<{
   email: string;
   password: string;
 }>;
 
 type LoginResponse = Readonly<{
-  isUser: boolean;
-  email: string;
+  userType: LoginUserType;
 }>;
 
 type RegisterRequest = Readonly<{
@@ -53,4 +54,5 @@ export type {
   RegisterRequest,
   ResetPasswordRequest,
   VerificationRequest,
+  LoginUserType
 };

@@ -20,6 +20,10 @@ export type SubscriptionAdminRequest = {
   membership: Membership;
 };
 
+export type SubscriptionCurrentRequest = Readonly<{
+  membership: Membership;
+}>;
+
 export type SubscriptionResponse = Identifiable & {
   customerEmail: string;
   membership: Membership;
@@ -28,13 +32,15 @@ export type SubscriptionResponse = Identifiable & {
   status: SubscriptionStatus;
 };
 
-export type SubscriptionAboutToEndResponse = Readonly<Identifiable & {
-  member: string;
-  membership: Membership;
-  price: number;
-  endsOn: string;
-  status: SubscriptionStatus;
-}>;
+export type SubscriptionAboutToEndResponse = Readonly<
+  Identifiable & {
+    member: string;
+    membership: Membership;
+    price: number;
+    endsOn: string;
+    status: SubscriptionStatus;
+  }
+>;
 
 export type SubscriptionAnnualResumeModel = Readonly<{
   content: Readonly<{
@@ -56,4 +62,13 @@ export type SubscriptionAnnualResumeModel = Readonly<{
     }>;
     topMembership: string;
   }>;
+}>;
+
+export type Checkout = Readonly<{
+  sessionUrl: string;
+}>;
+
+export type SubscriptionSessionResponse = Readonly<{
+  checkout: Checkout;
+  subscription: SubscriptionResponse;
 }>;

@@ -1,7 +1,7 @@
 import { getQueryKeyProvider } from "@/services/query-key-provider";
 import type { Identifiable } from "@/types/Types";
 
-const { administration } = getQueryKeyProvider();
+const { administration, current } = getQueryKeyProvider();
 
 const PAYMENT_DOMAIN_KEY = ["payments"] as const;
 
@@ -25,6 +25,9 @@ const paymentQueryKeys = {
     investmentEvolution: () =>
       [...paymentQueryKeys.administration.metrics(), "evolution"] as const,
   },
+  current: {
+    all: () => [...current, ...getQueryDomainKey()] as const
+  }
 };
 
 export const getPaymentQueryKeys = () => paymentQueryKeys;

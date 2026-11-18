@@ -9,6 +9,7 @@ import { PageSkeleton } from "@/components/skeleton";
 import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { HomeLayout } from "@/features/home/layouts/HomeLayout";
+import { RetryPaymentBtn } from "@/features/payment/components/RetryPaymentBtn";
 
 const NotFoundPage = lazy(() => import("@/pages/404Page"));
 const WelcomePage = lazy(() => import("@/pages/Welcome"));
@@ -95,6 +96,16 @@ export const AppRouter = () => {
         </Route>
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/404" element={<NotFoundPage />} />
+        <Route
+          path="/current"
+          element={
+            <>
+            <div className={"flex size-24"}>
+              <RetryPaymentBtn />
+            </div>
+            </>
+          }
+        />
       </Routes>
     </Suspense>
   );

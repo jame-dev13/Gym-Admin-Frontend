@@ -1,5 +1,7 @@
 import { useModalContext } from "@/context/useModalContext";
 import { useDeleteSubscription } from "@/features/subscription/hooks/useMutateSubscription";
+import { useDeleteCurrentSubscription } from "@/features/subscription/hooks/useMutateCurrentSubscription";
+
 import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { useToastFactory } from "@/hooks/useToastFactory";
 import type { Identifiable } from "@/types/Types";
@@ -19,6 +21,22 @@ export const useDeleteSubscriptionHandler = (
   return useMutationHandler({
     id,
     mutationHook: () => mutation,
+    payloadBuilder: () => undefined,
+    resultHandlers: {
+      onSuccess: () => showSuccess("Subscription deleted with success."),
+      onError: (err) =>
+        showError(`Cannot delete subscription: ${err?.message}`),
+      onSettled: closeModal,
+    },
+  });
+};
+
+export const useDeleteCurrentSubscriptionHandler = () => {
+  const { closeModal } = useModalContext();
+  const { showSuccess, showError } = useToastFactory();
+
+  return useMutationHandler({
+    mutationHook: useDeleteCurrentSubscription,
     payloadBuilder: () => undefined,
     resultHandlers: {
       onSuccess: () => showSuccess("Subscription deleted with success."),

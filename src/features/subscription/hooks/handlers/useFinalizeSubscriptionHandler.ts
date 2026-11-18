@@ -1,5 +1,6 @@
 import { useModalContext } from "@/context/useModalContext";
 import { useFinalizeSubscription } from "@/features/subscription/hooks/useMutateSubscription";
+import { useFinalizeCurrentSubscription } from "@/features/subscription/hooks/useMutateCurrentSubscription";
 import { useMutationHandler } from "@/hooks/useMutationHandler";
 import { useToastFactory } from "@/hooks/useToastFactory";
 import type { Identifiable } from "@/types/Types";
@@ -19,6 +20,22 @@ export const useFinalizeSubscriptionHandler = (
   return useMutationHandler({
     id,
     mutationHook: () => mutation,
+    payloadBuilder: () => undefined,
+    resultHandlers: {
+      onSuccess: () => showSuccess("Subscription finalized with success."),
+      onError: (err) =>
+        showError(`Cannot finalize subscription: ${err?.message}`),
+      onSettled: closeModal,
+    },
+  });
+};
+
+export const useFinalizeCurrentSubscriptionHandler = () => {
+  const { closeModal } = useModalContext();
+  const { showSuccess, showError } = useToastFactory();
+
+  return useMutationHandler({
+    mutationHook: useFinalizeCurrentSubscription,
     payloadBuilder: () => undefined,
     resultHandlers: {
       onSuccess: () => showSuccess("Subscription finalized with success."),

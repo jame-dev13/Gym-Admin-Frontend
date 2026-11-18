@@ -1,7 +1,7 @@
 import { getQueryKeyProvider } from "@/services/query-key-provider";
 import type { Identifiable } from "@/types/Types";
 
-const { administration } = getQueryKeyProvider();
+const { administration, current } = getQueryKeyProvider();
 
 const SUBSCRIPTION_DOMAIN_KEY = ["subscriptions"] as const;
 
@@ -22,6 +22,11 @@ const subscriptionQueryKeys = {
       [...subscriptionQueryKeys.administration.all(), "metrics"] as const,
     annualResume: () =>
       [...subscriptionQueryKeys.administration.metrics(), "resume"] as const,
+  },
+  current: {
+    all: () => [...current, ...getQueryDomainKey()] as const,
+    detail: ({ id }: Identifiable) =>
+      [...subscriptionQueryKeys.current.all(), "detail", id] as const,
   },
 };
 

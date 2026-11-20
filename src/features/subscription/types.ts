@@ -15,6 +15,12 @@ export type SubscriptionStatus =
   | "ON_RENEWAL"
   | "RENEWED";
 
+export type CurrentSubscriptionConfirmVariant =
+  | "create"
+  | "renew"
+  | "finalize"
+  | "delete";
+
 export type SubscriptionAdminRequest = {
   customerEmail: string;
   membership: Membership;

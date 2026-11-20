@@ -16,9 +16,16 @@ export const homePanelRoutes: HomePanelRoute[] = [
   },
   {
     path: "my/subscription",
-    title: "Subscription",
+    title: "Subscription overview",
     description:
-      "Check the details of your current membership plan and its renewal status.",
+      "Review your current membership, its payment status, and the actions available for it.",
+    Element: lazy(() =>
+      import("@/features/subscription/layouts/SubscriptionOverviewLayout").then(
+        (mod) => ({
+          default: mod.SubscriptionOverviewLayout,
+        }),
+      ),
+    ),
   },
   {
     path: "my/payments",

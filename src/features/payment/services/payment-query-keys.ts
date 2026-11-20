@@ -26,8 +26,13 @@ const paymentQueryKeys = {
       [...paymentQueryKeys.administration.metrics(), "evolution"] as const,
   },
   current: {
-    all: () => [...current, ...getQueryDomainKey()] as const
-  }
+    all: () => [...current, ...getQueryDomainKey()] as const,
+    page: (params?: Record<string, unknown>) => [
+      ...paymentQueryKeys.current.all(),
+      "page",
+      { ...params },
+    ] as const,
+  },
 };
 
 export const getPaymentQueryKeys = () => paymentQueryKeys;

@@ -1,10 +1,10 @@
-import {
-  TableField,
-  TableFieldGroup,
-} from "@/components/table/TableField";
+import { TableField, TableFieldGroup } from "@/components/table/TableField";
 import type { TableRendererConfig } from "@/components/table/tableRendererConfig";
 import { AuditLogDetailsButton } from "@/features/audit/components/AuditLogDetailsButton";
-import { useGetPageAuditLog } from "@/features/audit/hooks/useFetchAuditLog";
+import {
+  useGetCurrentPageAuditLog,
+  useGetPageAuditLog,
+} from "@/features/audit/hooks/useFetchAuditLog";
 import type { AuditLogResponse } from "@/features/audit/types";
 import type { Column } from "@/types/Types";
 import { Box, Asterisk, UserCheck, Timer, Activity } from "lucide-react";
@@ -68,7 +68,7 @@ const auditLogTableConfig: TableRendererConfig<AuditLogResponse> = {
     "aria-label": "Audit log's data Table",
     cardTitleKey: "entity",
     getRowKey: (row) => row.id!,
-    emptyMessage: "Audit logs not found..",
+    emptyMessage: "Audit logs not found.",
     size: "sm",
     striped: true,
     responsive: "cards",
@@ -93,3 +93,6 @@ const auditLogTableConfig: TableRendererConfig<AuditLogResponse> = {
 };
 
 export const getAuditLogTableConfig = () => auditLogTableConfig;
+
+export const getCurrentAuditLogTableConfig = () =>
+  Object.seal({ ...auditLogTableConfig, usePage: useGetCurrentPageAuditLog });

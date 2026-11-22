@@ -49,6 +49,9 @@ export const homePanelRoutes: HomePanelRoute[] = [
     title: "Trace",
     description:
       "Follow a chronological record of the activity linked to your account.",
+    Element: lazy(
+      () => import("@/features/audit/layouts/AuditLogCurrentLayout"),
+    ),
   },
   {
     path: "community/comments",

@@ -1,9 +1,11 @@
+import { getPaymentQueryKeys } from "@/features/payment/services/payment-query-keys";
 import { getSubscriptionQueryKeys } from "@/features/subscription/services/subscription-query-keys";
 import type {
   SubscriptionCurrentRequest,
   SubscriptionSessionResponse,
 } from "@/features/subscription/types";
 import { useMutationMapping } from "@/hooks/useClientMutator";
+import { getQueryAppClient } from "@/services/query-client";
 
 const BASE: string = import.meta.env.VITE_SUBSCRIPTION_CURRENT_V1;
 
@@ -19,6 +21,12 @@ export const useCreateCurrentSubscription = () =>
     uri: BASE,
     method: "post",
     ...subscriptionMutationBase,
+    options: {
+      onSettled: () =>
+        getQueryAppClient().invalidateQueries({
+          queryKey: getPaymentQueryKeys().current.all(),
+        }),
+    },
   });
 
 export const useRenewSubscription = () =>

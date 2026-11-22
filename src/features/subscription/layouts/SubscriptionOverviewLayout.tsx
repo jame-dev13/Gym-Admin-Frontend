@@ -1,17 +1,9 @@
 import { CommandBtn } from "@/components/buttons/Buttons";
-import { useModalContext } from "@/context/useModalContext";
-import {
-  CreateCurrentSubscriptionDialog,
-  DeleteCurrentSubscriptionDialog,
-  FinalizeCurrentSubscriptionDialog,
-  RenewCurrentSubscriptionDialog,
-} from "@/features/subscription/components/CurrentSubscriptionConfirmDialog";
-import { MembershipShowcase } from "@/features/subscription/components/MembershipShowcase";
+import { SubscriptionCallToAction } from "@/features/subscription/components/SubscriptionCallToAction";
 import { SubscriptionCard } from "@/features/subscription/components/SubscriptionCard";
 import { SubscriptionPeriodMetrics } from "@/features/subscription/components/SubscriptionPeriodMetrics";
+import { useCurrentSubscriptionDialogs } from "@/features/subscription/hooks/useCurrentSubscriptionDialogs";
 import { useGetSubscription } from "@/features/subscription/hooks/useFetchCurrentSubscription";
-import type { MembershipPlan } from "@/features/subscription/services/membership-plans";
-import type { SubscriptionResponse } from "@/features/subscription/types";
 import { HttpStatusCode } from "axios";
 import { CreditCard, RefreshCw } from "lucide-react";
 import type { ReactNode } from "react";
@@ -45,13 +37,17 @@ const SubscriptionOverviewFallback = () => (
 /**
  * Customer-facing subscription overview.
  *
- * Decides between the "welcome" membership showcase and the current
- * subscription card from the payload of the current-subscription endpoint.
- * The modal host lives in `HomeLayout`.
+ * Decides between the call to action that sends customers to the home
+ * overview and the current subscription card from the payload of the
+ * current-subscription endpoint. The modal host lives in `HomeLayout`.
  */
 export const SubscriptionOverviewLayout = () => {
   const { data, error, isPending, refetch } = useGetSubscription();
-  const { openModal } = useModalContext();
+  const {
+    openRenewDialog,
+    openFinalizeDialog,
+    openDeleteDialog,
+  } = useCurrentSubscriptionDialogs();
 
   const subscription = data?.data;
   const isMissingSubscription =
@@ -62,50 +58,6 @@ export const SubscriptionOverviewLayout = () => {
       ? (error.message ?? error.error ?? ERROR_MESSAGE)
       : null;
 
-  const handleSelectMembership = (plan: MembershipPlan) => {
-    openModal({
-      title: "Start a membership",
-      description: `Create a new ${plan.label} membership.`,
-      size: "sm",
-      data: plan,
-      render: (selected) => (
-        <CreateCurrentSubscriptionDialog membership={selected.membership} />
-      ),
-    });
-  };
-
-  const handleRenew = (current: SubscriptionResponse) => {
-    openModal({
-      title: "Renew membership",
-      description: `Renew the ${current.membership.toLowerCase()} membership.`,
-      size: "sm",
-      data: current,
-      render: (selected) => (
-        <RenewCurrentSubscriptionDialog membership={selected.membership} />
-      ),
-    });
-  };
-
-  const handleFinalize = (current: SubscriptionResponse) => {
-    openModal({
-      title: "Finalize membership",
-      description: `Finalize the ${current.membership.toLowerCase()} membership.`,
-      size: "sm",
-      data: current,
-      render: () => <FinalizeCurrentSubscriptionDialog />,
-    });
-  };
-
-  const handleDelete = (current: SubscriptionResponse) => {
-    openModal({
-      title: "Delete membership",
-      description: `Delete the ${current.membership.toLowerCase()} membership.`,
-      size: "sm",
-      data: current,
-      render: () => <DeleteCurrentSubscriptionDialog />,
-    });
-  };
-
   let content: ReactNode;
 
   if (isPending) {
@@ -115,17 +67,15 @@ export const SubscriptionOverviewLayout = () => {
       <div className="flex flex-col gap-6">
         <SubscriptionCard
           subscription={subscription}
-          onRenew={handleRenew}
-          onFinalize={handleFinalize}
-          onDelete={handleDelete}
+          onRenew={openRenewDialog}
+          onFinalize={openFinalizeDialog}
+          onDelete={openDeleteDialog}
         />
         <SubscriptionPeriodMetrics subscription={subscription} />
       </div>
     );
   } else if (isMissingSubscription) {
-    content = (
-      <MembershipShowcase onSelectMembership={handleSelectMembership} />
-    );
+    content = <SubscriptionCallToAction />;
   } else if (errorMessage) {
     content = (
       <div

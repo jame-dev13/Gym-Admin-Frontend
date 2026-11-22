@@ -5,7 +5,16 @@ import {
   type TableFieldIndicator,
 } from "@/components/table/TableField";
 import type { TableRendererConfig } from "@/components/table/tableRendererConfig";
-import { useGetPaymentPage } from "@/features/payment/hooks/useFetchPayments";
+import {
+  useGetCurrentPaymentPage,
+  useGetPaymentPage,
+} from "@/features/payment/hooks/useFetchPayments";
+import {
+  formatPaymentAmount as formatAmount,
+  formatPaymentDate as formatDate,
+  formatPaymentMethod as formatMethod,
+  formatPaymentStatus as formatStatus,
+} from "@/features/payment/services/payment-format";
 import type { PaymentResponse } from "@/features/payment/types";
 import type { Column } from "@/types/Types";
 import type { LucideIcon } from "lucide-react";
@@ -21,33 +30,6 @@ import {
   Store,
   Timer,
 } from "lucide-react";
-
-const amountFormatter = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "MXN",
-  maximumFractionDigits: 2,
-});
-
-const dateFormatter = new Intl.DateTimeFormat("en-US", {
-  dateStyle: "medium",
-  timeStyle: "short",
-});
-
-const formatAmount = (amount: number) => amountFormatter.format(amount);
-
-const formatDate = (createdAt: string) => {
-  const date = new Date(createdAt);
-
-  return Number.isNaN(date.getTime()) ? createdAt : dateFormatter.format(date);
-};
-
-const STATUS_LABEL: Record<string, string> = {
-  PENDING: "Pending",
-  COMPLETED: "Completed",
-  FAILED: "Failed",
-  REFUNDED: "Refunded",
-  FINALIZED: "Finalized",
-};
 
 const STATUS_VARIANT: Record<string, BadgeVariant> = {
   PENDING: "amber",
@@ -73,21 +55,10 @@ const STATUS_INDICATOR: Record<string, TableFieldIndicator> = {
   FINALIZED: "neutral",
 };
 
-const METHOD_LABEL: Record<string, string> = {
-  ELECTRONIC: "Electronic",
-  PHYSIC: "Physic",
-};
-
 const METHOD_ICON: Record<string, LucideIcon> = {
   ELECTRONIC: CreditCard,
   PHYSIC: Store,
 };
-
-const formatStatus = (status: string) =>
-  STATUS_LABEL[status] ?? status.replaceAll("_", " ").toLowerCase();
-
-const formatMethod = (method: string) =>
-  METHOD_LABEL[method] ?? method.replaceAll("_", " ").toLowerCase();
 
 const columns: Column<PaymentResponse>[] = [
   {
@@ -170,3 +141,6 @@ const paymentTableConfig: TableRendererConfig<PaymentResponse> = {
 };
 
 export const getPaymentTableConfig = () => paymentTableConfig;
+
+export const getPaymentCurrentTableConfig = () =>
+  Object.seal({ ...paymentTableConfig, usePage: useGetCurrentPaymentPage });

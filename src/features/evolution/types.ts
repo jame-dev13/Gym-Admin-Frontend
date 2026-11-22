@@ -18,7 +18,7 @@ type EvolutionMonth = {
   downs: number;
 };
 
-type BillingMonth = {
+export type BillingMonth = {
   month: string;
   total: number;
 };

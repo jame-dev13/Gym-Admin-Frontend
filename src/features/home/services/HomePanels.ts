@@ -32,6 +32,11 @@ export const homePanelRoutes: HomePanelRoute[] = [
     title: "Payments",
     description:
       "Browse the payments registered on your account and their current status.",
+    Element: lazy(() =>
+      import("@/features/payment/layouts/PaymentBillingLayout").then((mod) => ({
+        default: mod.PaymentBillingLayout,
+      })),
+    ),
   },
   {
     path: "my/comments",

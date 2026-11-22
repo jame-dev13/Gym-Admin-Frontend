@@ -18,7 +18,6 @@ export const useRetryCurrentPayment = () =>
       onSettled: () =>
         getQueryAppClient().invalidateQueries({
           queryKey: subscriptionCurr.all(),
-          exact: true,
         }),
     },
   });

@@ -1,5 +1,11 @@
 import { Settings2 } from "lucide-react";
 import { CurrentLayout } from "@/features/current/layouts/CurrentLayout";
+import { lazy, Suspense } from "react";
+import { FormSkeleton } from "@/components/skeleton";
+
+const LazyNotificationConfigCard = lazy(
+  () => import("@/features/notification/components/NotificationConfigCard"),
+);
 
 export const HomeSettingsLayout = () => {
   return (
@@ -19,12 +25,14 @@ export const HomeSettingsLayout = () => {
           Settings
         </h1>
         <p className="max-w-2xl text-sm leading-relaxed text-text-secondary">
-          Manage your account details and keep your personal information up to
-          date.
+          Manage your account details and choose how notifications reach you.
         </p>
       </header>
 
-      <div className="grid min-h-0 gap-6 pb-2">
+      <Suspense fallback={<FormSkeleton />}>
+        <LazyNotificationConfigCard />
+      </Suspense>
+      <div className="flex min-h-0 gap-6 pb-2 flex-wrap">
         <CurrentLayout />
       </div>
     </section>

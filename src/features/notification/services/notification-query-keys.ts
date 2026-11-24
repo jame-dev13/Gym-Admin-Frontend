@@ -6,11 +6,13 @@ export const getNotificationQueryKey = () => DOMAIN;
 
 export const getNotificationQueryKeys = () => notificationQueryKeys;
 
-const { administration } = getQueryKeyProvider();
+const { administration, current } = getQueryKeyProvider();
 
 const notificationQueryKeys = {
   administration: {
     all: () => [...administration, DOMAIN] as const,
   },
-  current: {}
-}
+  current: {
+    all: () => [...current, DOMAIN] as const,
+  },
+};

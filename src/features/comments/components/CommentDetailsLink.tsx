@@ -1,28 +1,13 @@
 import { PopoverLink } from "@/components/popover";
 import { Rating } from "@/components/rating/Rating";
+import {
+  formatCommentDate,
+  formatCommentRate,
+  formatCommentType,
+} from "@/features/comments/services/comment-presentation";
 import type { CommentResponse } from "@/features/comments/types";
 import { Eye } from "lucide-react";
 import type { FC } from "react";
-
-const formatDate = (value: string | null) => {
-  if (!value) {
-    return "—";
-  }
-
-  const date = new Date(value);
-
-  return Number.isNaN(date.getTime())
-    ? value
-    : new Intl.DateTimeFormat("en-US", {
-        dateStyle: "medium",
-        timeStyle: "short",
-      }).format(date);
-};
-
-const formatCommentType = (commentType: CommentResponse["commentType"]) =>
-  commentType.toLowerCase();
-
-const formatRate = (rate: number) => Math.round(rate * 5 * 100) / 100;
 
 export const CommentDetailsLink: FC<{ comment: CommentResponse }> = ({
   comment,
@@ -56,18 +41,22 @@ export const CommentDetailsLink: FC<{ comment: CommentResponse }> = ({
                 <Rating
                   value={data.rate}
                   readOnly
-                  label={`Rating: ${formatRate(data.rate)} out of 5`}
+                  label={`Rating: ${formatCommentRate(data.rate)} out of 5`}
                 />
               )}
             </dd>
           </div>
           <div className="flex items-center justify-between gap-3">
             <dt className="text-text-secondary">Created</dt>
-            <dd className="text-text-primary">{formatDate(data.createdAt)}</dd>
+            <dd className="text-text-primary">
+              {formatCommentDate(data.createdAt)}
+            </dd>
           </div>
           <div className="flex items-center justify-between gap-3">
             <dt className="text-text-secondary">Edited</dt>
-            <dd className="text-text-primary">{formatDate(data.editedAt)}</dd>
+            <dd className="text-text-primary">
+              {formatCommentDate(data.editedAt)}
+            </dd>
           </div>
         </dl>
       </div>

@@ -43,6 +43,11 @@ export const homePanelRoutes: HomePanelRoute[] = [
     title: "Comments",
     description:
       "Read the comments you have shared and follow up on any pending feedback.",
+    Element: lazy(() =>
+      import("@/features/comments/layouts/CommentListLayout").then((mod) => ({
+        default: mod.CommentListLayout,
+      })),
+    ),
   },
   {
     path: "my/trace",

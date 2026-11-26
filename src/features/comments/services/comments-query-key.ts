@@ -1,7 +1,7 @@
 import { getQueryKeyProvider } from "@/services/query-key-provider";
 import type { Identifiable } from "@/types/Types";
 
-const { administration } = getQueryKeyProvider();
+const { administration, current } = getQueryKeyProvider();
 
 const COMMENT_DOMAIN_KEY = ["comments"] as const;
 
@@ -15,6 +15,15 @@ const commentQueryKeys = {
     page: (params?: Record<string, unknown>) =>
       [
         ...commentQueryKeys.administration.all(),
+        "page",
+        { ...params },
+      ] as const,
+  },
+  current: {
+    all: () => [...current, ...getQueryDomainKey()] as const,
+    page: (params?: Record<string, unknown>) =>
+      [
+        ...commentQueryKeys.current.all(),
         "page",
         { ...params },
       ] as const,

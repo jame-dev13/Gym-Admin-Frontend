@@ -3,6 +3,7 @@ import type {
   FetchResponse,
   Identifiable,
   Page,
+  Slice,
 } from "@/types/Types";
 import type { UseQueryResult } from "@tanstack/react-query";
 import { useCallback, useEffect } from "react";
@@ -153,4 +154,42 @@ function usePageFetchHandler<T>({
   };
 }
 
-export { useFetchHandler, usePageFetchHandler };
+type useSliceFetchConfig<T> = {
+  sliceFetchHook: () => UseQueryResult<Slice<T>, ApiErrorResponse>;
+  resultHandlers?: ResultHandlers<Slice<T>>;
+  abortExpression?: boolean;
+};
+
+function useSliceFetchHandler<T>({
+  sliceFetchHook,
+  abortExpression,
+  resultHandlers = {},
+}: useSliceFetchConfig<T>) {
+  const { data, error, isPending, refetch, isRefetching, isSuccess } =
+    sliceFetchHook();
+
+  useQueryLifecycle({
+    data,
+    error,
+    isPending,
+    isRefetching,
+    isSuccess,
+    abortExpression,
+    resultHandlers,
+  });
+
+  const performRefetch = useSafeRefetch({ refetch, isPending, isRefetching });
+
+  return {
+    slice: {
+      ...data,
+    },
+    refetch: {
+      performRefetch,
+      isRefetching,
+    },
+    error,
+  };
+}
+
+export { useFetchHandler, usePageFetchHandler, useSliceFetchHandler };

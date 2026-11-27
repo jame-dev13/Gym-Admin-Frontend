@@ -24,6 +24,16 @@ export type Page<T> = Readonly<{
   page: PageProperty;
 }>;
 
+export type Slice<T> = Readonly<{
+  content: T[];
+  number: number;
+  size: number;
+  numberOfElements: number;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+}>
+
 type PageProperty = Readonly<{
   size: number;
   number: number;

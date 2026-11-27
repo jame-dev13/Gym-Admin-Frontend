@@ -13,12 +13,20 @@ export type CommentResponse = Readonly<{
   rate: number | null;
   createdAt: string;
   editedAt: string | null;
+  hasReplies: boolean;
 }>;
 
 export type CommentRequest = Readonly<{
   comment: string;
   commentType: CommentType;
   rate: number | null;
+}>;
+
+export type ReplyResponse = Readonly<{
+  replyId: string;
+  replyFrom: string;
+  replyText: string;
+  createdAt: string;
 }>;
 
 export type CommentTableRow = CommentResponse & Identifiable;

@@ -3,6 +3,7 @@ import { Badge } from "@/components/badge/Badge";
 import { Rating } from "@/components/rating/Rating";
 import { CommentDetailsLink } from "@/features/comments/components/CommentDetailsLink";
 import { CommentListActionRows } from "@/features/comments/components/CommentListActionRows";
+import { CommentReplySection } from "@/features/comments/components/CommentReplySection";
 import {
   COMMENT_TYPE_VARIANT,
   formatCommentDate,
@@ -85,6 +86,10 @@ export const CommentListItem = ({ comment }: CommentListItemProps) => {
       <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-border/60 pt-2">
         <CommentDetailsLink comment={comment} />
       </footer>
+
+      {comment.hasReplies && (
+        <CommentReplySection commentId={comment.commentId} />
+      )}
     </article>
   );
 };

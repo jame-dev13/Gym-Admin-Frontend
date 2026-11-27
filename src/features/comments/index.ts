@@ -3,16 +3,19 @@ export type {
   CommentResponse,
   CommentTableRow,
   CommentType,
+  ReplyResponse,
 } from "@/features/comments/types";
 export {
   getCommentQueryKeys,
   getQueryDomainKey,
 } from "@/features/comments/services/comments-query-key";
+export { getCommentReplyQueryKeys } from "@/features/comments/services/comment-reply-query-keys";
 export {
   useGetComment,
   useGetCommentPage,
 } from "@/features/comments/hooks/api/useFetchComments";
 export { useGetCurrentCommentPage } from "@/features/comments/hooks/api/useFetchCurrentComments";
+export { useGetCommentReplySlice } from "@/features/comments/hooks/api/useFetchCurrentComments";
 export {
   useCreateCurrentComment,
   useDeleteCurrentComment,
@@ -42,6 +45,14 @@ export {
   type CommentListItemProps,
 } from "@/features/comments/components/CommentListItem";
 export { CommentListActionRows } from "@/features/comments/components/CommentListActionRows";
+export {
+  CommentReplySection,
+  type CommentReplySectionProps,
+} from "@/features/comments/components/CommentReplySection";
+export {
+  CommentReplyList,
+  type CommentReplyListProps,
+} from "@/features/comments/components/CommentReplyList";
 export { CommentTableActionRows } from "@/features/comments/components/CommentTableActionRows";
 export { COMMENT_TYPE_OPTIONS } from "@/features/comments/services/comment-form-config";
 export { CommentLayout } from "@/features/comments/layouts/CommentLayout";

@@ -2,7 +2,7 @@ import { PencilLine, Trash2 } from "lucide-react";
 import { lazy } from "react";
 import { ListRowActions } from "@/components/list/ListRowActions";
 import { useModalContext } from "@/context/useModalContext";
-import type { CommentResponse } from "@/features/comments/types";
+import type { CommentRow } from "@/features/comments/types";
 import type { RowAction } from "@/types/Types";
 
 const LazyEditCurrentCommentForm = lazy(() =>
@@ -21,19 +21,22 @@ const LazyDeleteCurrentCommentDialog = lazy(() =>
   ),
 );
 
-export const CommentListActionRows = ({
-  row,
-}: {
-  row: CommentResponse;
-}) => {
+const belongsToCurrentUser = (comment: CommentRow): boolean =>
+  !("isOwner" in comment) || comment.isOwner;
+
+export const CommentListActionRows = ({ row }: { row: CommentRow }) => {
   const { isOpen: isModalOpen, openModal } = useModalContext();
 
-  const actions: RowAction<CommentResponse>[] = [
+  if (!belongsToCurrentUser(row)) {
+    return null;
+  }
+
+  const actions: RowAction<CommentRow>[] = [
     {
       id: "edit-comment",
       label: "Edit comment",
       Icon: PencilLine,
-      disabled: isModalOpen,
+      disabled: isModalOpen || !row.commentId,
       onSelect: (comment) => {
         openModal({
           title: "Edit comment",
@@ -51,7 +54,7 @@ export const CommentListActionRows = ({
       label: "Remove comment",
       Icon: Trash2,
       destructive: true,
-      disabled: isModalOpen,
+      disabled: isModalOpen || !row.commentId,
       onSelect: (comment) => {
         openModal({
           title: "Remove comment",

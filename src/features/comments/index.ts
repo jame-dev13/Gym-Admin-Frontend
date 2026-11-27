@@ -1,8 +1,10 @@
 export type {
   CommentRequest,
   CommentResponse,
+  CommentRow,
   CommentTableRow,
   CommentType,
+  CommunityCommentResponse,
   ReplyResponse,
 } from "@/features/comments/types";
 export {
@@ -14,8 +16,11 @@ export {
   useGetComment,
   useGetCommentPage,
 } from "@/features/comments/hooks/api/useFetchComments";
-export { useGetCurrentCommentPage } from "@/features/comments/hooks/api/useFetchCurrentComments";
-export { useGetCommentReplySlice } from "@/features/comments/hooks/api/useFetchCurrentComments";
+export {
+  useGetCommentReplySlice,
+  useGetCommunityCommentPage,
+  useGetCurrentCommentPage,
+} from "@/features/comments/hooks/api/useFetchCurrentComments";
 export {
   useCreateCurrentComment,
   useDeleteCurrentComment,

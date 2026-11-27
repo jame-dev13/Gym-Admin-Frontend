@@ -1,7 +1,6 @@
 import { Avatar } from "@/components/avatar/Avatar";
 import { Badge } from "@/components/badge/Badge";
 import { Rating } from "@/components/rating/Rating";
-import { CommentDetailsLink } from "@/features/comments/components/CommentDetailsLink";
 import { CommentListActionRows } from "@/features/comments/components/CommentListActionRows";
 import { CommentReplySection } from "@/features/comments/components/CommentReplySection";
 import {
@@ -10,12 +9,21 @@ import {
   formatCommentRate,
   formatCommentType,
 } from "@/features/comments/services/comment-presentation";
-import type { CommentResponse } from "@/features/comments/types";
+import type {
+  CommentResponse,
+  CommunityCommentResponse,
+} from "@/features/comments/types";
 import { CalendarClock, PencilLine } from "lucide-react";
 
-export type CommentListItemProps = {
-  comment: CommentResponse;
-};
+export type CommentListItemProps =
+  | {
+      kind: "current";
+      comment: CommentResponse;
+    }
+  | {
+      kind: "community";
+      comment: CommunityCommentResponse;
+    };
 
 /**
  * The concrete item view for the comments list. It owns its layout and its
@@ -79,13 +87,9 @@ export const CommentListItem = ({ comment }: CommentListItemProps) => {
         </div>
       </header>
 
-      <p className="whitespace-pre-line break-words text-sm leading-relaxed text-text-primary">
+      <p className="whitespace-pre-line wrap-break text-sm leading-relaxed text-text-primary">
         {comment.comment || "—"}
       </p>
-
-      <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-border/60 pt-2">
-        <CommentDetailsLink comment={comment} />
-      </footer>
 
       {comment.hasReplies && (
         <CommentReplySection commentId={comment.commentId} />

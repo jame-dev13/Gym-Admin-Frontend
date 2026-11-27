@@ -63,6 +63,9 @@ export const homePanelRoutes: HomePanelRoute[] = [
     title: "Comments",
     description:
       "Discover what other members are saying and join the community conversation.",
+    Element: lazy(
+      () => import("@/features/comments/layouts/CommunityCommentLayout"),
+    ),
   },
   {
     path: "settings",

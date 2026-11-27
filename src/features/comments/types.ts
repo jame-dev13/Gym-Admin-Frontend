@@ -29,4 +29,14 @@ export type ReplyResponse = Readonly<{
   createdAt: string;
 }>;
 
-export type CommentTableRow = CommentResponse & Identifiable;
+export type CommunityCommentResponse = Readonly<
+  CommentResponse & { isOwner: boolean }
+>;
+
+/**
+ * Any comment rendered by the list layer, regardless of whether it belongs to
+ * the current user (current domain) or to the community feed.
+ */
+export type CommentRow = CommentResponse | CommunityCommentResponse;
+
+export type CommentTableRow<T = CommentRow> = T & Identifiable;

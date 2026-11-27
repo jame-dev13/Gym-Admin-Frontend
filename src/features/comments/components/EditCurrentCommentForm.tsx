@@ -7,12 +7,12 @@ import { Rating } from "@/components/rating/Rating";
 import { useModalContext } from "@/context/useModalContext";
 import { useEditCurrentCommentHandler } from "@/features/comments/hooks/handlers/useEditCurrentCommentHandler";
 import { COMMENT_TYPE_OPTIONS } from "@/features/comments/services/comment-form-config";
-import type { CommentResponse } from "@/features/comments/types";
+import type { CommentRow } from "@/features/comments/types";
 import { ArrowLeft, Save } from "lucide-react";
 import { useState, type FC } from "react";
 
 export type EditCurrentCommentFormProps = {
-  comment: CommentResponse;
+  comment: CommentRow;
 };
 
 export const EditCurrentCommentForm: FC<EditCurrentCommentFormProps> = ({

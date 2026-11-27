@@ -21,7 +21,7 @@ const renderItem = (comment: CommentResponse) =>
   renderWithProviders(
     <PopoverProvider>
       <ModalProvider>
-        <CommentListItem comment={comment} />
+        <CommentListItem comment={comment} kind="current" />
       </ModalProvider>
     </PopoverProvider>,
   );

@@ -12,11 +12,6 @@ export type CommentReplySectionProps = {
   commentId: string;
 };
 
-/**
- * Collapsed entry point of a comment's reply thread. The replies list lives in
- * its own chunk and is only requested after the first "See more" click, so
- * comments without an opened thread cost nothing.
- */
 export const CommentReplySection = ({
   commentId,
 }: CommentReplySectionProps) => {

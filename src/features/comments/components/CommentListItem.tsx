@@ -3,6 +3,7 @@ import { Badge } from "@/components/badge/Badge";
 import { Rating } from "@/components/rating/Rating";
 import { CommentListActionRows } from "@/features/comments/components/CommentListActionRows";
 import { CommentReplySection } from "@/features/comments/components/CommentReplySection";
+import { MakeReplyBtn } from "@/features/comments/components/MakeReplyBtn";
 import {
   COMMENT_TYPE_VARIANT,
   formatCommentDate,
@@ -25,10 +26,6 @@ export type CommentListItemProps =
       comment: CommunityCommentResponse;
     };
 
-/**
- * The concrete item view for the comments list. It owns its layout and its
- * actions; `List`/`ListLayout` only space and scroll the items.
- */
 export const CommentListItem = ({ comment }: CommentListItemProps) => {
   const createdAt = formatCommentDate(comment.createdAt);
   const editedAt = comment.editedAt
@@ -87,9 +84,14 @@ export const CommentListItem = ({ comment }: CommentListItemProps) => {
         </div>
       </header>
 
+
       <p className="whitespace-pre-line wrap-break text-sm leading-relaxed text-text-primary">
         {comment.comment || "—"}
       </p>
+
+      <footer className={"flex w-full border-t border-surface-over pt-2"}>
+        <MakeReplyBtn comment={comment} />
+      </footer>
 
       {comment.hasReplies && (
         <CommentReplySection commentId={comment.commentId} />

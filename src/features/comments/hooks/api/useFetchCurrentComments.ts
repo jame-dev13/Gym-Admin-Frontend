@@ -26,7 +26,7 @@ export const useGetCommentReplySlice = (
 ) =>
   useSliceFetchMapping<ReplyResponse>({
     uri: pathBuilder.action(BASE_URI, commentId, "replies"),
-    queryKey: [...replyCurrent.slice(commentId, params)],
+    queryKey: replyCurrent.slice(commentId, params),
     params,
   });
 

@@ -29,6 +29,10 @@ export type ReplyResponse = Readonly<{
   createdAt: string;
 }>;
 
+export type ReplyRequest = Readonly<{
+  comment: string;
+}>
+
 export type CommunityCommentResponse = Readonly<
   CommentResponse & { isOwner: boolean }
 >;
